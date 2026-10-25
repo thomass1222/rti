@@ -1262,10 +1262,24 @@
                 margin: 2px 0 6px 0;
             }
 
-            .holo-viewport {
-                height: 205px;
-                max-width: 100%;
-            }
+         .holo-viewport {
+             width: 100%;
+             max-width: 320px;
+             height: 260px;
+             margin: 0 auto;
+         }
+
+         #hero-3d-canvas {
+             width: 100%;
+             height: 100%;
+             display: block;
+         }
+
+         .holo-pedestal {
+             width: 220px;
+             height: 48px;
+             bottom: 12px;
+         }
 
             .stage-hud-top {
                 top: 0;
@@ -2472,13 +2486,26 @@
             `).join('');
         }
 
-        // =========================================================
+  // =========================================================
         // 5. ИНТЕРАКТИВНЫЙ 3D-ДВИЖОК НА ПЬЕДЕСТАЛЕ
         // =========================================================
         const canvas = document.getElementById('hero-3d-canvas');
         const ctx = canvas.getContext('2d');
-        const CW = canvas.width = 500;
-        const CH = canvas.height = 420;
+        let CW = 500;
+        let CH = 420;
+
+        function resize3DCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                CW = canvas.width;
+                CH = canvas.height;
+            }
+        }
+        window.addEventListener('resize', resize3DCanvas);
+        resize3DCanvas();
 
         const SEGMENTS = 16;
         const RINGS = 10;
@@ -2614,6 +2641,9 @@
 
             const proj = [];
 
+            // Автоматический масштаб модели под размер экрана
+            const baseScale = Math.min(CW, CH) * 0.95;
+
             for (let i = 0; i < vertices.length; i++) {
                 const v = vertices[i];
                 v.x += (v.tx - v.x) * 0.08;
@@ -2623,12 +2653,12 @@
                 const x1 = v.x * cosY - v.z * sinY;
                 const z1 = v.z * cosY + v.x * sinY;
                 const y1 = v.y * cosX - z1 * sinX;
-                const z2 = z1 * cosX + pYOffset(v.y, sinX);
+                const z2 = z1 * cosX + v.y * sinX;
 
-                const fov = 440 / (440 + z2);
+                const fov = baseScale / (baseScale + z2 * 1.5);
                 proj.push({
                     px: CW / 2 + x1 * fov,
-                    py: CH / 2 - 14 + y1 * fov,
+                    py: CH / 2 - 8 + y1 * fov,
                     z: z2,
                     fov: fov
                 });
@@ -2641,7 +2671,7 @@
                 const depthAlpha = Math.max(0.08, Math.min(0.75, (avgZ + 180) / 320));
 
                 ctx.strokeStyle = `rgba(${strokeRGB}, ${depthAlpha})`;
-                ctx.lineWidth = depthAlpha * 1.7;
+                ctx.lineWidth = depthAlpha * (CW < 600 ? 1.2 : 1.7);
                 ctx.beginPath();
                 ctx.moveTo(p1.px, p1.py);
                 ctx.lineTo(p2.px, p2.py);
@@ -2653,15 +2683,11 @@
                 const alpha = Math.max(0.15, Math.min(0.95, (p.z + 180) / 320));
                 ctx.fillStyle = `rgba(${nodeRGB}, ${alpha})`;
                 ctx.beginPath();
-                ctx.arc(p.px, p.py, 1.8 * p.fov, 0, Math.PI * 2);
+                ctx.arc(p.px, p.py, (CW < 600 ? 1.4 : 1.8) * p.fov, 0, Math.PI * 2);
                 ctx.fill();
             }
 
             requestAnimationFrame(renderHero3D);
-        }
-
-        function pYOffset(vy, sinX) {
-            return vy * sinX;
         }
 
         renderHero3D();
