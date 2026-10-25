@@ -3,39 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ПромТехИнжиниринг — Производство РТИ и Металлоконструкции</title>
+    <title>ПРОМТЕХ — Инжиниринг, РТИ и Металлоконструкции</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
+        /* =========================================================
+           1. СИСТЕМА ЦВЕТОВ И ПЕРЕМЕННЫХ (РТИ vs МЕТАЛЛ)
+           ========================================================= */
         :root {
-            --bg-main: #070a10;
-            --bg-card: rgba(16, 23, 36, 0.78);
-            --border-card: rgba(255, 255, 255, 0.08);
-            --text-main: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
+            --bg-base: #06090f;
+            --bg-panel: #0b111c;
+            --bg-glass: rgba(13, 20, 33, 0.78);
+            --border-dim: rgba(255, 255, 255, 0.08);
+            --text-white: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-low: #64748b;
 
-            /* Режим РТИ */
-            --accent-primary: #00d2ff;
-            --accent-secondary: #0066ff;
-            --accent-glow: rgba(0, 210, 255, 0.6);
-            --accent-soft: rgba(0, 210, 255, 0.1);
-            --accent-border: rgba(0, 210, 255, 0.35);
-            --hero-glow: rgba(0, 190, 255, 0.12);
+            /* Режим I: РТИ (Кобальт и Неоновый Циан) */
+            --accent: #00d4ff;
+            --accent-alt: #0066ff;
+            --accent-rgb: 0, 212, 255;
+            --accent-soft: rgba(0, 212, 255, 0.1);
+            --accent-border: rgba(0, 212, 255, 0.38);
+            --accent-glow: rgba(0, 212, 255, 0.55);
         }
 
         html[data-mode="metal"] {
-            /* Режим Металл */
-            --accent-primary: #38bdf8;
-            --accent-secondary: #f59e0b;
-            --accent-glow: rgba(245, 158, 11, 0.55);
-            --accent-soft: rgba(56, 189, 248, 0.1);
-            --accent-border: rgba(245, 158, 11, 0.4);
-            --hero-glow: rgba(245, 158, 11, 0.1);
+            /* Режим II: Металлоконструкции (Сталь и Индустриальный Янтарь) */
+            --accent: #f59e0b;
+            --accent-alt: #38bdf8;
+            --accent-rgb: 245, 158, 11;
+            --accent-soft: rgba(245, 158, 11, 0.1);
+            --accent-border: rgba(245, 158, 11, 0.42);
+            --accent-glow: rgba(245, 158, 11, 0.5);
         }
+
+        /* Безотказное переключение видимости слоев */
+        html[data-mode="rti"] [data-show="metal"] { display: none !important; }
+        html[data-mode="metal"] [data-show="rti"] { display: none !important; }
 
         * {
             box-sizing: border-box;
@@ -49,59 +57,46 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            line-height: 1.6;
+            background-color: var(--bg-base);
+            color: var(--text-white);
+            line-height: 1.55;
             overflow-x: hidden;
-            transition: background-color 0.4s ease;
         }
 
         h1, h2, h3, h4, .font-head {
             font-family: 'Montserrat', sans-serif;
         }
 
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
         .container {
-            max-width: 1240px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
             position: relative;
-            z-index: 10;
+            z-index: 5;
         }
 
-        /* Переключение контента между режимами */
-        .content-metal {
-            display: none !important;
-        }
-
-        html[data-mode="metal"] .content-metal {
-            display: grid !important;
-        }
-        html[data-mode="metal"] .content-metal.flex-view {
-            display: flex !important;
-        }
-        html[data-mode="metal"] .content-metal.block-view {
-            display: block !important;
-        }
-
-        html[data-mode="metal"] .content-rti {
-            display: none !important;
-        }
-
-        .bg-grid {
+        /* Фоновая инженерная миллиметровка */
+        .blueprint-bg-grid {
             position: fixed;
             inset: 0;
             background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
-            mask-image: radial-gradient(ellipse at 50% 25%, black 20%, transparent 80%);
-            -webkit-mask-image: radial-gradient(ellipse at 50% 25%, black 20%, transparent 80%);
+                linear-gradient(to right, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+            background-size: 56px 56px;
+            mask-image: radial-gradient(ellipse at 50% 30%, black 25%, transparent 85%);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 25%, transparent 85%);
             pointer-events: none;
             z-index: 1;
         }
 
-        /* ШАПКА */
-        .header-wrap {
+        /* =========================================================
+           2. ФИКСИРОВАННАЯ ШАПКА (БЕЗ ПРЫЖКОВ И ПЕРЕНОСОВ)
+           ========================================================= */
+        .header-fixed {
             position: fixed;
             top: 16px;
             left: 0;
@@ -110,23 +105,24 @@
             padding: 0 16px;
         }
 
-        .header-bar {
-            max-width: 1200px;
+        .header-capsule {
+            max-width: 1240px;
             margin: 0 auto;
             height: 64px;
-            background: rgba(11, 16, 26, 0.88);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(10, 15, 25, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 0 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+            gap: 16px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
         }
 
-        .brand-logo {
+        .brand {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -134,1645 +130,2111 @@
             color: #fff;
             font-weight: 800;
             font-size: 17px;
-            letter-spacing: 1.2px;
+            letter-spacing: 1.5px;
             flex-shrink: 0;
         }
 
-        .brand-logo svg {
-            width: 28px;
-            height: 28px;
-            filter: drop-shadow(0 0 6px var(--accent-glow));
-            transition: filter 0.4s ease;
+        .brand svg {
+            width: 30px;
+            height: 30px;
+            filter: drop-shadow(0 0 8px var(--accent-glow));
+            transition: filter 0.3s ease;
         }
 
-        .mode-switcher-bar {
+        /* Переключатель режимов в шапке */
+        .header-mode-switch {
             display: flex;
-            background: rgba(5, 8, 14, 0.8);
+            background: #05080e;
             border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 4px;
-            border-radius: 8px;
+            border-radius: 9px;
             gap: 4px;
+            flex-shrink: 0;
         }
 
-        .switch-tab {
-            border: none;
+        .hms-btn {
+            border: 1px solid transparent;
             background: transparent;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             font-family: 'Montserrat', sans-serif;
             font-size: 12px;
-            font-weight: 600;
-            padding: 8px 16px;
+            font-weight: 700;
+            padding: 7px 14px;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.25s ease;
             white-space: nowrap;
         }
 
-        .switch-tab.active {
-            background: rgba(255, 255, 255, 0.08);
+        .hms-btn.active {
+            background: var(--accent-soft);
             color: #fff;
-            border: 1px solid var(--accent-border);
-            box-shadow: 0 0 14px var(--accent-soft);
+            border-color: var(--accent-border);
+            box-shadow: 0 0 15px var(--accent-soft);
         }
 
-        .nav-menu {
+        .header-nav {
             display: flex;
             align-items: center;
             gap: 22px;
         }
 
-        .nav-menu a {
-            color: var(--text-secondary);
+        .header-nav a {
+            color: var(--text-muted);
             text-decoration: none;
             font-size: 13px;
             font-weight: 500;
-            transition: color 0.25s ease;
-            cursor: pointer;
+            transition: color 0.2s ease;
+            white-space: nowrap;
         }
 
-        .nav-menu a:hover {
+        .header-nav a:hover {
             color: #fff;
         }
 
-        .btn-header-cta {
-            background: rgba(255, 255, 255, 0.04);
+        .header-cta {
+            background: var(--accent-soft);
             border: 1px solid var(--accent-border);
             color: #fff;
-            padding: 8px 18px;
+            padding: 9px 18px;
             border-radius: 8px;
             font-size: 12.5px;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             white-space: nowrap;
             flex-shrink: 0;
         }
 
-        .btn-header-cta:hover {
-            background: var(--accent-soft);
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 18px var(--accent-glow);
+        .header-cta:hover {
+            background: var(--accent);
+            color: #05080e;
+            box-shadow: 0 0 20px var(--accent-glow);
         }
 
-        /* HERO */
-        .hero {
+        /* =========================================================
+           3. ЭКРАН 01: АСИММЕТРИЧНЫЙ HERO + 3D-МОДЕЛЬ НА ПЬЕДЕСТАЛЕ
+           ========================================================= */
+        .hero-section {
             position: relative;
-            min-height: 94vh;
-            padding-top: 140px;
-            padding-bottom: 70px;
+            min-height: 100vh;
+            padding: 130px 0 70px 0;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            overflow: hidden;
-            background: radial-gradient(ellipse at 50% 20%, var(--hero-glow) 0%, rgba(7, 10, 16, 0) 70%);
-            transition: background 0.4s ease;
+            align-items: center;
+            background: radial-gradient(circle at 70% 45%, rgba(var(--accent-rgb), 0.11) 0%, transparent 60%);
         }
 
-        #morph-canvas {
-            position: absolute;
-            top: 10px;
-            left: -60px;
-            width: 640px;
-            height: 640px;
-            z-index: 2;
-            pointer-events: none;
-            opacity: 0.88;
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.08fr 0.92fr;
+            gap: 48px;
+            align-items: center;
         }
 
-        .rubber-wave-bg {
-            position: absolute;
-            bottom: 120px;
-            left: -4%;
-            width: 50%;
-            height: 320px;
-            z-index: 1;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-        }
-
-        html[data-mode="metal"] .rubber-wave-bg {
-            opacity: 0.2;
-        }
-
-        .steel-truss-bg {
-            position: absolute;
-            top: 0;
-            right: -40px;
-            width: 48%;
-            height: 100%;
-            z-index: 2;
-            pointer-events: none;
-            opacity: 0.8;
-            animation: floatTruss 14s ease-in-out infinite alternate;
-        }
-
-        html[data-mode="metal"] .steel-truss-bg {
-            opacity: 1;
-        }
-
-        @keyframes floatTruss {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-14px); }
-        }
-
-        .hero-content {
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto 56px auto;
-            position: relative;
-            z-index: 10;
-        }
-
-        .badge-kicker {
+        .division-pill {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            padding: 6px 14px;
+            border-radius: 100px;
             background: var(--accent-soft);
             border: 1px solid var(--accent-border);
-            padding: 6px 16px;
-            border-radius: 100px;
-            font-size: 12px;
+            color: var(--accent);
+            font-size: 11.5px;
             font-weight: 600;
-            color: var(--accent-primary);
-            margin-bottom: 20px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 22px;
         }
 
-        .badge-dot {
-            width: 6px;
-            height: 6px;
+        .division-pill .dot {
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
-            background: var(--accent-primary);
-            box-shadow: 0 0 10px var(--accent-primary);
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
         }
 
-        .hero h1 {
-            font-size: clamp(26px, 4.4vw, 50px);
+        .hero-left h1 {
+            font-size: clamp(28px, 4.2vw, 52px);
             font-weight: 800;
-            line-height: 1.2;
-            color: #ffffff;
-            margin-bottom: 18px;
+            line-height: 1.14;
+            letter-spacing: -0.5px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
         }
 
-        .hero-desc {
-            font-size: clamp(14px, 1.6vw, 17px);
-            color: var(--text-secondary);
-            max-width: 680px;
-            margin: 0 auto 34px auto;
-            font-weight: 400;
+        .hero-left p {
+            font-size: clamp(14.5px, 1.5vw, 17px);
+            color: var(--text-muted);
+            max-width: 580px;
+            margin-bottom: 32px;
         }
 
-        .hero-controls {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            flex-wrap: wrap;
+        /* Пульт выбора направления под текстом */
+        .mode-console-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-low);
+            margin-bottom: 10px;
+            display: block;
         }
 
-        .btn-direction {
+        .hero-mode-console {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            max-width: 580px;
+            margin-bottom: 32px;
+        }
+
+        .console-card-btn {
             position: relative;
-            min-width: 260px;
-            padding: 16px 26px;
-            background: rgba(18, 26, 40, 0.75);
-            backdrop-filter: blur(12px);
+            text-align: left;
+            padding: 16px 20px;
+            background: rgba(14, 21, 34, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            color: var(--text-secondary);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13.5px;
-            font-weight: 600;
+            color: var(--text-muted);
             cursor: pointer;
-            transition: all 0.25s ease;
-            text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .btn-direction::after {
+        .console-card-btn strong {
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .console-card-btn span {
+            font-size: 12px;
+            color: var(--text-low);
+        }
+
+        .console-card-btn.active {
+            background: rgba(20, 30, 48, 0.95);
+            border-color: var(--accent-border);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px var(--accent-soft);
+        }
+
+        .console-card-btn.active::after {
             content: '';
             position: absolute;
             bottom: -1px;
-            left: 20%;
-            width: 60%;
-            height: 2px;
-            background: radial-gradient(circle, var(--accent-primary) 0%, transparent 80%);
-            opacity: 0.25;
-            transition: all 0.35s ease;
+            left: 12%;
+            width: 76%;
+            height: 2.5px;
+            background: var(--accent);
+            box-shadow: 0 0 18px 2px var(--accent);
         }
 
-        .btn-direction:hover {
-            color: #fff;
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.2);
+        .hero-quick-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .btn-direction.active {
-            color: #fff;
-            background: rgba(24, 34, 52, 0.92);
-            border-color: var(--accent-border);
-            transform: translateY(-2px);
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+        .q-tag {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 6px 12px;
+            border-radius: 6px;
         }
 
-        .btn-direction.active::after {
-            left: 10%;
-            width: 80%;
-            opacity: 1;
-            box-shadow: 0 2px 20px 3px var(--accent-primary);
-        }
-
-        .btn-direction span {
-            display: block;
-            font-size: 11px;
-            font-weight: 400;
-            color: var(--accent-primary);
-            margin-top: 4px;
-        }
-
-        /* КАРТОЧКИ ПЕРВОГО ЭКРАНА */
-        .cards-overview {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
-            max-width: 1080px;
-            margin: 0 auto;
+        /* ПРАВАЯ ЧАСТЬ HERO: 3D-ГОЛОГРАММА И ПЬЕДЕСТАЛ */
+        .hero-3d-stage {
             position: relative;
-            z-index: 10;
-        }
-
-        .card-item {
-            position: relative;
-            background: linear-gradient(180deg, rgba(20, 28, 44, 0.85) 0%, rgba(12, 18, 28, 0.94) 100%);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 28px 24px;
-            min-height: 220px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
-            overflow: hidden;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            align-items: center;
+            justify-content: center;
         }
 
-        .card-item::after {
+        .holo-viewport {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 430px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #hero-3d-canvas {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+            position: relative;
+            z-index: 4;
+        }
+
+        #hero-3d-canvas:active {
+            cursor: grabbing;
+        }
+
+        /* Светящийся голографический пьедестал под 3D-деталью */
+        .holo-pedestal {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 340px;
+            height: 76px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center, rgba(var(--accent-rgb), 0.28) 0%, rgba(10, 15, 26, 0.9) 65%, transparent 100%);
+            border: 1.5px solid var(--accent-border);
+            box-shadow: 0 10px 40px rgba(var(--accent-rgb), 0.25), inset 0 0 25px rgba(var(--accent-rgb), 0.25);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .holo-pedestal::before {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 14%;
-            width: 72%;
-            height: 2px;
-            background: radial-gradient(circle, var(--accent-primary) 0%, transparent 75%);
-            box-shadow: 0 2px 18px 3px var(--accent-glow);
-            transition: all 0.35s ease;
+            inset: 12px 28px;
+            border-radius: 50%;
+            border: 1px dashed rgba(var(--accent-rgb), 0.45);
         }
 
-        .card-item:hover {
-            transform: translateY(-5px);
+        /* HUD-плашки вокруг 3D-модели */
+        .stage-hud-top {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--accent);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .stage-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(10, 15, 25, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 5px;
+            border-radius: 10px;
+            margin-top: -6px;
+            position: relative;
+            z-index: 6;
+        }
+
+        .stage-ctrl-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            font-size: 11.5px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .stage-ctrl-btn.active {
+            background: var(--accent-soft);
+            color: #fff;
             border-color: var(--accent-border);
         }
 
-        .card-item:hover::after {
-            left: 6%;
-            width: 88%;
-            box-shadow: 0 3px 25px 5px var(--accent-primary);
+        /* =========================================================
+           4. ЭКРАН 02: ТРЕХКОЛОНОЧНЫЙ ТЕРМИНАЛ CAD (КАК НА СХЕМЕ)
+           ========================================================= */
+        .cad-section {
+            padding: 90px 0;
+            background: #080d16;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .card-top {
-            height: 60px;
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .card-item h3 {
-            font-size: 17.5px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .card-item p {
-            font-size: 13.5px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        /* ИНЖЕНЕРНЫЙ СТЕНД */
-        .blueprint-sec {
-            padding: 95px 0;
-            background: #080c14;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .sec-header {
+        .section-head-split {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
             flex-wrap: wrap;
             gap: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 36px;
         }
 
-        .sec-kicker {
-            color: var(--accent-primary);
-            font-size: 12px;
-            font-weight: 700;
+        .kicker-line {
+            color: var(--accent);
+            font-size: 11.5px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
+            letter-spacing: 1.5px;
             margin-bottom: 8px;
             display: block;
         }
 
-        .sec-header h2 {
+        .section-head-split h2 {
             font-size: clamp(24px, 3.2vw, 36px);
             font-weight: 800;
+            text-transform: uppercase;
         }
 
-        .stand-box {
+        .cad-workstation {
+            background: #060911;
+            border: 1px solid var(--accent-border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.75), 0 0 35px rgba(var(--accent-rgb), 0.08);
+        }
+
+        .cad-topbar {
+            background: #0b111e;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11.5px;
+            color: var(--text-muted);
+        }
+
+        .cad-window-dots {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+        }
+
+        .cad-window-dots span {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .cad-window-dots span:first-child {
+            background: var(--accent);
+        }
+
+        .cad-body-3col {
             display: grid;
-            grid-template-columns: 1fr 1.3fr;
-            gap: 28px;
-            background: rgba(11, 16, 26, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 30px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+            grid-template-columns: 270px 1fr 290px;
+            min-height: 410px;
         }
 
-        .stand-menu {
+        /* Колонка 1: Селектор узлов */
+        .cad-sidebar-left {
+            border-right: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 18px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
+            background: rgba(11, 17, 30, 0.5);
         }
 
-        .stand-tab-btn {
+        .cad-node-btn {
             text-align: left;
+            padding: 14px 16px;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 16px 20px;
-            border-radius: 10px;
-            color: var(--text-secondary);
+            border-radius: 9px;
+            color: var(--text-muted);
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }
 
-        .stand-tab-btn:hover {
-            background: rgba(255, 255, 255, 0.04);
+        .cad-node-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
             color: #fff;
         }
 
-        .stand-tab-btn.active {
+        .cad-node-btn.active {
             background: var(--accent-soft);
             border-color: var(--accent-border);
             color: #fff;
-            border-left: 3px solid var(--accent-primary);
+            border-left: 3px solid var(--accent);
         }
 
-        .stand-tab-btn h4 {
-            font-size: 14.5px;
-            font-weight: 600;
-            margin-bottom: 4px;
+        .cad-node-btn strong {
+            display: block;
+            font-size: 13.5px;
+            margin-bottom: 3px;
             color: #fff;
         }
 
-        .stand-tab-btn span {
-            font-size: 12px;
-            color: var(--text-secondary);
+        .cad-node-btn span {
+            font-size: 11.5px;
+            color: var(--text-low);
         }
 
-        .stand-view {
-            background: radial-gradient(circle at 50% 45%, rgba(16, 26, 44, 0.9) 0%, #060910 100%);
-            border: 1px solid var(--accent-border);
-            border-radius: 14px;
+        /* Колонка 2: Центральный экран чертежа */
+        .cad-viewport-center {
+            position: relative;
             padding: 24px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 340px;
-            position: relative;
+            background-image: 
+                linear-gradient(to right, rgba(var(--accent-rgb), 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(var(--accent-rgb), 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
-        .stand-hud {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11.5px;
-            color: var(--accent-primary);
-            font-weight: 600;
-        }
-
-        .stand-render {
-            margin: 15px auto;
-            width: 100%;
-            height: 150px;
+        .cad-drawing-canvas {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 250px;
         }
 
-        .stand-params {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            background: rgba(6, 9, 14, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .cad-drawing-canvas svg {
+            width: 100%;
+            max-width: 440px;
+            height: auto;
+            filter: drop-shadow(0 0 12px rgba(var(--accent-rgb), 0.25));
+        }
+
+        .cad-bottom-coords {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-low);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 12px;
+        }
+
+        /* Колонка 3: Правая панель телеметрии и шкал */
+        .cad-telemetry-right {
+            border-left: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 22px;
+            background: rgba(11, 17, 30, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .telemetry-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .telemetry-bar-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .t-bar-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .t-bar-head span:first-child {
+            color: var(--text-muted);
+        }
+
+        .t-bar-head strong {
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .t-bar-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .t-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-alt), var(--accent));
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .cad-summary-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
             border-radius: 10px;
             padding: 14px;
-        }
-
-        .stand-cell span {
-            display: block;
-            font-size: 11px;
+            font-size: 12px;
             color: var(--text-muted);
-            margin-bottom: 2px;
+            margin-top: 16px;
         }
 
-        .stand-cell strong {
-            font-size: 12.5px;
-            color: #fff;
+        /* =========================================================
+           5. ЭКРАН 03: МОЗАИЧНЫЙ BENTO-КАТАЛОГ (РАЗНЫЕ РАЗМЕРЫ БЛОКОВ)
+           ========================================================= */
+        .bento-section {
+            padding: 100px 0;
         }
 
-        /* КАТАЛОГ */
-        .catalog-sec {
-            padding: 95px 0;
-            background: var(--bg-main);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .catalog-grid {
+        .bento-mosaic {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 22px;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
         }
 
-        .catalog-card {
-            background: linear-gradient(160deg, rgba(18, 26, 40, 0.75) 0%, rgba(10, 14, 22, 0.92) 100%);
+        .bento-tile {
+            background: linear-gradient(165deg, rgba(17, 25, 40, 0.86) 0%, rgba(9, 13, 22, 0.95) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 28px;
+            border-radius: 16px;
+            padding: 30px;
             position: relative;
-            transition: all 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
-        .catalog-card:hover {
+        .bento-tile:hover {
             border-color: var(--accent-border);
             transform: translateY(-4px);
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
         }
 
-        .catalog-tag {
+        /* Разные пропорции плиток мозаики */
+        .span-7 { grid-column: span 7; }
+        .span-5 { grid-column: span 5; }
+        .span-4 { grid-column: span 4; }
+        .span-8 { grid-column: span 8; }
+        .span-12 { grid-column: span 12; }
+
+        .bento-tile.tile-Split {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .bento-tag {
             display: inline-block;
             font-size: 11px;
             font-weight: 600;
-            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--accent);
             background: var(--accent-soft);
             border: 1px solid var(--accent-border);
-            padding: 3px 10px;
-            border-radius: 5px;
-            margin-bottom: 16px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 14px;
+            width: fit-content;
         }
 
-        .catalog-card h4 {
-            font-size: 18.5px;
+        .bento-tile h3 {
+            font-size: 20px;
             font-weight: 700;
             margin-bottom: 10px;
             color: #fff;
         }
 
-        .catalog-card p {
+        .bento-tile p {
             font-size: 13.5px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-
-        .specs-table {
-            list-style: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            padding-top: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .specs-table li {
-            font-size: 12px;
             color: var(--text-muted);
-            display: flex;
-            justify-content: space-between;
+            margin-bottom: 18px;
         }
 
-        .specs-table li span:last-child {
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        /* МЕТРИКИ */
-        .metrics-strip {
-            padding: 65px 0;
-            background: linear-gradient(90deg, #070a10 0%, #0d1422 50%, #070a10 100%);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .metric-item {
-            text-align: center;
-            padding: 24px 16px;
-            background: rgba(255, 255, 255, 0.015);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
-        }
-
-        .metric-num {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(24px, 2.8vw, 36px);
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 4px;
-            background: linear-gradient(135deg, #ffffff 40%, var(--accent-primary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .metric-title {
-            font-size: 12.5px;
-            color: var(--text-secondary);
-        }
-
-        /* ЭТАПЫ */
-        .workflow-sec {
-            padding: 95px 0;
-            background: #070a10;
-        }
-
-        .steps-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .step-tile {
-            background: rgba(14, 20, 32, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
-            padding: 26px 20px;
-            transition: all 0.3s ease;
-        }
-
-        .step-tile:hover {
-            border-color: var(--accent-border);
-            transform: translateY(-3px);
-        }
-
-        .step-idx {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--accent-primary);
-            background: var(--accent-soft);
-            padding: 4px 10px;
-            border-radius: 6px;
-            margin-bottom: 14px;
-            display: inline-block;
-        }
-
-        .step-tile h4 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-
-        .step-tile p {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        /* NDA */
-        .nda-sec {
-            padding: 85px 0;
-            background: var(--bg-main);
-        }
-
-        .nda-container-box {
-            background: radial-gradient(circle at 88% 50%, var(--accent-soft) 0%, rgba(13, 19, 32, 0.95) 65%);
-            border: 1px solid var(--accent-border);
-            border-radius: 18px;
-            padding: 48px;
-            display: grid;
-            grid-template-columns: 1.35fr 1fr;
-            gap: 40px;
-            align-items: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-        }
-
-        .nda-checklist {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-top: 24px;
-        }
-
-        .nda-check-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .nda-icon-box {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            background: var(--accent-soft);
-            border: 1px solid var(--accent-border);
-            color: var(--accent-primary);
+        .bento-art-box {
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            font-size: 12px;
-            font-weight: 700;
+            background: rgba(6, 9, 15, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 18px;
+            height: 100%;
+            min-height: 160px;
         }
 
-        .nda-right-panel {
-            background: rgba(6, 9, 14, 0.85);
+        .pill-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .pill-specs span {
+            font-size: 11.5px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-white);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 28px;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+
+        /* =========================================================
+           6. ЭКРАН 04: СКВОЗНАЯ СВЕТОВАЯ ШКАЛА ПОКАЗАТЕЛЕЙ (БЕЗ ОКОН)
+           ========================================================= */
+        .telemetry-strip {
+            padding: 56px 0;
+            background: radial-gradient(circle at 50% 50%, rgba(var(--accent-rgb), 0.14) 0%, rgba(8, 12, 20, 0.98) 75%);
+            border-top: 1px solid var(--accent-border);
+            border-bottom: 1px solid var(--accent-border);
+            box-shadow: 0 0 50px rgba(var(--accent-rgb), 0.1);
+        }
+
+        .strip-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            divide-x: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .strip-metric {
+            padding: 10px 24px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
         }
 
-        /* КОНТАКТЫ */
-        .contact-sec {
-            padding: 95px 0 100px 0;
-            background: linear-gradient(180deg, #070a10 0%, #040609 100%);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        .strip-metric:last-child {
+            border-right: none;
         }
 
-        .contact-box {
-            background: linear-gradient(180deg, rgba(18, 25, 38, 0.88) 0%, rgba(10, 15, 24, 0.96) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 48px;
-            display: grid;
-            grid-template-columns: 1fr 1.25fr;
-            gap: 40px;
-            position: relative;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
-        }
-
-        .contact-box::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 20%;
-            width: 60%;
-            height: 2px;
-            background: radial-gradient(circle, var(--accent-primary) 0%, transparent 75%);
-            box-shadow: 0 2px 20px 3px var(--accent-glow);
-        }
-
-        .email-card {
-            background: var(--accent-soft);
-            border: 1px solid var(--accent-border);
-            border-radius: 12px;
-            padding: 20px 22px;
-            margin: 24px 0;
-        }
-
-        .email-card span {
-            display: block;
-            font-size: 11.5px;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-
-        .email-card a {
+        .strip-number {
             font-family: 'Montserrat', sans-serif;
-            font-size: 19px;
-            font-weight: 700;
+            font-size: clamp(28px, 3.5vw, 44px);
+            font-weight: 900;
             color: #fff;
-            text-decoration: none;
-            transition: color 0.25s ease;
+            text-shadow: 0 0 24px var(--accent-glow);
+            line-height: 1.1;
+            margin-bottom: 6px;
         }
 
-        .email-card a:hover {
-            color: var(--accent-primary);
+        .strip-caption {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
         }
 
-        .contact-form {
+        /* =========================================================
+           7. ЭКРАН 05: ГОРИЗОНТАЛЬНЫЙ ИНТЕРАКТИВНЫЙ ТАЙМЛАЙН (БЕЗ ОКОН)
+           ========================================================= */
+        .timeline-section {
+            padding: 105px 0;
+            background: #06090f;
+            overflow: hidden;
+        }
+
+        .timeline-track-wrapper {
+            position: relative;
+            margin-top: 60px;
+            padding: 20px 0;
+        }
+
+        /* Центральная светящаяся ось */
+        .timeline-axis-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, var(--accent) 15%, var(--accent-alt) 85%, transparent 100%);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .timeline-nodes-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tl-node {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            min-height: 250px;
+            justify-content: space-between;
         }
 
-        .form-row {
+        /* Чередование текста сверху и снизу от оси */
+        .tl-node:nth-child(odd) .tl-text-block {
+            order: 1;
+            padding-bottom: 28px;
+        }
+        .tl-node:nth-child(odd) .tl-dot-ring {
+            order: 2;
+        }
+        .tl-node:nth-child(odd) .tl-spacer {
+            order: 3;
+            height: 85px;
+        }
+
+        .tl-node:nth-child(even) .tl-spacer {
+            order: 1;
+            height: 85px;
+        }
+        .tl-node:nth-child(even) .tl-dot-ring {
+            order: 2;
+        }
+        .tl-node:nth-child(even) .tl-text-block {
+            order: 3;
+            padding-top: 28px;
+        }
+
+        .tl-dot-ring {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #06090f;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 18px var(--accent-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .tl-node:hover .tl-dot-ring {
+            transform: scale(1.2);
+            background: var(--accent);
+            color: #05080e;
+        }
+
+        .tl-text-block h4 {
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .tl-text-block p {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        /* =========================================================
+           8. ЭКРАН 06: АСИММЕТРИЧНАЯ ФОРМА С ДИАГОНАЛЬНЫМ РАЗРЕЗОМ
+           ========================================================= */
+        .contact-section {
+            padding: 80px 0 100px 0;
+        }
+
+        .asymmetric-contact-monolith {
+            position: relative;
+            background: linear-gradient(135deg, #0c1424 0%, #070b14 100%);
+            border: 1px solid var(--accent-border);
+            border-radius: 22px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75);
+        }
+
+        .contact-left-side {
+            padding: 52px;
+            background: radial-gradient(circle at 20% 20%, var(--accent-soft) 0%, transparent 70%);
+            border-right: 1px solid rgba(var(--accent-rgb), 0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .contact-left-side h2 {
+            font-size: clamp(24px, 3vw, 34px);
+            font-weight: 800;
+            margin-bottom: 14px;
+            line-height: 1.2;
+        }
+
+        .direct-email-panel {
+            margin: 28px 0;
+            padding: 20px;
+            background: rgba(5, 8, 14, 0.75);
+            border: 1px solid var(--accent-border);
+            border-radius: 14px;
+        }
+
+        .direct-email-panel span {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .email-copy-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .email-copy-row a {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .copy-email-btn {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-border);
+            color: var(--accent);
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 7px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-email-btn:hover {
+            background: var(--accent);
+            color: #05080e;
+        }
+
+        .contact-right-form {
+            padding: 52px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .minimal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .form-2col {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 16px;
         }
 
-        .form-ctrl {
+        .sleek-input {
             width: 100%;
-            background: rgba(6, 9, 14, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            border-radius: 9px;
-            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px 18px;
             color: #fff;
             font-family: 'Inter', sans-serif;
-            font-size: 13.5px;
+            font-size: 14px;
             outline: none;
             transition: all 0.25s ease;
         }
 
-        .form-ctrl:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 14px var(--accent-soft);
+        .sleek-input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 18px var(--accent-soft);
         }
 
-        textarea.form-ctrl {
+        .sleek-input option {
+            background: #0b111c;
+            color: #fff;
+        }
+
+        textarea.sleek-input {
             min-height: 115px;
             resize: vertical;
         }
 
-        .btn-submit {
-            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-            color: #fff;
+        .btn-send-monolith {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
+            color: #05080e;
             border: none;
-            border-radius: 9px;
-            padding: 16px 24px;
+            border-radius: 10px;
+            padding: 17px 26px;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
+            font-weight: 800;
             font-size: 13.5px;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 24px var(--accent-soft);
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 28px var(--accent-soft);
         }
 
-        .btn-submit:hover {
+        .btn-send-monolith:hover {
             transform: translateY(-2px);
-            box-shadow: 0 14px 30px var(--accent-glow);
+            box-shadow: 0 14px 35px var(--accent-glow);
         }
 
+        /* ФУТЕР (БЕЗ ГОДОВ) */
         footer {
-            padding: 36px 0;
-            background: #040608;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 34px 0;
+            background: #04060a;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .footer-flex {
+        .footer-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 18px;
-        }
-
-        .footer-flex p {
+            gap: 16px;
             font-size: 12.5px;
-            color: var(--text-muted);
-            max-width: 500px;
+            color: var(--text-low);
         }
 
-        /* МОБИЛЬНАЯ ВЕРСИЯ */
-        @media (max-width: 1024px) {
-            .cards-overview {
+        /* =========================================================
+           9. АДАПТИВНАЯ МОБИЛЬНАЯ ВЕРСТКА (БЕЗ ПОЛОМОК)
+           ========================================================= */
+        @media (max-width: 1080px) {
+            .hero-grid {
                 grid-template-columns: 1fr;
-                max-width: 500px;
+                gap: 32px;
             }
-            .stand-box, .nda-container-box, .contact-box {
+            .cad-body-3col {
                 grid-template-columns: 1fr;
-                padding: 28px 20px;
             }
-            .metrics-grid, .steps-row {
-                grid-template-columns: repeat(2, 1fr);
+            .cad-sidebar-left {
+                flex-direction: row;
+                overflow-x: auto;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            }
+            .cad-node-btn {
+                min-width: 210px;
+            }
+            .cad-telemetry-right {
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.07);
+            }
+            .span-7, .span-5, .span-4, .span-8 {
+                grid-column: span 6;
+            }
+            /* Таймлайн переходит в аккуратную вертикальную ось */
+            .timeline-axis-line {
+                top: 0;
+                left: 19px;
+                width: 2px;
+                height: 100%;
+                transform: none;
+            }
+            .timeline-nodes-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .tl-node {
+                flex-direction: row;
+                min-height: auto;
+                text-align: left;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            .tl-node .tl-spacer {
+                display: none;
+            }
+            .tl-node:nth-child(odd) .tl-dot-ring,
+            .tl-node:nth-child(even) .tl-dot-ring {
+                order: 1;
+            }
+            .tl-node:nth-child(odd) .tl-text-block,
+            .tl-node:nth-child(even) .tl-text-block {
+                order: 2;
+                padding: 0;
+            }
+            .asymmetric-contact-monolith {
+                grid-template-columns: 1fr;
+            }
+            .contact-left-side {
+                border-right: none;
+                border-bottom: 1px solid rgba(var(--accent-rgb), 0.25);
+                padding: 32px 24px;
+            }
+            .contact-right-form {
+                padding: 32px 24px;
             }
         }
 
         @media (max-width: 768px) {
-            .header-bar {
-                padding: 0 14px;
-                height: 58px;
-            }
-
-            .nav-menu, .btn-header-cta {
+            .header-nav {
                 display: none;
             }
-
-            .switch-tab {
+            .header-capsule {
+                padding: 0 12px;
+                height: 58px;
+            }
+            .brand span {
+                font-size: 14px;
+            }
+            .hms-btn {
                 padding: 6px 10px;
                 font-size: 11px;
             }
-
-            .hero {
-                padding-top: 105px;
-                padding-bottom: 45px;
-                min-height: auto;
+            .header-cta {
+                padding: 7px 12px;
+                font-size: 11.5px;
             }
-
-            .hero-content {
-                margin-bottom: 36px;
+            .hero-section {
+                padding: 100px 0 50px 0;
             }
-
-            .badge-kicker {
-                font-size: 11px;
-                padding: 5px 12px;
-                margin-bottom: 14px;
-            }
-
-            .hero h1 {
-                font-size: 24px;
-                line-height: 1.25;
-                margin-bottom: 14px;
-            }
-
-            .hero-desc {
-                font-size: 13.5px;
-                margin-bottom: 24px;
-            }
-
-            .btn-direction {
-                min-width: 100%;
-                padding: 13px 18px;
-                font-size: 13px;
-            }
-
-            .stand-menu {
-                flex-direction: row;
-                overflow-x: auto;
-                padding-bottom: 8px;
-                gap: 8px;
-            }
-
-            .stand-tab-btn {
-                min-width: 200px;
-                padding: 12px 14px;
-            }
-
-            .stand-params {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-
-            .metrics-grid, .steps-row, .form-row, .nda-checklist {
+            .hero-mode-console {
                 grid-template-columns: 1fr;
             }
-
-            #morph-canvas {
-                opacity: 0.35;
-                left: -120px;
-                top: 0;
+            .holo-viewport {
+                height: 330px;
             }
-
-            .steel-truss-bg {
-                opacity: 0.25;
+            .holo-pedestal {
+                width: 260px;
+                height: 56px;
+            }
+            .span-7, .span-5, .span-4, .span-8, .span-12 {
+                grid-column: span 12;
+            }
+            .bento-tile.tile-Split {
+                grid-template-columns: 1fr;
+            }
+            .strip-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+            .strip-metric {
+                border-right: none;
+            }
+            .form-2col {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-grid"></div>
+    <div class="blueprint-bg-grid"></div>
 
-    <!-- ШАПКА -->
-    <div class="header-wrap">
-        <header class="header-bar">
-            <a href="#" class="brand-logo">
+    <!-- ШАПКА САЙТА -->
+    <div class="header-fixed">
+        <header class="header-capsule">
+            <a href="#" class="brand">
                 <svg viewBox="0 0 40 40" fill="none">
-                    <path d="M6 32V8L20 24V8M20 24L34 8V32M20 24L34 32" stroke="var(--accent-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6 32V8L20 24V8M20 24L34 8V32M20 24L34 32" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
                     <rect x="2" y="2" width="36" height="36" rx="8" stroke="var(--accent-border)" stroke-width="1.5"/>
                 </svg>
                 <span>ПРОМТЕХ</span>
             </a>
 
-            <div class="mode-switcher-bar">
-                <button class="switch-tab active" id="tab-nav-rti" onclick="setSiteMode('rti')">РТИ</button>
-                <button class="switch-tab" id="tab-nav-metal" onclick="setSiteMode('metal')">Металлоконструкции</button>
+            <!-- Компактный двухпозиционный переключатель режимов -->
+            <div class="header-mode-switch">
+                <button class="hms-btn active" id="nav-btn-rti" onclick="switchMode('rti')">РТИ</button>
+                <button class="hms-btn" id="nav-btn-metal" onclick="switchMode('metal')">Металл и Цеха</button>
             </div>
 
-            <nav class="nav-menu">
-                <a onclick="scrollToBlock('stand')">Компетенции</a>
-                <a onclick="scrollToBlock('catalog')">Продукция</a>
-                <a onclick="scrollToBlock('workflow')">Регламент</a>
-                <a onclick="scrollToBlock('nda')">NDA</a>
+            <nav class="header-nav">
+                <a href="#cad-stand">Инженерный стенд</a>
+                <a href="#bento-catalog">Каталог</a>
+                <a href="#process-timeline">Этапы</a>
+                <a href="#contacts">Контакты</a>
             </nav>
 
-            <a href="#contacts" class="btn-header-cta">Отправить ТЗ</a>
+            <a href="#contacts" class="header-cta">Запрос ТЗ</a>
         </header>
     </div>
 
-    <!-- HERO -->
-    <section class="hero" id="hero">
-        <canvas id="morph-canvas"></canvas>
-
-        <svg class="rubber-wave-bg" viewBox="0 0 700 400" fill="none">
-            <defs>
-                <pattern id="carbonMesh" width="10" height="10" patternUnits="userSpaceOnUse">
-                    <circle cx="5" cy="5" r="2" fill="#1e293b" />
-                    <circle cx="0" cy="0" r="1.2" fill="#0f172a" />
-                </pattern>
-                <linearGradient id="waveGradient" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stop-color="#1e293b" stop-opacity="0.9"/>
-                    <stop offset="60%" stop-color="#0f172a" stop-opacity="0.95"/>
-                    <stop offset="100%" stop-color="#070a10" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-            <path d="M-50 380 C 120 120, 260 140, 420 260 C 540 340, 620 290, 700 390 L -50 400 Z" fill="url(#waveGradient)"/>
-            <path d="M-50 380 C 120 120, 260 140, 420 260 C 540 340, 620 290, 700 390 L -50 400 Z" fill="url(#carbonMesh)" opacity="0.7"/>
-            <path d="M-50 380 C 120 120, 260 140, 420 260 C 540 340, 620 290, 700 390" stroke="var(--accent-border)" stroke-width="2" fill="none"/>
-        </svg>
-
-        <svg class="steel-truss-bg" viewBox="0 0 700 900" fill="none">
-            <defs>
-                <linearGradient id="trussSteel" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#94a3b8" stop-opacity="0.6"/>
-                    <stop offset="45%" stop-color="#38bdf8" stop-opacity="0.4"/>
-                    <stop offset="100%" stop-color="#1e293b" stop-opacity="0.1"/>
-                </linearGradient>
-            </defs>
-            <g stroke="url(#trussSteel)" stroke-width="3.5">
-                <line x1="580" y1="-50" x2="260" y2="900"/>
-                <line x1="720" y1="-50" x2="400" y2="900"/>
-                <line x1="460" y1="-50" x2="750" y2="650"/>
-            </g>
-            <g stroke="rgba(255,255,255,0.3)" stroke-width="1.8">
-                <line x1="580" y1="-50" x2="720" y2="120"/>
-                <line x1="520" y1="120" x2="680" y2="260"/>
-                <line x1="470" y1="260" x2="620" y2="420"/>
-                <line x1="410" y1="420" x2="570" y2="580"/>
-                <line x1="680" y1="260" x2="470" y2="260"/>
-                <line x1="620" y1="420" x2="410" y2="420"/>
-                <line x1="570" y1="580" x2="360" y2="580"/>
-                <line x1="450" y1="180" x2="700" y2="180"/>
-                <line x1="390" y1="340" x2="680" y2="340"/>
-            </g>
-        </svg>
-
+    <!-- =========================================================
+         ЭКРАН 01: HERO + 3D-ДЕТАЛЬ НА ГОЛОГРАФИЧЕСКОМ ПЬЕДЕСТАЛЕ
+         ========================================================= -->
+    <section class="hero-section">
         <div class="container">
-            <div class="hero-content">
-                <div class="badge-kicker">
-                    <span class="badge-dot"></span>
-                    <span class="content-rti">ДИВИЗИОН РЕЗИНОТЕХНИЧЕСКИХ ИЗДЕЛИЙ</span>
-                    <span class="content-metal">ДИВИЗИОН МЕТАЛЛОКОНСТРУКЦИЙ И ИНЖИНИРИНГА</span>
-                </div>
-
-                <h1 class="content-rti">СПЕЦИАЛИЗИРОВАННЫЕ РЕЗИНОТЕХНИЧЕСКИЕ ИЗДЕЛИЯ</h1>
-                <h1 class="content-metal">ПРОЕКТИРОВАНИЕ И МЕТАЛЛОКОНСТРУКЦИИ</h1>
-
-                <p class="hero-desc content-rti">
-                    Серийное и опытное производство РТИ по чертежам и образцам заказчика. Подбор рецептур резиновых смесей под агрессивные среды и высокие нагрузки.
-                </p>
-                <p class="hero-desc content-metal">
-                    Разработка конструкторской документации (КМ, КМД), проектирование химико-технологических цехов и производство несущих стальных конструкций.
-                </p>
-
-                <div class="hero-controls">
-                    <button class="btn-direction active" id="hero-btn-rti" onclick="setSiteMode('rti')">
-                        Резинотехнические изделия
-                        <span>Формовые РТИ и спецсмеси</span>
-                    </button>
-                    <button class="btn-direction" id="hero-btn-metal" onclick="setSiteMode('metal')">
-                        Проектирование и металлоконструкции
-                        <span>Инжиниринг цехов и сталь</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- 3 карточки РТИ -->
-            <div class="cards-overview content-rti">
-                <div class="card-item">
-                    <div class="card-top">
-                        <svg width="48" height="48" viewBox="0 0 68 68" fill="none">
-                            <line x1="20" y1="20" x2="36" y2="34" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <line x1="36" y1="34" x2="54" y2="24" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <circle cx="20" cy="20" r="5" fill="#0b111d" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <circle cx="36" cy="34" r="6" fill="#0b111d" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <circle cx="54" cy="24" r="5" fill="#0b111d" stroke="var(--accent-primary)" stroke-width="2"/>
-                        </svg>
+            <div class="hero-grid">
+                
+                <!-- Левая часть: Смыслы и пульт выбора направления -->
+                <div class="hero-left">
+                    <div class="division-pill">
+                        <span class="dot"></span>
+                        <span data-show="rti">Дивизион 01 // Резинотехнические изделия</span>
+                        <span data-show="metal">Дивизион 02 // Металлоконструкции и Цеха</span>
                     </div>
-                    <div>
-                        <h3>Спецрецептуры смесей</h3>
-                        <p>Подбор эластомеров (NBR, EPDM, FKM, силикон) под масла, кислоты, перегретый пар и минусовые температуры.</p>
+
+                    <h1 data-show="rti">Производство промышленных РТИ и эластомеров</h1>
+                    <h1 data-show="metal">Проектирование цехов и металлоконструкций</h1>
+
+                    <p data-show="rti">
+                        Разработка рецептур резиновых смесей и выпуск формовых, неформовых и резинометаллических деталей по чертежам или физическим образцам для тяжелых условий эксплуатации.
+                    </p>
+                    <p data-show="metal">
+                        Инжиниринг технологических и химических участков, разработка разделов КМ/КМД и производство несущих стальных каркасов, эстакад и нестандартного оборудования.
+                    </p>
+
+                    <span class="mode-console-label">Переключение специализации комплекса:</span>
+                    <div class="hero-mode-console">
+                        <button class="console-card-btn active" id="console-btn-rti" onclick="switchMode('rti')">
+                            <strong>01. Изделия из резины (РТИ)</strong>
+                            <span>Уплотнения, демпферы, спецсмеси</span>
+                        </button>
+                        <button class="console-card-btn" id="console-btn-metal" onclick="switchMode('metal')">
+                            <strong>02. Металл и химцеха</strong>
+                            <span>Каркасы, эстакады, проектирование</span>
+                        </button>
+                    </div>
+
+                    <div class="hero-quick-tags" data-show="rti">
+                        <span class="q-tag">Масло- и кислотостойкие смеси</span>
+                        <span class="q-tag">Реверс-инжиниринг по образцу</span>
+                        <span class="q-tag">Собственный парк пресс-форм</span>
+                    </div>
+                    <div class="hero-quick-tags" data-show="metal">
+                        <span class="q-tag">3D-проектирование КМ / КМД / ТХ</span>
+                        <span class="q-tag">Стали С245, С345, 09Г2С, AISI</span>
+                        <span class="q-tag">Ультразвуковой контроль сварки</span>
                     </div>
                 </div>
 
-                <div class="card-item">
-                    <div class="card-top">
-                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
-                            <polygon points="32,6 54,18 54,46 32,58 10,46 10,18" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                            <circle cx="32" cy="32" r="10" stroke="#fff" stroke-width="1.8"/>
-                        </svg>
+                <!-- Правая часть: Объемная 3D-модель над пьедесталом -->
+                <div class="hero-3d-stage">
+                    <div class="holo-viewport">
+                        <div class="stage-hud-top mono">
+                            <span id="hud-model-name">3D-MODEL: ELASTOMER-RING</span>
+                            <span>ВРАЩЕНИЕ: 360° МЫШЬЮ</span>
+                        </div>
+
+                        <canvas id="hero-3d-canvas" width="500" height="420"></canvas>
+                        <div class="holo-pedestal"></div>
                     </div>
-                    <div>
-                        <h3>Формовые детали</h3>
-                        <p>Манжеты, кольца, уплотнители и виброопоры высокой точности. Стендовый контроль геометрии.</p>
+
+                    <!-- Кнопки управления проекцией 3D-модели -->
+                    <div class="stage-controls">
+                        <button class="stage-ctrl-btn active" onclick="set3DView('iso', this)">Изометрия</button>
+                        <button class="stage-ctrl-btn" onclick="set3DView('front', this)">Фронтальный вид</button>
+                        <button class="stage-ctrl-btn" onclick="set3DView('top', this)">Проекция сверху</button>
                     </div>
                 </div>
 
-                <div class="card-item">
-                    <div class="card-top">
-                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
-                            <rect x="12" y="12" width="40" height="40" rx="6" stroke="var(--accent-primary)" stroke-width="2" stroke-dasharray="4 4"/>
-                            <path d="M24 32L30 38L42 26" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3>Реверс-инжиниринг</h3>
-                        <p>Изготовление аналогов импортных деталей по предоставленному физическому образцу с проектированием оснастки.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3 карточки МЕТАЛЛ -->
-            <div class="cards-overview content-metal">
-                <div class="card-item">
-                    <div class="card-top">
-                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
-                            <path d="M10 50L32 16L54 50H10Z" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                            <line x1="32" y1="16" x2="32" y2="50" stroke="#fff" stroke-width="1.8"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3>Проектирование цехов</h3>
-                        <p>Комплексные технологические решения: компоновка производственных линий, эстакад и участков.</p>
-                    </div>
-                </div>
-
-                <div class="card-item">
-                    <div class="card-top">
-                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
-                            <rect x="12" y="12" width="40" height="40" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <line x1="12" y1="12" x2="52" y2="52" stroke="#fff" stroke-width="1.8"/>
-                            <line x1="52" y1="12" x2="12" y2="52" stroke="#fff" stroke-width="1.8"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3>Каркасы и фермы</h3>
-                        <p>Несущие металлоконструкции для производственных корпусов, большепролетные фермы и колонны.</p>
-                    </div>
-                </div>
-
-                <div class="card-item">
-                    <div class="card-top">
-                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
-                            <polygon points="32,10 54,22 54,46 32,58 10,46 10,22" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <polyline points="10,22 32,34 54,22" stroke="#fff" stroke-width="1.8"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3>Документация КМ/КМД</h3>
-                        <p>Прочностной расчет нагрузок, 3D-моделирование узлов и подготовка полного пакета рабочих чертежей.</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- ИНЖЕНЕРНЫЙ СТЕНД -->
-    <section class="blueprint-sec" id="stand">
+    <!-- =========================================================
+         ЭКРАН 02: ИНТЕРАКТИВНЫЙ СТЕНД CAD (3 КОЛОНКИ)
+         ========================================================= -->
+    <section class="cad-section" id="cad-stand">
         <div class="container">
-            <div class="sec-header">
+            <div class="section-head-split">
                 <div>
-                    <span class="sec-kicker">Инженерный стенд</span>
-                    <h2 class="content-rti">ТЕХНОЛОГИЧЕСКИЕ ВОЗМОЖНОСТИ РТИ</h2>
-                    <h2 class="content-metal">ТЕХНОЛОГИЧЕСКИЕ ВОЗМОЖНОСТИ ИНЖИНИРИНГА</h2>
+                    <span class="kicker-line mono">Интерактивный инженерный стенд</span>
+                    <h2 data-show="rti">Конструкторские параметры РТИ</h2>
+                    <h2 data-show="metal">Конструкторский стенд металлоконструкций</h2>
                 </div>
-                <p style="color: var(--text-secondary); max-width: 440px; font-size: 14px;">
-                    Выберите позицию для просмотра ключевых параметров, применяемых материалов и конструктивной схемы.
+                <p style="color: var(--text-muted); max-width: 440px; font-size: 14px;">
+                    Переключайте типовые узлы в левой панели для анализа чертежной проекции и расчетных эксплуатационных характеристик.
                 </p>
             </div>
 
-            <!-- Стенд РТИ -->
-            <div class="stand-box content-rti">
-                <div class="stand-menu">
-                    <button class="stand-tab-btn active" onclick="setStandTab('rti', 0)">
-                        <h4>Уплотнительные элементы</h4>
-                        <span>Стойкость к маслам, кислотам и давлению</span>
-                    </button>
-                    <button class="stand-tab-btn" onclick="setStandTab('rti', 1)">
-                        <h4>Антивибрационные опоры</h4>
-                        <span>Резинометаллические демпферы оборудования</span>
-                    </button>
-                    <button class="stand-tab-btn" onclick="setStandTab('rti', 2)">
-                        <h4>Гуммирование узлов</h4>
-                        <span>Эластомерная защита валов и емкостей</span>
-                    </button>
+            <div class="cad-workstation">
+                <div class="cad-topbar mono">
+                    <div class="cad-window-dots">
+                        <span></span><span></span><span></span>
+                        <strong style="margin-left: 8px; color: #fff;">CAD-TERMINAL // ПРОЕКТНАЯ ПРОЕКЦИЯ</strong>
+                    </div>
+                    <span id="cad-layer-code">LAYER: RTI-SEAL-01</span>
                 </div>
 
-                <div class="stand-view">
-                    <div class="stand-hud">
-                        <span id="stand-hud-title-rti">УПЛОТНИТЕЛЬНЫЕ ЭЛЕМЕНТЫ</span>
-                        <span>КОНТУР NDA</span>
+                <!-- СТЕНД ДЛЯ РЕЖИМА РТИ -->
+                <div class="cad-body-3col" data-show="rti">
+                    <div class="cad-sidebar-left">
+                        <button class="cad-node-btn active" onclick="selectCadNode('rti', 0, this)">
+                            <strong>01. Армированная манжета</strong>
+                            <span>Высокое давление и вращение</span>
+                        </button>
+                        <button class="cad-node-btn" onclick="selectCadNode('rti', 1, this)">
+                            <strong>02. Резинометаллическая опора</strong>
+                            <span>Гашение ударных вибраций</span>
+                        </button>
+                        <button class="cad-node-btn" onclick="selectCadNode('rti', 2, this)">
+                            <strong>03. Химстойкая мембрана</strong>
+                            <span>Кислотные и щелочные контуры</span>
+                        </button>
+                        <button class="cad-node-btn" onclick="selectCadNode('rti', 3, this)">
+                            <strong>04. Футеровочный модуль</strong>
+                            <span>Защита валов и барабанов</span>
+                        </button>
                     </div>
 
-                    <div class="stand-render" id="stand-hud-svg-rti">
-                        <svg width="240" height="130" viewBox="0 0 240 130" fill="none">
-                            <ellipse cx="120" cy="65" rx="85" ry="46" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                            <ellipse cx="120" cy="65" rx="50" ry="24" stroke="#fff" stroke-width="1.5" stroke-dasharray="5 3"/>
-                        </svg>
+                    <div class="cad-viewport-center">
+                        <div class="cad-drawing-canvas" id="cad-svg-rti">
+                            <!-- Начальный чертеж РТИ (2 проекции с размерами) -->
+                            <svg viewBox="0 0 420 220" fill="none">
+                                <circle cx="125" cy="110" r="78" stroke="var(--accent)" stroke-width="2" fill="var(--accent-soft)"/>
+                                <circle cx="125" cy="110" r="56" stroke="#fff" stroke-width="1.2" stroke-dasharray="5 4"/>
+                                <circle cx="125" cy="110" r="38" stroke="var(--accent)" stroke-width="2" fill="#060911"/>
+                                <line x1="30" y1="110" x2="220" y2="110" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-dasharray="4 4"/>
+                                <line x1="125" y1="18" x2="125" y2="202" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-dasharray="4 4"/>
+                                <!-- Проекция разреза справа -->
+                                <rect x="275" y="32" width="44" height="156" rx="4" stroke="var(--accent)" stroke-width="2" fill="var(--accent-soft)"/>
+                                <line x1="275" y1="72" x2="319" y2="72" stroke="#fff" stroke-width="2"/>
+                                <line x1="275" y1="148" x2="319" y2="148" stroke="#fff" stroke-width="2"/>
+                                <line x1="340" y1="32" x2="340" y2="188" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                                <text x="350" y="114" fill="var(--accent)" font-family="monospace" font-size="11">Ø 40..600 мм</text>
+                                <text x="85" y="212" fill="#94a3b8" font-family="monospace" font-size="11">ПРОЕКЦИЯ А-А // РАЗРЕЗ</text>
+                            </svg>
+                        </div>
+                        <div class="cad-bottom-coords mono">
+                            <span>ДОПУСК: ISO 3302-1 (M1/M2)</span>
+                            <span>ЭЛАСТОМЕР: NBR / FKM / EPDM</span>
+                        </div>
                     </div>
 
-                    <div class="stand-params" id="stand-hud-params-rti">
-                        <div class="stand-cell"><span>Твердость</span><strong>50–90 Shore A</strong></div>
-                        <div class="stand-cell"><span>Температура</span><strong>-50°C … +250°C</strong></div>
-                        <div class="stand-cell"><span>Давление</span><strong>до 45 МПа</strong></div>
+                    <div class="cad-telemetry-right">
+                        <div class="telemetry-group" id="cad-bars-rti">
+                            <div class="telemetry-bar-item">
+                                <div class="t-bar-head"><span>Стойкость к агрессивной среде</span><strong>98%</strong></div>
+                                <div class="t-bar-track"><div class="t-bar-fill" style="width: 98%"></div></div>
+                            </div>
+                            <div class="telemetry-bar-item">
+                                <div class="t-bar-head"><span>Термостойкость смеси</span><strong>+260°C</strong></div>
+                                <div class="t-bar-track"><div class="t-bar-fill" style="width: 90%"></div></div>
+                            </div>
+                            <div class="telemetry-bar-item">
+                                <div class="t-bar-head"><span>Твердость эластомера</span><strong>75 Sh A</strong></div>
+                                <div class="t-bar-track"><div class="t-bar-fill" style="width: 78%"></div></div>
+                            </div>
+                        </div>
+                        <div class="cad-summary-box" id="cad-note-rti">
+                            Прецизионная формовка на ЧПУ-матрицах с вулканизацией металлического закладного кольца.
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Стенд МЕТАЛЛ -->
-            <div class="stand-box content-metal">
-                <div class="stand-menu">
-                    <button class="stand-tab-btn active" onclick="setStandTab('metal', 0)">
-                        <h4>Проектирование техцехов</h4>
-                        <span>Планировки участков, эстакады и вентиляция</span>
-                    </button>
-                    <button class="stand-tab-btn" onclick="setStandTab('metal', 1)">
-                        <h4>Несущие стальные фермы</h4>
-                        <span>Силовые конструкции промышленных зданий</span>
-                    </button>
-                    <button class="stand-tab-btn" onclick="setStandTab('metal', 2)">
-                        <h4>Емкостные корпуса и эстакады</h4>
-                        <span>Бункеры, рамы и кабельно-трубопроводные мосты</span>
-                    </button>
-                </div>
-
-                <div class="stand-view">
-                    <div class="stand-hud">
-                        <span id="stand-hud-title-metal">ПРОЕКТИРОВАНИЕ ТЕХЦЕХОВ</span>
-                        <span>КОНТУР NDA</span>
+                <!-- СТЕНД ДЛЯ РЕЖИМА МЕТАЛЛ -->
+                <div class="cad-body-3col" data-show="metal">
+                    <div class="cad-sidebar-left">
+                        <button class="cad-node-btn active" onclick="selectCadNode('metal', 0, this)">
+                            <strong>01. Пространственная ферма</strong>
+                            <span>Большепролетные перекрытия цехов</span>
+                        </button>
+                        <button class="cad-node-btn" onclick="selectCadNode('metal', 1, this)">
+                            <strong>02. Химико-технологический блок</strong>
+                            <span>Обвязка реакторов и площадок</span>
+                        </button>
+                        <button class="cad-node-btn" onclick="selectCadNode('metal', 2, this)">
+                            <strong>03. Инженерная эстакада</strong>
+                            <span>Несущие мосты под трубопроводы</span>
+                        </button>
+                        <button class="cad-node-btn" onclick="selectCadNode('metal', 3, this)">
+                            <strong>04. Силосный / емкостной узел</strong>
+                            <span>Бункеры и опорные рамы</span>
+                        </button>
                     </div>
 
-                    <div class="stand-render" id="stand-hud-svg-metal">
-                        <svg width="240" height="130" viewBox="0 0 240 130" fill="none">
-                            <polygon points="30,105 120,25 210,105" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                            <rect x="55" y="70" width="130" height="45" stroke="#fff" stroke-width="1.6"/>
-                            <line x1="120" y1="25" x2="120" y2="115" stroke="var(--accent-primary)" stroke-width="1.5" stroke-dasharray="4 4"/>
-                        </svg>
+                    <div class="cad-viewport-center">
+                        <div class="cad-drawing-canvas" id="cad-svg-metal">
+                            <!-- Начальный чертеж Металла -->
+                            <svg viewBox="0 0 420 220" fill="none">
+                                <rect x="25" y="55" width="370" height="75" stroke="#fff" stroke-width="2"/>
+                                <polyline points="25,130 85,55 145,130 210,55 275,130 335,55 395,130" stroke="var(--accent)" stroke-width="2.2"/>
+                                <line x1="85" y1="55" x2="85" y2="130" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+                                <line x1="145" y1="55" x2="145" y2="130" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+                                <line x1="210" y1="55" x2="210" y2="130" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+                                <line x1="275" y1="55" x2="275" y2="130" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+                                <line x1="335" y1="55" x2="335" y2="130" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+                                <line x1="25" y1="165" x2="395" y2="165" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4 4"/>
+                                <text x="145" y="185" fill="var(--accent)" font-family="monospace" font-size="11">ПРОЛЕТ L = 12 000 .. 36 000 мм</text>
+                            </svg>
+                        </div>
+                        <div class="cad-bottom-coords mono">
+                            <span>РАЗДЕЛЫ: КМ / КМД / ТХ</span>
+                            <span>СТАЛЬ: 09Г2С / С345 / AISI 316</span>
+                        </div>
                     </div>
 
-                    <div class="stand-params" id="stand-hud-params-metal">
-                        <div class="stand-cell"><span>Разделы</span><strong>ТХ, КМ, КМД, АР</strong></div>
-                        <div class="stand-cell"><span>Среды</span><strong>Агрессивные и химопасные</strong></div>
-                        <div class="stand-cell"><span>Контроль</span><strong>3D-увязка без коллизий</strong></div>
+                    <div class="cad-telemetry-right">
+                        <div class="telemetry-group" id="cad-bars-metal">
+                            <div class="telemetry-bar-item">
+                                <div class="t-bar-head"><span>УЗК контроль сварных швов</span><strong>100%</strong></div>
+                                <div class="t-bar-track"><div class="t-bar-fill" style="width: 100%"></div></div>
+                            </div>
+                            <div class="telemetry-bar-item">
+                                <div class="t-bar-head"><span>Точность сходимости BIM-узлов</span><strong>99.8%</strong></div>
+                                <div class="t-bar-track"><div class="t-bar-fill" style="width: 99%"></div></div>
+                            </div>
+                            <div class="telemetry-bar-item">
+                                <div class="t-bar-head"><span>Химстойкая защита профиля</span><strong>Класс IV</strong></div>
+                                <div class="t-bar-track"><div class="t-bar-fill" style="width: 92%"></div></div>
+                            </div>
+                        </div>
+                        <div class="cad-summary-box" id="cad-note-metal">
+                            Полный прочностной расчет нагрузок и выпуск деталировочных чертежей для заводской сборки.
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- КАТАЛОГ ПРОДУКЦИИ -->
-    <section class="catalog-sec" id="catalog">
+    <!-- =========================================================
+         ЭКРАН 03: АСИММЕТРИЧНЫЙ МОЗАИЧНЫЙ КАТАЛОГ (BENTO GRID)
+         ========================================================= -->
+    <section class="bento-section" id="bento-catalog">
         <div class="container">
-            <div class="sec-header">
+            <div class="section-head-split">
                 <div>
-                    <span class="sec-kicker">Номенклатурный ряд</span>
-                    <h2 class="content-rti">ПРОИЗВОДСТВЕННАЯ ПРОГРАММА РТИ</h2>
-                    <h2 class="content-metal">ПРОЕКТИРОВАНИЕ И МЕТАЛЛОКОНСТРУКЦИИ</h2>
+                    <span class="kicker-line mono">Производственная архитектура</span>
+                    <h2 data-show="rti">Мозаика компетенций: Резинотехника</h2>
+                    <h2 data-show="metal">Мозаика компетенций: Металл и Цеха</h2>
                 </div>
-                <p style="color: var(--text-secondary); max-width: 440px; font-size: 14px;">
-                    Выпуск изделий осуществляется по ГОСТ, техническим условиям или индивидуальным чертежам заказчика.
+                <p style="color: var(--text-muted); max-width: 440px; font-size: 14px;">
+                    Каждое направление включает полный цикл: от разработки чертежей и оснастки до серийных промышленных поставок.
                 </p>
             </div>
 
-            <!-- Каталог РТИ -->
-            <div class="catalog-grid content-rti">
-                <div class="catalog-card">
-                    <span class="catalog-tag">Формовые РТИ</span>
-                    <h4>Манжеты и уплотнительные кольца</h4>
-                    <p>Прецизионные уплотнения для гидравлических и пневматических систем промышленного оборудования.</p>
-                    <ul class="specs-table">
-                        <li><span>Материалы</span><span>NBR, EPDM, FKM</span></li>
-                        <li><span>Твердость</span><span>40–90 Shore A</span></li>
-                    </ul>
+            <!-- МОЗАИКА 1: РТИ (РАЗНЫЕ ПРОПОРЦИИ КАРТОЧЕК) -->
+            <div class="bento-mosaic" data-show="rti">
+                <!-- Крупная карточка 7 колонок со схемой -->
+                <div class="bento-tile span-7 tile-Split">
+                    <div>
+                        <span class="bento-tag">Флагманское направление</span>
+                        <h3>Формовые РТИ сложной геометрии</h3>
+                        <p>Серийное прессование уплотнений, колец, манжет, мембран и защитных чехлов по индивидуальным чертежам с микронными допусками.</p>
+                        <div class="pill-specs">
+                            <span>NBR / EPDM</span>
+                            <span>FKM (Viton)</span>
+                            <span>Силикон VMQ</span>
+                        </div>
+                    </div>
+                    <div class="bento-art-box">
+                        <svg width="140" height="140" viewBox="0 0 140 140" fill="none">
+                            <circle cx="70" cy="70" r="54" stroke="var(--accent)" stroke-width="2.5" fill="var(--accent-soft)"/>
+                            <circle cx="70" cy="70" r="32" stroke="#fff" stroke-width="2"/>
+                            <circle cx="70" cy="70" r="16" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        </svg>
+                    </div>
                 </div>
-                <div class="catalog-card">
-                    <span class="catalog-tag">Виброизоляция</span>
-                    <h4>Амортизаторы и демпферы</h4>
-                    <p>Резинометаллические виброопоры для снижения динамических нагрузок от станочного парка и прессов.</p>
-                    <ul class="specs-table">
-                        <li><span>Крепление</span><span>Шпильки / фланцы</span></li>
-                        <li><span>Среда</span><span>Масло- и бензостойкие</span></li>
-                    </ul>
+
+                <!-- Карточка 5 колонок -->
+                <div class="bento-tile span-5">
+                    <div>
+                        <span class="bento-tag">Реверс-инжиниринг</span>
+                        <h3>Разработка аналогов по образцу</h3>
+                        <p>3D-сканирование изношенной импортной детали, расшифровка состава эластомера, выпуск КД и изготовление собственной пресс-формы.</p>
+                    </div>
+                    <div class="pill-specs">
+                        <span>3D-сканер</span>
+                        <span>Анализ Шора</span>
+                        <span>Своя оснастка</span>
+                    </div>
                 </div>
-                <div class="catalog-card">
-                    <span class="catalog-tag">Спецрецептуры</span>
-                    <h4>Химостойкие и термостойкие детали</h4>
-                    <p>Изделия, устойчивые к воздействию концентрированных щелочей, кислот и перегретого пара.</p>
-                    <ul class="specs-table">
-                        <li><span>Температура</span><span>-60°C … +300°C</span></li>
-                        <li><span>Стандарты</span><span>ГОСТ, ТУ заказчика</span></li>
-                    </ul>
+
+                <!-- 3 карточки по 4 колонки -->
+                <div class="bento-tile span-4">
+                    <div>
+                        <span class="bento-tag">Демпфирование</span>
+                        <h3>Резинометаллические виброопоры</h3>
+                        <p>Сайлентблоки, амортизаторы, буферы и опоры станочного парка с горячей вулканизацией резины к стали.</p>
+                    </div>
+                    <div class="pill-specs">
+                        <span>Адгезия к металлу</span>
+                        <span>Ударные нагрузки</span>
+                    </div>
                 </div>
-                <div class="catalog-card">
-                    <span class="catalog-tag">Импортозамещение</span>
-                    <h4>Изготовление по образцу</h4>
-                    <p>Реверс-инжиниринг изношенных импортных комплектующих с выпуском индивидуальной оснастки.</p>
-                    <ul class="specs-table">
-                        <li><span>Контроль</span><span>3D-сканирование</span></li>
-                        <li><span>Партии</span><span>От опытной до серии</span></li>
-                    </ul>
+
+                <div class="bento-tile span-4">
+                    <div>
+                        <span class="bento-tag">Агрессивные среды</span>
+                        <h3>Химстойкие и термостойкие смеси</h3>
+                        <p>Специальные рецептуры эластомеров для работы в кислотах, щелочах, перегретом паре и нефтепродуктах.</p>
+                    </div>
+                    <div class="pill-specs">
+                        <span>-60°C … +300°C</span>
+                        <span>Кислоты / Масла</span>
+                    </div>
                 </div>
-                <div class="catalog-card">
-                    <span class="catalog-tag">Антикоррозия</span>
-                    <h4>Гуммирование барабанов и валов</h4>
-                    <p>Нанесение защитного эластомерного покрытия на металл для предотвращения абразивного износа.</p>
-                    <ul class="specs-table">
-                        <li><span>Адгезия</span><span>Повышенная прочность</span></li>
-                        <li><span>Обработка</span><span>Шлифовка в допуск</span></li>
-                    </ul>
-                </div>
-                <div class="catalog-card">
-                    <span class="catalog-tag">Неформовые РТИ</span>
-                    <h4>Профили, техпластины и шнуры</h4>
-                    <p>Экструзионные монолитные и пористые профили нестандартного сечения для герметизации узлов.</p>
-                    <ul class="specs-table">
-                        <li><span>Поставка</span><span>Бухты / отрезки</span></li>
-                        <li><span>Форма</span><span>По матрице заказчика</span></li>
-                    </ul>
+
+                <div class="bento-tile span-4">
+                    <div>
+                        <span class="bento-tag">Футеровка и экструзия</span>
+                        <h3>Гуммирование валов и профили</h3>
+                        <p>Нанесение защитного резинового покрытия на металлические валы и выпуск экструзионных шнуров и профилей.</p>
+                    </div>
+                    <div class="pill-specs">
+                        <span>Защита от абразива</span>
+                        <span>Любое сечение</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Каталог МЕТАЛЛ -->
-            <div class="catalog-grid content-metal">
-                <div class="catalog-card">
-                    <span class="catalog-tag">Промпроектирование</span>
-                    <h4>Проектирование химических и техцехов</h4>
-                    <p>Разработка технологических планировок, трассировки коммуникаций и расстановки оборудования.</p>
-                    <ul class="specs-table">
-                        <li><span>Документация</span><span>ТХ, КМ, КМД</span></li>
-                        <li><span>Специфика</span><span>Сложные производства</span></li>
-                    </ul>
+            <!-- МОЗАИКА 2: МЕТАЛЛ И ЦЕХА -->
+            <div class="bento-mosaic" data-show="metal">
+                <!-- Крупная карточка 7 колонок со схемой цеха -->
+                <div class="bento-tile span-7 tile-Split">
+                    <div>
+                        <span class="bento-tag">Генеральный инжиниринг</span>
+                        <h3>Проектирование химических и техцехов</h3>
+                        <p>Комплексная разработка технологических участков, компоновка реакторного и насосного оборудования, трассировка трубопроводов и газоочистки.</p>
+                        <div class="pill-specs">
+                            <span>Разделы ТХ / КМ</span>
+                            <span>BIM 3D-модель</span>
+                            <span>Химстойкие узлы</span>
+                        </div>
+                    </div>
+                    <div class="bento-art-box">
+                        <svg width="150" height="130" viewBox="0 0 150 130" fill="none">
+                            <polygon points="15,105 75,20 135,105" stroke="var(--accent)" stroke-width="2.2" fill="var(--accent-soft)"/>
+                            <rect x="35" y="65" width="80" height="45" stroke="#fff" stroke-width="1.8"/>
+                            <line x1="75" y1="20" x2="75" y2="110" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        </svg>
+                    </div>
                 </div>
-                <div class="catalog-card">
-                    <span class="catalog-tag">Несущие конструкции</span>
-                    <h4>Колонны, фермы и балки</h4>
-                    <p>Изготовление металлоконструкций силового каркаса для строительства и реконструкции цехов.</p>
-                    <ul class="specs-table">
-                        <li><span>Стали</span><span>С245, С345, 09Г2С</span></li>
-                        <li><span>Контроль</span><span>100% УЗК диагностика</span></li>
-                    </ul>
+
+                <!-- Карточка 5 колонок -->
+                <div class="bento-tile span-5">
+                    <div>
+                        <span class="bento-tag">Силовой каркас</span>
+                        <h3>Несущие стальные конструкции</h3>
+                        <p>Производство колонн, стропильных и подстропильных ферм, балок перекрытия и связей жесткости для промышленных зданий.</p>
+                    </div>
+                    <div class="pill-specs">
+                        <span>Сталь 09Г2С / С345</span>
+                        <span>100% УЗК швов</span>
+                    </div>
                 </div>
-                <div class="catalog-card">
-                    <span class="catalog-tag">Инфраструктура</span>
-                    <h4>Технологические эстакады и площадки</h4>
-                    <p>Многоуровневые галереи под прокладку трубопроводов и безопасное обслуживание агрегатов.</p>
-                    <ul class="specs-table">
-                        <li><span>Настил</span><span>Прессованный / ПВЛ</span></li>
-                        <li><span>Покрытие</span><span>Химстойкие грунты</span></li>
-                    </ul>
+
+                <!-- 3 карточки по 4 колонки -->
+                <div class="bento-tile span-4">
+                    <div>
+                        <span class="bento-tag">Инфраструктура</span>
+                        <h3>Эстакады и галереи обслуживания</h3>
+                        <p>Многоуровневые металлоконструкции под прокладку технологических трубопроводов и доступ персонала к агрегатам.</p>
+                    </div>
+                    <div class="pill-specs">
+                        <span>Настил ПВЛ / Пресс</span>
+                        <span>Антикоррозия</span>
+                    </div>
                 </div>
-                <div class="catalog-card">
-                    <span class="catalog-tag">Емкостной парк</span>
-                    <h4>Бункеры, силосы и резервуары</h4>
-                    <p>Расчет и изготовление металлоемкостей, рам под тяжелые насосы и технологических газоходов.</p>
-                    <ul class="specs-table">
-                        <li><span>Исполнение</span><span>Нержавеющая сталь</span></li>
-                        <li><span>Испытания</span><span>Гидравлический контроль</span></li>
-                    </ul>
+
+                <div class="bento-tile span-4">
+                    <div>
+                        <span class="bento-tag">Нестандартное оборудование</span>
+                        <h3>Бункеры, емкости и силосы</h3>
+                        <p>Расчет и изготовление сварных резервуаров, реакторных рубашек, газоходов и силовых рам под тяжелые агрегаты.</p>
+                    </div>
+                    <div class="pill-specs">
+                        <span>Нержавеющая сталь</span>
+                        <span>Гидроиспытания</span>
+                    </div>
                 </div>
-                <div class="catalog-card">
-                    <span class="catalog-tag">Оснастка</span>
-                    <h4>Пресс-формы и детали штампов</h4>
-                    <p>Высокоточная металлообработка на ЧПУ-станках: изготовление формующей оснастки для РТИ.</p>
-                    <ul class="specs-table">
-                        <li><span>Точность</span><span>Высокие квалитеты</span></li>
-                        <li><span>Закалка</span><span>Термообработка стали</span></li>
-                    </ul>
+
+                <div class="bento-tile span-4">
+                    <div>
+                        <span class="bento-tag">Металлообработка ЧПУ</span>
+                        <h3>Пресс-формы и технологическая оснастка</h3>
+                        <p>Высокоточная фрезерная и токарная обработка инструментальных сталей, выпуск матриц и штампов высокой твердости.</p>
+                    </div>
+                    <div class="pill-specs">
+                        <span>ЧПУ-комплекс</span>
+                        <span>Термообработка</span>
+                    </div>
                 </div>
-                <div class="catalog-card">
-                    <span class="catalog-tag">Модернизация</span>
-                    <h4>Усиление конструкций цехов</h4>
-                    <p>Инженерное обследование, перерасчет нагрузок и усиление каркасов без остановки цеха.</p>
-                    <ul class="specs-table">
-                        <li><span>Режим</span><span>В действующем производстве</span></li>
-                        <li><span>Безопасность</span><span>Регламент NDA</span></li>
-                    </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         ЭКРАН 04: СКВОЗНАЯ ШКАЛА ИНЖЕНЕРНЫХ ПОКАЗАТЕЛЕЙ
+         ========================================================= -->
+    <section class="telemetry-strip">
+        <div class="container">
+            <div class="strip-row" data-show="rti">
+                <div class="strip-metric">
+                    <div class="strip-number">-60°…+300°C</div>
+                    <div class="strip-caption">Температурный режим смесей</div>
+                </div>
+                <div class="strip-metric">
+                    <div class="strip-number">30–95 Sh A</div>
+                    <div class="strip-caption">Твердость эластомеров по Шору</div>
+                </div>
+                <div class="strip-metric">
+                    <div class="strip-number">до 50 МПа</div>
+                    <div class="strip-caption">Рабочее давление уплотнений</div>
+                </div>
+                <div class="strip-metric">
+                    <div class="strip-number">ГОСТ / ТУ</div>
+                    <div class="strip-caption">Паспорт качества на каждую партию</div>
+                </div>
+            </div>
+
+            <div class="strip-row" data-show="metal">
+                <div class="strip-metric">
+                    <div class="strip-number">КМ / КМД / ТХ</div>
+                    <div class="strip-caption">Полный цикл проектирования</div>
+                </div>
+                <div class="strip-metric">
+                    <div class="strip-number">09Г2С / AISI</div>
+                    <div class="strip-caption">Конструкционные и спецстали</div>
+                </div>
+                <div class="strip-metric">
+                    <div class="strip-number">100% УЗК</div>
+                    <div class="strip-caption">Дефектоскопия сварных соединений</div>
+                </div>
+                <div class="strip-metric">
+                    <div class="strip-number">BIM 3D</div>
+                    <div class="strip-caption">Сборка узлов без коллизий</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ИНЖЕНЕРНЫЕ МЕТРИКИ -->
-    <section class="metrics-strip">
+    <!-- =========================================================
+         ЭКРАН 05: ГОРИЗОНТАЛЬНЫЙ ТАЙМЛАЙН (6 ЭТАПОВ НА ОДНОЙ ОСИ)
+         ========================================================= -->
+    <section class="timeline-section" id="process-timeline">
         <div class="container">
-            <div class="metrics-grid content-rti">
-                <div class="metric-item"><div class="metric-num">-60°…+300°C</div><div class="metric-title">Температурный диапазон эластомеров</div></div>
-                <div class="metric-item"><div class="metric-num">40–95 Sh A</div><div class="metric-title">Диапазон программируемой твердости</div></div>
-                <div class="metric-item"><div class="metric-num">ГОСТ / ТУ</div><div class="metric-title">Соответствие проектной документации</div></div>
-                <div class="metric-item"><div class="metric-num">100% NDA</div><div class="metric-title">Закрытый контур производства и оснастки</div></div>
-            </div>
-
-            <div class="metrics-grid content-metal">
-                <div class="metric-item"><div class="metric-num">КМ / КМД</div><div class="metric-title">Комплект рабочей документации</div></div>
-                <div class="metric-item"><div class="metric-num">09Г2С / AISI</div><div class="metric-title">Конструкционные и нержавеющие стали</div></div>
-                <div class="metric-item"><div class="metric-num">100% УЗК</div><div class="metric-title">Контроль ответственных сварных швов</div></div>
-                <div class="metric-item"><div class="metric-num">3D Модель</div><div class="metric-title">Точное проектирование узлов</div></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ЭТАПЫ РАБОТЫ -->
-    <section class="workflow-sec" id="workflow">
-        <div class="container">
-            <span class="sec-kicker">Регламент исполнения</span>
-            <h2 style="font-size: clamp(24px, 3.2vw, 36px); font-weight: 800;">ПОРЯДОК РЕАЛИЗАЦИИ ПРОЕКТА</h2>
-
-            <div class="steps-row content-rti">
-                <div class="step-tile"><span class="step-idx">ШАГ 01</span><h4>Анализ задачи и ТЗ</h4><p>Изучаем условия работы узла, температурные режимы, контактные среды и нагрузки.</p></div>
-                <div class="step-tile"><span class="step-idx">ШАГ 02</span><h4>Рецептура и оснастка</h4><p>Подбираем эластомерную смесь и проектируем формующую матрицу.</p></div>
-                <div class="step-tile"><span class="step-idx">ШАГ 03</span><h4>Опытный образец</h4><p>Выпускаем предсерийную партию деталей для контроля размеров и полевых испытаний.</p></div>
-                <div class="step-tile"><span class="step-idx">ШАГ 04</span><h4>Серийный выпуск</h4><p>Производим требуемый тираж изделий с контролем ОТК и закрывающими документами.</p></div>
-            </div>
-
-            <div class="steps-row content-metal">
-                <div class="step-tile"><span class="step-idx">ШАГ 01</span><h4>Анализ исходных данных</h4><p>Изучаем архитектурные параметры, схемы нагрузок и условия размещения оборудования.</p></div>
-                <div class="step-tile"><span class="step-idx">ШАГ 02</span><h4>Расчет и 3D-моделирование</h4><p>Выполняем прочностные расчеты, разрабатываем чертежи КМ и деталировку КМД.</p></div>
-                <div class="step-tile"><span class="step-idx">ШАГ 03</span><h4>Изготовление и контроль</h4><p>Производим раскрой металлопроката, сварку узлов и неразрушающий контроль швов.</p></div>
-                <div class="step-tile"><span class="step-idx">ШАГ 04</span><h4>Поставка и комплектность</h4><p>Отгружаем готовые конструкции с сертификатами качества на сталь и паспортами изделий.</p></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NDA -->
-    <section class="nda-sec" id="nda">
-        <div class="container">
-            <div class="nda-container-box">
+            <div class="section-head-split">
                 <div>
-                    <span class="sec-kicker">Безопасность данных</span>
-                    <h3 style="font-size: clamp(22px, 2.8vw, 30px); font-weight: 800; margin-bottom: 14px;">ПОЛИТИКА ЗАКРЫТОГО ПРОИЗВОДСТВА</h3>
-                    <p style="color: var(--text-secondary); font-size: 14.5px;">
-                        Мы производим нестандартные узлы и реализуем инжиниринговые проекты по техническим заданиям заказчиков. В целях защиты авторских прав и технологических решений клиентов мы не публикуем в открытом доступе фотографии цехов, оборудования и персональные контакты ведущих специалистов.
-                    </p>
-                    <div class="nda-checklist">
-                        <div class="nda-check-item"><span class="nda-icon-box">✓</span><span>Подписание NDA до обмена чертежами</span></div>
-                        <div class="nda-check-item"><span class="nda-icon-box">✓</span><span>Закрытый учет пресс-форм заказчика</span></div>
-                        <div class="nda-check-item"><span class="nda-icon-box">✓</span><span>Защита рецептур и проектных решений</span></div>
-                        <div class="nda-check-item"><span class="nda-icon-box">✓</span><span>Договорные отношения строго с юрлицами</span></div>
+                    <span class="kicker-line mono">Инженерная цепочка</span>
+                    <h2>Маршрут реализации заказа</h2>
+                </div>
+                <p style="color: var(--text-muted); max-width: 440px; font-size: 14px;">
+                    От первичного анализа чертежей или образца до отгрузки готовой промышленной партии на склад заказчика.
+                </p>
+            </div>
+
+            <div class="timeline-track-wrapper">
+                <div class="timeline-axis-line"></div>
+
+                <!-- Таймлайн РТИ -->
+                <div class="timeline-nodes-grid" data-show="rti">
+                    <div class="tl-node">
+                        <div class="tl-text-block">
+                            <h4>Анализ ТЗ / Образца</h4>
+                            <p>Оценка среды, давления, температуры и 3D-сканирование детали.</p>
+                        </div>
+                        <div class="tl-dot-ring">01</div>
+                        <div class="tl-spacer"></div>
+                    </div>
+                    <div class="tl-node">
+                        <div class="tl-spacer"></div>
+                        <div class="tl-dot-ring">02</div>
+                        <div class="tl-text-block">
+                            <h4>Рецептура смеси</h4>
+                            <p>Подбор полимерной базы и лабораторный тест физико-механики.</p>
+                        </div>
+                    </div>
+                    <div class="tl-node">
+                        <div class="tl-text-block">
+                            <h4>Выпуск оснастки</h4>
+                            <p>Проектирование и ЧПУ-фрезеровка формующей пресс-формы.</p>
+                        </div>
+                        <div class="tl-dot-ring">03</div>
+                        <div class="tl-spacer"></div>
+                    </div>
+                    <div class="tl-node">
+                        <div class="tl-spacer"></div>
+                        <div class="tl-dot-ring">04</div>
+                        <div class="tl-text-block">
+                            <h4>Пилотный образец</h4>
+                            <p>Формовка предсерийного изделия и стендовая проверка допусков.</p>
+                        </div>
+                    </div>
+                    <div class="tl-node">
+                        <div class="tl-text-block">
+                            <h4>Серийный тираж</h4>
+                            <p>Промышленная вулканизация партии с контролем ОТК.</p>
+                        </div>
+                        <div class="tl-dot-ring">05</div>
+                        <div class="tl-spacer"></div>
+                    </div>
+                    <div class="tl-node">
+                        <div class="tl-spacer"></div>
+                        <div class="tl-dot-ring">06</div>
+                        <div class="tl-text-block">
+                            <h4>Отгрузка</h4>
+                            <p>Упаковка, паспорта качества и поставка по графику снабжения.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="nda-right-panel">
-                    <svg width="64" height="64" viewBox="0 0 76 76" fill="none">
-                        <path d="M38 8L12 19V37C12 53.5 23.1 68.6 38 73C52.9 68.6 64 53.5 64 37V19L38 8Z" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                        <rect x="29" y="34" width="18" height="14" rx="3" stroke="#fff" stroke-width="2"/>
-                        <path d="M33 34V29C33 26.2 35.2 24 38 24C40.8 24 43 26.2 43 29V34" stroke="var(--accent-primary)" stroke-width="2"/>
-                    </svg>
-                    <h4 style="margin-top: 14px; font-size: 16px;">Защищенный обмен данными</h4>
-                    <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 6px;">
-                        Вся конструкторская документация передается по защищенным корпоративным каналам связи.
-                    </p>
+                <!-- Таймлайн Металл -->
+                <div class="timeline-nodes-grid" data-show="metal">
+                    <div class="tl-node">
+                        <div class="tl-text-block">
+                            <h4>Исходные данные</h4>
+                            <p>Сбор нагрузок, габаритов пролетов и технологической схемы цеха.</p>
+                        </div>
+                        <div class="tl-dot-ring">01</div>
+                        <div class="tl-spacer"></div>
+                    </div>
+                    <div class="tl-node">
+                        <div class="tl-spacer"></div>
+                        <div class="tl-dot-ring">02</div>
+                        <div class="tl-text-block">
+                            <h4>BIM и расчет КМ</h4>
+                            <p>Прочностной расчет конструкции и построение 3D-модели.</p>
+                        </div>
+                    </div>
+                    <div class="tl-node">
+                        <div class="tl-text-block">
+                            <h4>Чертежи КМД</h4>
+                            <p>Выпуск деталировочных карт раскроя и сборочных ведомостей.</p>
+                        </div>
+                        <div class="tl-dot-ring">03</div>
+                        <div class="tl-spacer"></div>
+                    </div>
+                    <div class="tl-node">
+                        <div class="tl-spacer"></div>
+                        <div class="tl-dot-ring">04</div>
+                        <div class="tl-text-block">
+                            <h4>Заготовка и сварка</h4>
+                            <p>Лазерный раскрой проката и сборка стальных узлов на стапелях.</p>
+                        </div>
+                    </div>
+                    <div class="tl-node">
+                        <div class="tl-text-block">
+                            <h4>УЗК и защита</h4>
+                            <p>Ультразвуковой контроль швов и нанесение химстойких покрытий.</p>
+                        </div>
+                        <div class="tl-dot-ring">05</div>
+                        <div class="tl-spacer"></div>
+                    </div>
+                    <div class="tl-node">
+                        <div class="tl-spacer"></div>
+                        <div class="tl-dot-ring">06</div>
+                        <div class="tl-text-block">
+                            <h4>Комплектная сдача</h4>
+                            <p>Маркировка отправочных марок и отгрузка с сертификатами.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- КОНТАКТЫ -->
-    <section class="contact-sec" id="contacts">
+    <!-- =========================================================
+         ЭКРАН 06: АСИММЕТРИЧНЫЙ КОНТАКТНЫЙ БЛОК (ТОЛЬКО EMAIL + ТЗ)
+         ========================================================= -->
+    <section class="contact-section" id="contacts">
         <div class="container">
-            <div class="contact-box">
-                <div>
-                    <span class="sec-kicker">Обратная связь</span>
-                    <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 12px;">НАПРАВИТЬ ЗАЯВКУ ИЛИ ТЗ</h2>
-                    <p style="color: var(--text-secondary); font-size: 14px;">
-                        Для предварительного расчета стоимости изделий или металлоконструкций отправьте техническое задание через форму или на почту.
-                    </p>
+            <div class="asymmetric-contact-monolith">
+                
+                <div class="contact-left-side">
+                    <div>
+                        <span class="kicker-line mono">Инженерно-коммерческий отдел</span>
+                        <h2>Расчет проекта по техническому заданию</h2>
+                        <p style="color: var(--text-muted); font-size: 14.5px;">
+                            Направьте чертежи, эскизы, опросные листы или описание требуемых изделий на электронную почту либо через форму справа.
+                        </p>
 
-                    <div class="email-card">
-                        <span>Корпоративная электронная почта:</span>
-                        <a href="mailto:info@indust-rti.ru">info@indust-rti.ru</a>
+                        <div class="direct-email-panel">
+                            <span>Единая почта для приема документации:</span>
+                            <div class="email-copy-row">
+                                <a href="mailto:info@indust-rti.ru" id="corp-email-text">info@indust-rti.ru</a>
+                                <button type="button" class="copy-email-btn" onclick="copyEmailAddress(this)">Скопировать</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <p style="font-size: 12px; color: var(--text-muted);">
-                        * Направляемые чертежи и спецификации защищены соглашением о неразглашении конфиденциальной информации.
+                    <p style="font-size: 12.5px; color: var(--text-low);">
+                        Принимаемые форматы чертежей: PDF, DWG, DXF, STEP, IGES, Компас-3D, а также фотографии образцов с указанием габаритов.
                     </p>
                 </div>
 
-                <form class="contact-form" onsubmit="event.preventDefault(); alert('Заявка сформирована. В боевом режиме параметры отправляются на корпоративную почту.'); event.target.reset();">
-                    <div class="form-row">
-                        <input type="text" class="form-ctrl" placeholder="Организация / ИНН" required>
-                        <input type="email" class="form-ctrl" placeholder="Корпоративный Email" required>
-                    </div>
-                    <select class="form-ctrl" id="form-direction">
-                        <option value="rti">Направление: Резинотехнические изделия (РТИ)</option>
-                        <option value="metal">Направление: Металлоконструкции и проектирование</option>
-                        <option value="complex">Комплексный проект (РТИ + Металлоконструкции)</option>
-                    </select>
-                    <textarea class="form-ctrl" placeholder="Краткое описание задачи, требуемая номенклатура, условия эксплуатации или примечания к чертежам..." required></textarea>
-                    <button type="submit" class="btn-submit">ОТПРАВИТЬ ТЕХНИЧЕСКОЕ ЗАДАНИЕ</button>
-                </form>
+                <div class="contact-right-form">
+                    <form class="minimal-form" onsubmit="handleTzSubmit(event)">
+                        <div class="form-2col">
+                            <input type="text" class="sleek-input" placeholder="Наименование предприятия / ИНН" required>
+                            <input type="email" class="sleek-input" placeholder="Обратный Email для расчета" required>
+                        </div>
+                        <select class="sleek-input" id="form-div-select">
+                            <option value="rti">Направление: Производство резинотехнических изделий (РТИ)</option>
+                            <option value="metal">Направление: Проектирование цехов и металлоконструкции</option>
+                            <option value="complex">Комплексная поставка (РТИ + Металлоконструкции)</option>
+                        </select>
+                        <textarea class="sleek-input" placeholder="Опишите задачу: наименование узла, рабочая среда, температурный режим, ориентировочный объем партии или параметры конструкций..." required></textarea>
+                        <button type="submit" class="btn-send-monolith">Отправить запрос в инженерный отдел</button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- ФУТЕР -->
+    <!-- ФУТЕР БЕЗ ДАТЫ -->
     <footer>
         <div class="container">
-            <div class="footer-flex">
-                <p>© ПРОМТЕХИНЖИНИРИНГ. Разработка специализированных РТИ и проектирование металлоконструкций. Все права защищены. Соблюдение регламента NDA.</p>
-                <a href="mailto:info@indust-rti.ru" style="color: #fff; text-decoration: none; font-size: 14px; font-weight: 600;">info@indust-rti.ru</a>
+            <div class="footer-bar">
+                <strong class="font-head" style="color: #fff; letter-spacing: 1px;">ПРОМТЕХ // ИНДУСТРИАЛЬНЫЕ РЕШЕНИЯ</strong>
+                <span>Производство резинотехнических изделий и проектирование металлоконструкций</span>
+                <a href="mailto:info@indust-rti.ru" style="color: var(--accent); text-decoration: none; font-weight: 600;">info@indust-rti.ru</a>
             </div>
         </div>
     </footer>
 
-    <!-- СКРИПТ ПЕРЕКЛЮЧЕНИЯ И 3D ДВИЖОК -->
+    <!-- =========================================================
+         JAVASCRIPT: 3D-МОДЕЛЬ НА ПЬЕДЕСТАЛЕ + ИНТЕРАКТИВНЫЙ CAD
+         ========================================================= -->
     <script>
-        const standData = {
+        let currentMode = 'rti';
+
+        // 1. Переключение двух частей сайта
+        function switchMode(mode) {
+            currentMode = mode;
+            document.documentElement.setAttribute('data-mode', mode);
+
+            // Обновление активных кнопок в шапке и консоли
+            document.getElementById('nav-btn-rti').classList.toggle('active', mode === 'rti');
+            document.getElementById('nav-btn-metal').classList.toggle('active', mode === 'metal');
+            document.getElementById('console-btn-rti').classList.toggle('active', mode === 'rti');
+            document.getElementById('console-btn-metal').classList.toggle('active', mode === 'metal');
+
+            const sel = document.getElementById('form-div-select');
+            if (sel) sel.value = mode;
+
+            document.getElementById('hud-model-name').textContent = mode === 'rti'
+                ? '3D-MODEL: ELASTOMER-RING'
+                : '3D-MODEL: STEEL-TRUSS-MODULE';
+
+            document.getElementById('cad-layer-code').textContent = mode === 'rti'
+                ? 'LAYER: RTI-SEAL-01'
+                : 'LAYER: STEEL-FRAME-01';
+
+            rebuild3DTargets(mode);
+        }
+
+        // 2. Копирование почты в 1 клик
+        function copyEmailAddress(btn) {
+            navigator.clipboard.writeText('info@indust-rti.ru');
+            const oldText = btn.textContent;
+            btn.textContent = 'Скопировано ✓';
+            setTimeout(() => { btn.textContent = oldText; }, 2000);
+        }
+
+        // 3. Обработка отправки формы
+        function handleTzSubmit(e) {
+            e.preventDefault();
+            alert('Заявка принята! При подключении почтового шлюза данные отправляются напрямую на корпоративный ящик.');
+            e.target.reset();
+        }
+
+        // 4. Данные для Интерактивного CAD-стенда
+        const cadNodesData = {
             rti: [
                 {
-                    title: "УПЛОТНИТЕЛЬНЫЕ ЭЛЕМЕНТЫ",
-                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><ellipse cx="120" cy="65" rx="85" ry="46" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/><ellipse cx="120" cy="65" rx="50" ry="24" stroke="#fff" stroke-width="1.5" stroke-dasharray="5 3"/></svg>`,
-                    params: [["Твердость", "50–90 Shore A"], ["Температура", "-50°C … +250°C"], ["Давление", "до 45 МПа"]]
+                    code: "LAYER: RTI-SEAL-01",
+                    note: "Прецизионная формовка на ЧПУ-матрицах с вулканизацией металлического закладного кольца.",
+                    bars: [["Стойкость к агрессивной среде", "98%", 98], ["Термостойкость смеси", "+260°C", 90], ["Твердость эластомера", "75 Sh A", 78]],
+                    svg: `<svg viewBox="0 0 420 220" fill="none">
+                        <circle cx="125" cy="110" r="78" stroke="var(--accent)" stroke-width="2" fill="var(--accent-soft)"/>
+                        <circle cx="125" cy="110" r="56" stroke="#fff" stroke-width="1.2" stroke-dasharray="5 4"/>
+                        <circle cx="125" cy="110" r="38" stroke="var(--accent)" stroke-width="2" fill="#060911"/>
+                        <line x1="30" y1="110" x2="220" y2="110" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-dasharray="4 4"/>
+                        <rect x="275" y="32" width="44" height="156" rx="4" stroke="var(--accent)" stroke-width="2" fill="var(--accent-soft)"/>
+                        <line x1="275" y1="72" x2="319" y2="72" stroke="#fff" stroke-width="2"/>
+                        <line x1="275" y1="148" x2="319" y2="148" stroke="#fff" stroke-width="2"/>
+                        <text x="335" y="114" fill="var(--accent)" font-family="monospace" font-size="11">Ø 40..600 мм</text>
+                    </svg>`
                 },
                 {
-                    title: "АНТИВИБРАЦИОННЫЕ ОПОРЫ",
-                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><rect x="50" y="25" width="140" height="16" rx="2" stroke="#fff" stroke-width="1.8"/><path d="M65 41 L50 95 L190 95 L175 41 Z" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/><rect x="40" y="95" width="160" height="16" rx="2" stroke="#fff" stroke-width="1.8"/></svg>`,
-                    params: [["Адгезия", "Горячая вулканизация"], ["Нагрузки", "Высокие динамические"], ["Исполнение", "По чертежу узла"]]
+                    code: "LAYER: RTI-DAMPER-02",
+                    note: "Горячая вулканизация эластомера к стальным опорным плитам для гашения резонансных колебаний.",
+                    bars: [["Поглощение ударной энергии", "94%", 94], ["Прочность сцепления со сталью", "14 МПа", 92], ["Ресурс циклов сжатия", "10⁷ циклов", 96]],
+                    svg: `<svg viewBox="0 0 420 220" fill="none">
+                        <rect x="75" y="35" width="160" height="20" rx="3" stroke="#fff" stroke-width="2"/>
+                        <path d="M90 55 L75 155 L235 155 L220 55 Z" stroke="var(--accent)" stroke-width="2.2" fill="var(--accent-soft)"/>
+                        <rect x="60" y="155" width="190" height="22" rx="3" stroke="#fff" stroke-width="2"/>
+                        <line x1="155" y1="18" x2="155" y2="195" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="4 4"/>
+                        <text x="270" y="110" fill="var(--accent)" font-family="monospace" font-size="11">НАГРУЗКА: до 25 т</text>
+                    </svg>`
                 },
                 {
-                    title: "ГУММИРОВАНИЕ УЗЛОВ",
-                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><rect x="35" y="40" width="170" height="50" rx="10" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/><line x1="15" y1="65" x2="225" y2="65" stroke="#fff" stroke-width="3"/></svg>`,
-                    params: [["Толщина слоя", "от 3 до 35 мм"], ["Назначение", "Защита от абразива"], ["Контроль", "Ультразвуковой"]]
+                    code: "LAYER: RTI-MEMBRANE-03",
+                    note: "Армированные тканевым кордом эластомерные мембраны для насосов, клапанов и дозаторов.",
+                    bars: [["Химическая инертность (FKM)", "99%", 99], ["Эластичность на изгиб", "Высокая", 95], ["Рабочее давление контура", "до 35 МПа", 86]],
+                    svg: `<svg viewBox="0 0 420 220" fill="none">
+                        <path d="M40 130 L105 130 C135 65, 215 65, 245 130 L310 130" stroke="var(--accent)" stroke-width="4"/>
+                        <path d="M40 144 L105 144 C135 79, 215 79, 245 144 L310 144" stroke="#fff" stroke-width="1.5" stroke-dasharray="5 3"/>
+                        <circle cx="65" cy="137" r="6" stroke="#fff" stroke-width="2"/>
+                        <circle cx="285" cy="137" r="6" stroke="#fff" stroke-width="2"/>
+                        <text x="115" y="185" fill="var(--accent)" font-family="monospace" font-size="11">ПРОФИЛЬ МЕМБРАНЫ // FKM</text>
+                    </svg>`
+                },
+                {
+                    code: "LAYER: RTI-ROLLER-04",
+                    note: "Бесшовное гуммирование приводных валов, роликов и внутренней поверхности химических реакторов.",
+                    bars: [["Стойкость к абразивному износу", "96%", 96], ["Толщина защитного слоя", "5–40 мм", 88], ["Сплошность покрытия (УЗК)", "100%", 100]],
+                    svg: `<svg viewBox="0 0 420 220" fill="none">
+                        <rect x="65" y="60" width="240" height="90" rx="14" stroke="var(--accent)" stroke-width="2.5" fill="var(--accent-soft)"/>
+                        <rect x="85" y="78" width="200" height="54" stroke="#fff" stroke-width="1.5"/>
+                        <line x1="25" y1="105" x2="345" y2="105" stroke="#fff" stroke-width="3"/>
+                        <text x="110" y="182" fill="var(--accent)" font-family="monospace" font-size="11">ШЛИФОВКА В ДОПУСК ±0.05 мм</text>
+                    </svg>`
                 }
             ],
             metal: [
                 {
-                    title: "ПРОЕКТИРОВАНИЕ ТЕХЦЕХОВ",
-                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><polygon points="30,105 120,25 210,105" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/><rect x="55" y="70" width="130" height="45" stroke="#fff" stroke-width="1.6"/><line x1="120" y1="25" x2="120" y2="115" stroke="var(--accent-primary)" stroke-width="1.5" stroke-dasharray="4 4"/></svg>`,
-                    params: [["Разделы", "ТХ, КМ, КМД, АР"], ["Среды", "Агрессивные и химопасные"], ["Контроль", "3D-увязка без коллизий"]]
+                    code: "LAYER: STEEL-FRAME-01",
+                    note: "Полный прочностной расчет нагрузок и выпуск деталировочных чертежей для заводской сборки.",
+                    bars: [["УЗК контроль сварных швов", "100%", 100], ["Точность сходимости BIM-узлов", "99.8%", 99], ["Химстойкая защита профиля", "Класс IV", 92]],
+                    svg: `<svg viewBox="0 0 420 220" fill="none">
+                        <rect x="25" y="55" width="370" height="75" stroke="#fff" stroke-width="2"/>
+                        <polyline points="25,130 85,55 145,130 210,55 275,130 335,55 395,130" stroke="var(--accent)" stroke-width="2.2"/>
+                        <line x1="25" y1="165" x2="395" y2="165" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4 4"/>
+                        <text x="135" y="185" fill="var(--accent)" font-family="monospace" font-size="11">ПРОЛЕТ L = 12 000 .. 36 000 мм</text>
+                    </svg>`
                 },
                 {
-                    title: "НЕСУЩИЕ СТАЛЬНЫЕ ФЕРМЫ",
-                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><rect x="25" y="45" width="190" height="48" stroke="#fff" stroke-width="1.8"/><polyline points="25,93 65,45 105,93 145,45 185,93 215,45" stroke="var(--accent-primary)" stroke-width="2"/></svg>`,
-                    params: [["Марки стали", "С245, С345, 09Г2С"], ["Контроль швов", "Ультразвуковой (УЗК)"], ["Защита", "Антикоррозийные эмали"]]
+                    code: "LAYER: CHEM-PLANT-02",
+                    note: "Трехмерная компоновка химико-технологических цехов, реакторных этажерок и систем газоочистки.",
+                    bars: [["Увязка трубопроводов и КМ", "100%", 100], ["Стойкость к кислотным парам", "Макс.", 97], ["Готовность рабочей КД", "ТХ + КМД", 100]],
+                    svg: `<svg viewBox="0 0 420 220" fill="none">
+                        <polygon points="55,165 185,30 315,165" stroke="var(--accent)" stroke-width="2.2" fill="var(--accent-soft)"/>
+                        <rect x="90" y="95" width="190" height="70" stroke="#fff" stroke-width="1.8"/>
+                        <circle cx="150" cy="130" r="20" stroke="var(--accent)" stroke-width="2"/>
+                        <circle cx="220" cy="130" r="20" stroke="var(--accent)" stroke-width="2"/>
+                    </svg>`
                 },
                 {
-                    title: "ЕМКОСТНЫЕ КОРПУСА И ЭСТАКАДЫ",
-                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><rect x="70" y="20" width="100" height="60" rx="6" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/><polygon points="70,80 170,80 140,118 100,118" stroke="#fff" stroke-width="1.8"/></svg>`,
-                    params: [["Материалы", "Конструкционная / нерж. сталь"], ["Нагрузки", "Высокие статические"], ["Монтаж", "Болтовые и сварные узлы"]]
+                    code: "LAYER: RACK-BRIDGE-03",
+                    note: "Многоярусные эстакады под технологические трубопроводы, кабельные трассы и площадки обслуживания.",
+                    bars: [["Несущая способность яруса", "до 18 т/м", 94], ["Антикоррозийная защита", "Горячий цинк/Эмаль", 96], ["Болтовая и сварная стыковка", "По ГОСТ", 100]],
+                    svg: `<svg viewBox="0 0 420 220" fill="none">
+                        <line x1="70" y1="185" x2="70" y2="45" stroke="#fff" stroke-width="3"/>
+                        <line x1="310" y1="185" x2="310" y2="45" stroke="#fff" stroke-width="3"/>
+                        <rect x="50" y="55" width="280" height="35" stroke="var(--accent)" stroke-width="2" fill="var(--accent-soft)"/>
+                        <polyline points="70,90 130,55 190,90 250,55 310,90" stroke="#fff" stroke-width="1.5"/>
+                    </svg>`
+                },
+                {
+                    code: "LAYER: TANK-SILO-04",
+                    note: "Проектирование и изготовление бункеров, силосов, емкостей и рам под насосно-компрессорные станции.",
+                    bars: [["Герметичность сварных корпусов", "100%", 100], ["Толщина листового проката", "4–40 мм", 90], ["Марки стали", "09Г2С / AISI", 98]],
+                    svg: `<svg viewBox="0 0 420 220" fill="none">
+                        <rect x="125" y="25" width="130" height="85" rx="6" stroke="var(--accent)" stroke-width="2.2" fill="var(--accent-soft)"/>
+                        <polygon points="125,110 255,110 215,175 165,175" stroke="#fff" stroke-width="2"/>
+                        <line x1="125" y1="110" x2="125" y2="190" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+                        <line x1="255" y1="110" x2="255" y2="190" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+                    </svg>`
                 }
             ]
         };
 
-        let currentActiveMode = 'rti';
+        function selectCadNode(mode, index, btnEl) {
+            const parent = btnEl.parentElement;
+            parent.querySelectorAll('.cad-node-btn').forEach(b => b.classList.remove('active'));
+            btnEl.classList.add('active');
 
-        function setSiteMode(mode) {
-            currentActiveMode = mode;
-            document.documentElement.setAttribute('data-mode', mode);
-
-            document.getElementById('tab-nav-rti').classList.toggle('active', mode === 'rti');
-            document.getElementById('tab-nav-metal').classList.toggle('active', mode === 'metal');
-            document.getElementById('hero-btn-rti').classList.toggle('active', mode === 'rti');
-            document.getElementById('hero-btn-metal').classList.toggle('active', mode === 'metal');
-            
-            const formDir = document.getElementById('form-direction');
-            if (formDir) formDir.value = mode;
-
-            updateMorphTargets(mode);
-        }
-
-        function setStandTab(mode, idx) {
-            const data = standData[mode][idx];
-            const prefix = mode;
-
-            const btns = document.querySelectorAll(`.stand-box.content-${mode} .stand-tab-btn`);
-            btns.forEach((btn, i) => btn.classList.toggle('active', i === idx));
-
-            document.getElementById(`stand-hud-title-${prefix}`).textContent = data.title;
-            document.getElementById(`stand-hud-svg-${prefix}`).innerHTML = data.svg;
-            document.getElementById(`stand-hud-params-${prefix}`).innerHTML = data.params.map(p => `
-                <div class="stand-cell"><span>${p[0]}</span><strong>${p[1]}</strong></div>
+            const item = cadNodesData[mode][index];
+            document.getElementById('cad-layer-code').textContent = item.code;
+            document.getElementById(`cad-svg-${mode}`).innerHTML = item.svg;
+            document.getElementById(`cad-note-${mode}`).textContent = item.note;
+            document.getElementById(`cad-bars-${mode}`).innerHTML = item.bars.map(b => `
+                <div class="telemetry-bar-item">
+                    <div class="t-bar-head"><span>${b[0]}</span><strong>${b[1]}</strong></div>
+                    <div class="t-bar-track"><div class="t-bar-fill" style="width: ${b[2]}%"></div></div>
+                </div>
             `).join('');
         }
 
-        function scrollToBlock(id) {
-            const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        /* 3D-МОРФИНГ (CANVAS) */
-        const canvas = document.getElementById('morph-canvas');
+        // =========================================================
+        // 5. ИНТЕРАКТИВНЫЙ 3D-ДВИЖОК НА ПЬЕДЕСТАЛЕ (ТОР РТИ <-> ФЕРМА)
+        // =========================================================
+        const canvas = document.getElementById('hero-3d-canvas');
         const ctx = canvas.getContext('2d');
-        const W = canvas.width = 640;
-        const H = canvas.height = 640;
-        const COUNT = 190;
-        const points = [];
+        const CW = canvas.width = 500;
+        const CH = canvas.height = 420;
 
-        for (let i = 0; i < COUNT; i++) {
-            const u = (i / COUNT) * Math.PI * 2 * 6;
-            const v = (i / COUNT) * Math.PI * 2;
-            const R = 135;
-            const r = 54 + Math.sin(v * 3) * 16;
-            const rx = (R + r * Math.cos(u)) * Math.cos(v);
-            const ry = (R + r * Math.cos(u)) * Math.sin(v);
-            const rz = r * Math.sin(u);
+        // Строим регулярную 3D-сетку (16 сегментов по кругу x 10 колец = 160 вершин со связями)
+        const SEGMENTS = 16;
+        const RINGS = 10;
+        const vertices = [];
+        const edges = [];
 
-            const tier = i % 8;
-            const spoke = Math.floor(i / 8) % 6;
-            const ang = (spoke / 6) * Math.PI * 2;
-            const rad = (i % 2 === 0) ? 150 : 80;
-            const mx = Math.cos(ang) * rad;
-            const my = (tier - 3.5) * 58;
-            const mz = Math.sin(ang) * rad;
+        for (let i = 0; i < SEGMENTS; i++) {
+            const u = (i / SEGMENTS) * Math.PI * 2;
+            for (let j = 0; j < RINGS; j++) {
+                const v = (j / RINGS) * Math.PI * 2;
 
-            points.push({
-                x: rx, y: ry, z: rz,
-                tx: rx, ty: ry, tz: rz,
-                rti: { x: rx, y: ry, z: rz },
-                metal: { x: mx, y: my, z: mz },
-                r: (i % 4 === 0) ? 2.4 : 1.5
+                // 1) Координаты РТИ: Объемное ребристое кольцо / уплотнительный тор
+                const majorR = 115;
+                const minorR = 44 + Math.cos(v * 4) * 6;
+                const rtiX = (majorR + minorR * Math.cos(v)) * Math.cos(u);
+                const rtiY = (majorR + minorR * Math.cos(v)) * Math.sin(u);
+                const rtiZ = minorR * Math.sin(v) * 1.25;
+
+                // 2) Координаты Металла: Угловатая пространственная стальная ферма / башня
+                const corners = 4;
+                const snappedAngle = (Math.floor((i / SEGMENTS) * corners) / corners) * Math.PI * 2 + Math.PI / 4;
+                const radiusLayer = (j % 2 === 0) ? 125 : 68;
+                const metalX = Math.cos(snappedAngle) * radiusLayer;
+                const metalZ = Math.sin(snappedAngle) * radiusLayer;
+                const metalY = ((j / (RINGS - 1)) - 0.5) * 230;
+
+                vertices.push({
+                    x: rtiX, y: rtiY, z: rtiZ,
+                    tx: rtiX, ty: rtiY, tz: rtiZ,
+                    rti: { x: rtiX, y: rtiY, z: rtiZ },
+                    metal: { x: metalX, y: metalY, z: metalZ }
+                });
+
+                const idx = i * RINGS + j;
+                const nextJ = i * RINGS + ((j + 1) % RINGS);
+                const nextI = ((i + 1) % SEGMENTS) * RINGS + j;
+                edges.push([idx, nextJ]);
+                edges.push([idx, nextI]);
+                if ((i + j) % 2 === 0) {
+                    const diag = ((i + 1) % SEGMENTS) * RINGS + ((j + 1) % RINGS);
+                    edges.push([idx, diag]);
+                }
+            }
+        }
+
+        function rebuild3DTargets(mode) {
+            vertices.forEach(v => {
+                const t = mode === 'rti' ? v.rti : v.metal;
+                v.tx = t.x;
+                v.ty = t.y;
+                v.tz = t.z;
             });
         }
 
-        function updateMorphTargets(mode) {
-            points.forEach(p => {
-                const target = mode === 'rti' ? p.rti : p.metal;
-                p.tx = target.x;
-                p.ty = target.y;
-                p.tz = target.z;
-            });
-        }
+        let rotX = 0.55;
+        let rotY = 0.35;
+        let targetRotX = 0.55;
+        let targetRotY = 0.35;
+        let autoSpin = true;
+        let isDragging = false;
+        let prevMouseX = 0;
+        let prevMouseY = 0;
 
-        let rotX = 0.25, rotY = 0;
-        let targetRotX = 0.003, targetRotY = 0.006;
-
-        window.addEventListener('mousemove', e => {
-            targetRotY = ((e.clientX / window.innerWidth) - 0.5) * 0.02;
-            targetRotX = ((e.clientY / window.innerHeight) - 0.5) * 0.02;
+        // Вращение 3D-детали мышкой и пальцем на телефоне
+        canvas.addEventListener('mousedown', e => {
+            isDragging = true;
+            autoSpin = false;
+            prevMouseX = e.clientX;
+            prevMouseY = e.clientY;
         });
 
-        function animate3D() {
-            ctx.clearRect(0, 0, W, H);
+        window.addEventListener('mouseup', () => { isDragging = false; });
 
-            const isMetal = currentActiveMode === 'metal';
-            const lineColor = isMetal ? '56, 189, 248' : '0, 210, 255';
-            const dotColor = isMetal ? '254, 243, 199' : '224, 242, 254';
+        window.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            targetRotY += (e.clientX - prevMouseX) * 0.01;
+            targetRotX += (e.clientY - prevMouseY) * 0.01;
+            prevMouseX = e.clientX;
+            prevMouseY = e.clientY;
+        });
 
-            rotY += 0.004 + targetRotY * 0.2;
-            rotX += 0.002 + targetRotX * 0.2;
+        canvas.addEventListener('touchstart', e => {
+            if (e.touches.length === 1) {
+                isDragging = true;
+                autoSpin = false;
+                prevMouseX = e.touches[0].clientX;
+                prevMouseY = e.touches[0].clientY;
+            }
+        }, { passive: true });
 
-            const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+        window.addEventListener('touchend', () => { isDragging = false; });
+
+        window.addEventListener('touchmove', e => {
+            if (!isDragging || e.touches.length !== 1) return;
+            targetRotY += (e.touches[0].clientX - prevMouseX) * 0.01;
+            targetRotX += (e.touches[0].clientY - prevMouseY) * 0.01;
+            prevMouseX = e.touches[0].clientX;
+            prevMouseY = e.touches[0].clientY;
+        }, { passive: true });
+
+        // Быстрое переключение ракурсов камеры
+        function set3DView(viewType, btnEl) {
+            btnEl.parentElement.querySelectorAll('.stage-ctrl-btn').forEach(b => b.classList.remove('active'));
+            btnEl.classList.add('active');
+
+            if (viewType === 'iso') {
+                targetRotX = 0.55;
+                targetRotY = 0.45;
+                autoSpin = true;
+            } else if (viewType === 'front') {
+                targetRotX = 0.05;
+                targetRotY = 0;
+                autoSpin = false;
+            } else if (viewType === 'top') {
+                targetRotX = 1.48;
+                targetRotY = 0;
+                autoSpin = false;
+            }
+        }
+
+        function renderHero3D() {
+            ctx.clearRect(0, 0, CW, CH);
+
+            if (autoSpin && !isDragging) {
+                targetRotY += 0.006;
+            }
+
+            rotX += (targetRotX - rotX) * 0.08;
+            rotY += (targetRotY - rotY) * 0.08;
+
             const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+            const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
 
-            const projected = [];
+            const isMetal = currentMode === 'metal';
+            const strokeRGB = isMetal ? '245, 158, 11' : '0, 212, 255';
+            const nodeRGB = isMetal ? '56, 189, 248' : '224, 242, 254';
 
-            for (let i = 0; i < points.length; i++) {
-                const p = points[i];
-                p.x += (p.tx - p.x) * 0.07;
-                p.y += (p.ty - p.y) * 0.07;
-                p.z += (p.tz - p.z) * 0.07;
+            const proj = [];
 
-                const x1 = p.x * cosY - p.z * sinY;
-                const z1 = p.z * cosY + p.x * sinY;
-                const y1 = p.y * cosX - z1 * sinX;
-                const z2 = z1 * cosX + p.y * sinX;
+            for (let i = 0; i < vertices.length; i++) {
+                const v = vertices[i];
+                v.x += (v.tx - v.x) * 0.08;
+                v.y += (v.ty - v.y) * 0.08;
+                v.z += (v.tz - v.z) * 0.08;
 
-                const scale = 400 / (400 + z2);
-                projected.push({
-                    px: W / 2 + x1 * scale,
-                    py: H / 2 + y1 * scale,
+                // Поворот по Y и X
+                const x1 = v.x * cosY - v.z * sinY;
+                const z1 = v.z * cosY + v.x * sinY;
+                const y1 = v.y * cosX - z1 * sinX;
+                const z2 = z1 * cosX + v.y * sinX;
+
+                const fov = 440 / (440 + z2);
+                proj.push({
+                    px: CW / 2 + x1 * fov,
+                    py: CH / 2 - 14 + y1 * fov,
                     z: z2,
-                    r: p.r * scale
+                    fov: fov
                 });
             }
 
-            const limit = isMetal ? 58 : 44;
-            for (let i = 0; i < projected.length; i++) {
-                for (let j = i + 1; j < projected.length; j++) {
-                    const dx = projected[i].px - projected[j].px;
-                    const dy = projected[i].py - projected[j].py;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
+            // Отрисовка каркасных ребер 3D-детали
+            for (let i = 0; i < edges.length; i++) {
+                const p1 = proj[edges[i][0]];
+                const p2 = proj[edges[i][1]];
+                const avgZ = (p1.z + p2.z) * 0.5;
+                const depthAlpha = Math.max(0.08, Math.min(0.75, (avgZ + 180) / 320));
 
-                    if (dist < limit) {
-                        const alpha = (1 - dist / limit) * 0.26;
-                        ctx.strokeStyle = `rgba(${lineColor}, ${alpha})`;
-                        ctx.lineWidth = 0.8;
-                        ctx.beginPath();
-                        ctx.moveTo(projected[i].px, projected[i].py);
-                        ctx.lineTo(projected[j].px, projected[j].py);
-                        ctx.stroke();
-                    }
-                }
+                ctx.strokeStyle = `rgba(${strokeRGB}, ${depthAlpha})`;
+                ctx.lineWidth = depthAlpha * 1.7;
+                ctx.beginPath();
+                ctx.moveTo(p1.px, p1.py);
+                ctx.lineTo(p2.px, p2.py);
+                ctx.stroke();
             }
 
-            for (let i = 0; i < projected.length; i++) {
-                const pt = projected[i];
-                const alpha = Math.max(0.2, Math.min(1, (pt.z + 200) / 360));
-                ctx.fillStyle = `rgba(${dotColor}, ${alpha})`;
+            // Отрисовка узловых вершин
+            for (let i = 0; i < proj.length; i++) {
+                const p = proj[i];
+                const alpha = Math.max(0.15, Math.min(0.95, (p.z + 180) / 320));
+                ctx.fillStyle = `rgba(${nodeRGB}, ${alpha})`;
                 ctx.beginPath();
-                ctx.arc(pt.px, pt.py, pt.r, 0, Math.PI * 2);
+                ctx.arc(p.px, p.py, 1.8 * p.fov, 0, Math.PI * 2);
                 ctx.fill();
             }
 
-            requestAnimationFrame(animate3D);
+            requestAnimationFrame(renderHero3D);
         }
 
-        animate3D();
+        renderHero3D();
     </script>
 </body>
 </html>
