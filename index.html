@@ -18,7 +18,7 @@
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
 
-            /* Палитра Режима РТИ */
+            /* Режим РТИ */
             --accent-primary: #00d2ff;
             --accent-secondary: #0066ff;
             --accent-glow: rgba(0, 210, 255, 0.6);
@@ -28,7 +28,7 @@
         }
 
         html[data-mode="metal"] {
-            /* Палитра Режима Металл */
+            /* Режим Металл */
             --accent-primary: #38bdf8;
             --accent-secondary: #f59e0b;
             --accent-glow: rgba(245, 158, 11, 0.55);
@@ -53,7 +53,7 @@
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
-            transition: background-color 0.5s ease;
+            transition: background-color 0.4s ease;
         }
 
         h1, h2, h3, h4, .font-head {
@@ -68,29 +68,25 @@
             z-index: 10;
         }
 
-        /* Сканирующая лазерная полоса при смене темы */
-        .scan-transition {
-            position: fixed;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, transparent 0%, var(--accent-soft) 50%, var(--accent-primary) 51%, transparent 100%);
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0;
+        /* Переключение контента между режимами */
+        .content-metal {
+            display: none !important;
         }
 
-        .scan-transition.active {
-            animation: scanLine 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        html[data-mode="metal"] .content-metal {
+            display: grid !important;
+        }
+        html[data-mode="metal"] .content-metal.flex-view {
+            display: flex !important;
+        }
+        html[data-mode="metal"] .content-metal.block-view {
+            display: block !important;
         }
 
-        @keyframes scanLine {
-            0% { top: -100%; opacity: 0.8; }
-            100% { top: 100%; opacity: 0; }
+        html[data-mode="metal"] .content-rti {
+            display: none !important;
         }
 
-        /* Фоновая сетка */
         .bg-grid {
             position: fixed;
             inset: 0;
@@ -104,9 +100,7 @@
             z-index: 1;
         }
 
-        /* =========================================================
-           ШАПКА САЙТА (СТРОГАЯ, БЕЗ СКАЧКОВ РАЗМЕРОВ)
-           ========================================================= */
+        /* ШАПКА */
         .header-wrap {
             position: fixed;
             top: 16px;
@@ -120,7 +114,7 @@
             max-width: 1200px;
             margin: 0 auto;
             height: 64px;
-            background: rgba(11, 16, 26, 0.85);
+            background: rgba(11, 16, 26, 0.88);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -130,7 +124,6 @@
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-            transition: border-color 0.4s ease;
         }
 
         .brand-logo {
@@ -152,7 +145,6 @@
             transition: filter 0.4s ease;
         }
 
-        /* Аккуратный переключатель направлений в шапке */
         .mode-switcher-bar {
             display: flex;
             background: rgba(5, 8, 14, 0.8);
@@ -172,7 +164,7 @@
             padding: 8px 16px;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             white-space: nowrap;
         }
 
@@ -222,9 +214,7 @@
             box-shadow: 0 0 18px var(--accent-glow);
         }
 
-        /* =========================================================
-           HERO-СЕКЦИЯ (ГЛАВНЫЙ ЭКРАН)
-           ========================================================= */
+        /* HERO */
         .hero {
             position: relative;
             min-height: 94vh;
@@ -235,7 +225,7 @@
             justify-content: center;
             overflow: hidden;
             background: radial-gradient(ellipse at 50% 20%, var(--hero-glow) 0%, rgba(7, 10, 16, 0) 70%);
-            transition: background 0.5s ease;
+            transition: background 0.4s ease;
         }
 
         #morph-canvas {
@@ -257,12 +247,11 @@
             height: 320px;
             z-index: 1;
             pointer-events: none;
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition: opacity 0.4s ease;
         }
 
         html[data-mode="metal"] .rubber-wave-bg {
-            opacity: 0.25;
-            transform: translateY(20px);
+            opacity: 0.2;
         }
 
         .steel-truss-bg {
@@ -274,7 +263,6 @@
             z-index: 2;
             pointer-events: none;
             opacity: 0.8;
-            transition: all 0.5s ease;
             animation: floatTruss 14s ease-in-out infinite alternate;
         }
 
@@ -305,10 +293,8 @@
             border-radius: 100px;
             font-size: 12px;
             font-weight: 600;
-            letter-spacing: 0.5px;
             color: var(--accent-primary);
             margin-bottom: 20px;
-            transition: all 0.4s ease;
         }
 
         .badge-dot {
@@ -320,17 +306,11 @@
         }
 
         .hero h1 {
-            font-size: clamp(26px, 4.4vw, 52px);
+            font-size: clamp(26px, 4.4vw, 50px);
             font-weight: 800;
-            line-height: 1.18;
+            line-height: 1.2;
             color: #ffffff;
             margin-bottom: 18px;
-            transition: opacity 0.3s ease, filter 0.3s ease;
-        }
-
-        .hero h1.text-fading {
-            opacity: 0;
-            filter: blur(6px);
         }
 
         .hero-desc {
@@ -339,7 +319,6 @@
             max-width: 680px;
             margin: 0 auto 34px auto;
             font-weight: 400;
-            transition: opacity 0.3s ease;
         }
 
         .hero-controls {
@@ -362,7 +341,7 @@
             font-size: 13.5px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             text-align: center;
         }
 
@@ -407,7 +386,7 @@
             margin-top: 4px;
         }
 
-        /* 3 КАРТОЧКИ ПЕРВОГО ЭКРАНА С НЕОНОВЫМ ДНОМ */
+        /* КАРТОЧКИ ПЕРВОГО ЭКРАНА */
         .cards-overview {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -429,9 +408,9 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
             box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
             overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
         .card-item::after {
@@ -449,7 +428,6 @@
         .card-item:hover {
             transform: translateY(-5px);
             border-color: var(--accent-border);
-            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7);
         }
 
         .card-item:hover::after {
@@ -459,10 +437,9 @@
         }
 
         .card-top {
-            height: 64px;
+            height: 60px;
             display: flex;
             align-items: flex-start;
-            justify-content: space-between;
             margin-bottom: 12px;
         }
 
@@ -479,9 +456,7 @@
             line-height: 1.5;
         }
 
-        /* =========================================================
-           ИНЖЕНЕРНЫЙ СТЕНД (ИНТЕРАКТИВНЫЙ БЛОК)
-           ========================================================= */
+        /* ИНЖЕНЕРНЫЙ СТЕНД */
         .blueprint-sec {
             padding: 95px 0;
             background: #080c14;
@@ -615,9 +590,7 @@
             color: #fff;
         }
 
-        /* =========================================================
-           КАТАЛОГ ПРОДУКЦИИ (6 КАРТОЧЕК)
-           ========================================================= */
+        /* КАТАЛОГ */
         .catalog-sec {
             padding: 95px 0;
             background: var(--bg-main);
@@ -691,9 +664,7 @@
             font-weight: 500;
         }
 
-        /* =========================================================
-           ИНЖЕНЕРНЫЕ МЕТРИКИ
-           ========================================================= */
+        /* МЕТРИКИ */
         .metrics-strip {
             padding: 65px 0;
             background: linear-gradient(90deg, #070a10 0%, #0d1422 50%, #070a10 100%);
@@ -731,9 +702,7 @@
             color: var(--text-secondary);
         }
 
-        /* =========================================================
-           ЭТАПЫ ВЗАИМОДЕЙСТВИЯ (4 ШАГА)
-           ========================================================= */
+        /* ЭТАПЫ */
         .workflow-sec {
             padding: 95px 0;
             background: #070a10;
@@ -782,9 +751,7 @@
             color: var(--text-secondary);
         }
 
-        /* =========================================================
-           БЛОК КОНФИДЕНЦИАЛЬНОСТИ (NDA)
-           ========================================================= */
+        /* NDA */
         .nda-sec {
             padding: 85px 0;
             background: var(--bg-main);
@@ -840,9 +807,7 @@
             text-align: center;
         }
 
-        /* =========================================================
-           КОНТАКТНЫЙ БЛОК (ТОЛЬКО ПОЧТА И ФОРМА)
-           ========================================================= */
+        /* КОНТАКТЫ */
         .contact-sec {
             padding: 95px 0 100px 0;
             background: linear-gradient(180deg, #070a10 0%, #040609 100%);
@@ -954,9 +919,6 @@
             box-shadow: 0 14px 30px var(--accent-glow);
         }
 
-        /* =========================================================
-           ФУТЕР
-           ========================================================= */
         footer {
             padding: 36px 0;
             background: #040608;
@@ -977,9 +939,7 @@
             max-width: 500px;
         }
 
-        /* =========================================================
-           АДАПТИВНОСТЬ ПОД МОБИЛЬНЫЕ УСТРОЙСТВА
-           ========================================================= */
+        /* МОБИЛЬНАЯ ВЕРСИЯ */
         @media (max-width: 1024px) {
             .cards-overview {
                 grid-template-columns: 1fr;
@@ -1000,17 +960,13 @@
                 height: 58px;
             }
 
-            .nav-menu {
+            .nav-menu, .btn-header-cta {
                 display: none;
             }
 
             .switch-tab {
                 padding: 6px 10px;
                 font-size: 11px;
-            }
-
-            .btn-header-cta {
-                display: none;
             }
 
             .hero {
@@ -1030,8 +986,8 @@
             }
 
             .hero h1 {
-                font-size: 25px;
-                line-height: 1.22;
+                font-size: 24px;
+                line-height: 1.25;
                 margin-bottom: 14px;
             }
 
@@ -1046,7 +1002,6 @@
                 font-size: 13px;
             }
 
-            /* Инженерный стенд на мобильном: свайп табов */
             .stand-menu {
                 flex-direction: row;
                 overflow-x: auto;
@@ -1082,10 +1037,9 @@
 </head>
 <body>
 
-    <div class="scan-transition" id="scan-fx"></div>
     <div class="bg-grid"></div>
 
-    <!-- ШАПКА САЙТА -->
+    <!-- ШАПКА -->
     <div class="header-wrap">
         <header class="header-bar">
             <a href="#" class="brand-logo">
@@ -1096,10 +1050,9 @@
                 <span>ПРОМТЕХ</span>
             </a>
 
-            <!-- Двухпозиционный переключатель (не ломает шапку) -->
             <div class="mode-switcher-bar">
-                <button class="switch-tab active" id="tab-nav-rti" onclick="switchSite('rti')">РТИ</button>
-                <button class="switch-tab" id="tab-nav-metal" onclick="switchSite('metal')">Металлоконструкции</button>
+                <button class="switch-tab active" id="tab-nav-rti" onclick="setSiteMode('rti')">РТИ</button>
+                <button class="switch-tab" id="tab-nav-metal" onclick="setSiteMode('metal')">Металлоконструкции</button>
             </div>
 
             <nav class="nav-menu">
@@ -1113,11 +1066,10 @@
         </header>
     </div>
 
-    <!-- ГЛАВНЫЙ ЭКРАН (HERO) -->
+    <!-- HERO -->
     <section class="hero" id="hero">
         <canvas id="morph-canvas"></canvas>
 
-        <!-- Волна карбона/резины -->
         <svg class="rubber-wave-bg" viewBox="0 0 700 400" fill="none">
             <defs>
                 <pattern id="carbonMesh" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -1135,7 +1087,6 @@
             <path d="M-50 380 C 120 120, 260 140, 420 260 C 540 340, 620 290, 700 390" stroke="var(--accent-border)" stroke-width="2" fill="none"/>
         </svg>
 
-        <!-- Стальная пространственная ферма -->
         <svg class="steel-truss-bg" viewBox="0 0 700 900" fill="none">
             <defs>
                 <linearGradient id="trussSteel" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -1166,83 +1117,363 @@
             <div class="hero-content">
                 <div class="badge-kicker">
                     <span class="badge-dot"></span>
-                    <span id="hero-badge-text">ПРОИЗВОДСТВЕННЫЙ КОМПЛЕКС B2B</span>
+                    <span class="content-rti">ДИВИЗИОН РЕЗИНОТЕХНИЧЕСКИХ ИЗДЕЛИЙ</span>
+                    <span class="content-metal">ДИВИЗИОН МЕТАЛЛОКОНСТРУКЦИЙ И ИНЖИНИРИНГА</span>
                 </div>
 
-                <h1 id="hero-head">СПЕЦИАЛИЗИРОВАННЫЕ РЕЗИНОТЕХНИЧЕСКИЕ ИЗДЕЛИЯ</h1>
-                <p class="hero-desc" id="hero-subhead">
+                <h1 class="content-rti">СПЕЦИАЛИЗИРОВАННЫЕ РЕЗИНОТЕХНИЧЕСКИЕ ИЗДЕЛИЯ</h1>
+                <h1 class="content-metal">ПРОЕКТИРОВАНИЕ И МЕТАЛЛОКОНСТРУКЦИИ</h1>
+
+                <p class="hero-desc content-rti">
                     Серийное и опытное производство РТИ по чертежам и образцам заказчика. Подбор рецептур резиновых смесей под агрессивные среды и высокие нагрузки.
                 </p>
+                <p class="hero-desc content-metal">
+                    Разработка конструкторской документации (КМ, КМД), проектирование химико-технологических цехов и производство несущих стальных конструкций.
+                </p>
 
-                <!-- Выбор направления на главном экране -->
                 <div class="hero-controls">
-                    <button class="btn-direction active" id="hero-btn-rti" onclick="switchSite('rti')">
+                    <button class="btn-direction active" id="hero-btn-rti" onclick="setSiteMode('rti')">
                         Резинотехнические изделия
                         <span>Формовые РТИ и спецсмеси</span>
                     </button>
-                    <button class="btn-direction" id="hero-btn-metal" onclick="switchSite('metal')">
+                    <button class="btn-direction" id="hero-btn-metal" onclick="setSiteMode('metal')">
                         Проектирование и металлоконструкции
                         <span>Инжиниринг цехов и сталь</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 3 карточки на первом экране -->
-            <div class="cards-overview" id="hero-cards"></div>
+            <!-- 3 карточки РТИ -->
+            <div class="cards-overview content-rti">
+                <div class="card-item">
+                    <div class="card-top">
+                        <svg width="48" height="48" viewBox="0 0 68 68" fill="none">
+                            <line x1="20" y1="20" x2="36" y2="34" stroke="var(--accent-primary)" stroke-width="2"/>
+                            <line x1="36" y1="34" x2="54" y2="24" stroke="var(--accent-primary)" stroke-width="2"/>
+                            <circle cx="20" cy="20" r="5" fill="#0b111d" stroke="var(--accent-primary)" stroke-width="2"/>
+                            <circle cx="36" cy="34" r="6" fill="#0b111d" stroke="var(--accent-primary)" stroke-width="2"/>
+                            <circle cx="54" cy="24" r="5" fill="#0b111d" stroke="var(--accent-primary)" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3>Спецрецептуры смесей</h3>
+                        <p>Подбор эластомеров (NBR, EPDM, FKM, силикон) под масла, кислоты, перегретый пар и минусовые температуры.</p>
+                    </div>
+                </div>
+
+                <div class="card-item">
+                    <div class="card-top">
+                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+                            <polygon points="32,6 54,18 54,46 32,58 10,46 10,18" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
+                            <circle cx="32" cy="32" r="10" stroke="#fff" stroke-width="1.8"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3>Формовые детали</h3>
+                        <p>Манжеты, кольца, уплотнители и виброопоры высокой точности. Стендовый контроль геометрии.</p>
+                    </div>
+                </div>
+
+                <div class="card-item">
+                    <div class="card-top">
+                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+                            <rect x="12" y="12" width="40" height="40" rx="6" stroke="var(--accent-primary)" stroke-width="2" stroke-dasharray="4 4"/>
+                            <path d="M24 32L30 38L42 26" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3>Реверс-инжиниринг</h3>
+                        <p>Изготовление аналогов импортных деталей по предоставленному физическому образцу с проектированием оснастки.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 карточки МЕТАЛЛ -->
+            <div class="cards-overview content-metal">
+                <div class="card-item">
+                    <div class="card-top">
+                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+                            <path d="M10 50L32 16L54 50H10Z" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
+                            <line x1="32" y1="16" x2="32" y2="50" stroke="#fff" stroke-width="1.8"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3>Проектирование цехов</h3>
+                        <p>Комплексные технологические решения: компоновка производственных линий, эстакад и участков.</p>
+                    </div>
+                </div>
+
+                <div class="card-item">
+                    <div class="card-top">
+                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+                            <rect x="12" y="12" width="40" height="40" stroke="var(--accent-primary)" stroke-width="2"/>
+                            <line x1="12" y1="12" x2="52" y2="52" stroke="#fff" stroke-width="1.8"/>
+                            <line x1="52" y1="12" x2="12" y2="52" stroke="#fff" stroke-width="1.8"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3>Каркасы и фермы</h3>
+                        <p>Несущие металлоконструкции для производственных корпусов, большепролетные фермы и колонны.</p>
+                    </div>
+                </div>
+
+                <div class="card-item">
+                    <div class="card-top">
+                        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+                            <polygon points="32,10 54,22 54,46 32,58 10,46 10,22" stroke="var(--accent-primary)" stroke-width="2"/>
+                            <polyline points="10,22 32,34 54,22" stroke="#fff" stroke-width="1.8"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3>Документация КМ/КМД</h3>
+                        <p>Прочностной расчет нагрузок, 3D-моделирование узлов и подготовка полного пакета рабочих чертежей.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- ИНЖЕНЕРНЫЙ СТЕНД КОМПЕТЕНЦИЙ -->
+    <!-- ИНЖЕНЕРНЫЙ СТЕНД -->
     <section class="blueprint-sec" id="stand">
         <div class="container">
             <div class="sec-header">
                 <div>
                     <span class="sec-kicker">Инженерный стенд</span>
-                    <h2 id="stand-head">ТЕХНОЛОГИЧЕСКИЕ ВОЗМОЖНОСТИ</h2>
+                    <h2 class="content-rti">ТЕХНОЛОГИЧЕСКИЕ ВОЗМОЖНОСТИ РТИ</h2>
+                    <h2 class="content-metal">ТЕХНОЛОГИЧЕСКИЕ ВОЗМОЖНОСТИ ИНЖИНИРИНГА</h2>
                 </div>
                 <p style="color: var(--text-secondary); max-width: 440px; font-size: 14px;">
                     Выберите позицию для просмотра ключевых параметров, применяемых материалов и конструктивной схемы.
                 </p>
             </div>
 
-            <div class="stand-box">
-                <div class="stand-menu" id="stand-tabs"></div>
+            <!-- Стенд РТИ -->
+            <div class="stand-box content-rti">
+                <div class="stand-menu">
+                    <button class="stand-tab-btn active" onclick="setStandTab('rti', 0)">
+                        <h4>Уплотнительные элементы</h4>
+                        <span>Стойкость к маслам, кислотам и давлению</span>
+                    </button>
+                    <button class="stand-tab-btn" onclick="setStandTab('rti', 1)">
+                        <h4>Антивибрационные опоры</h4>
+                        <span>Резинометаллические демпферы оборудования</span>
+                    </button>
+                    <button class="stand-tab-btn" onclick="setStandTab('rti', 2)">
+                        <h4>Гуммирование узлов</h4>
+                        <span>Эластомерная защита валов и емкостей</span>
+                    </button>
+                </div>
 
                 <div class="stand-view">
                     <div class="stand-hud">
-                        <span id="hud-title">ТЕХНИЧЕСКАЯ СПЕЦИФИКАЦИЯ</span>
+                        <span id="stand-hud-title-rti">УПЛОТНИТЕЛЬНЫЕ ЭЛЕМЕНТЫ</span>
                         <span>КОНТУР NDA</span>
                     </div>
 
-                    <div class="stand-render" id="hud-svg"></div>
+                    <div class="stand-render" id="stand-hud-svg-rti">
+                        <svg width="240" height="130" viewBox="0 0 240 130" fill="none">
+                            <ellipse cx="120" cy="65" rx="85" ry="46" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
+                            <ellipse cx="120" cy="65" rx="50" ry="24" stroke="#fff" stroke-width="1.5" stroke-dasharray="5 3"/>
+                        </svg>
+                    </div>
 
-                    <div class="stand-params" id="hud-params"></div>
+                    <div class="stand-params" id="stand-hud-params-rti">
+                        <div class="stand-cell"><span>Твердость</span><strong>50–90 Shore A</strong></div>
+                        <div class="stand-cell"><span>Температура</span><strong>-50°C … +250°C</strong></div>
+                        <div class="stand-cell"><span>Давление</span><strong>до 45 МПа</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Стенд МЕТАЛЛ -->
+            <div class="stand-box content-metal">
+                <div class="stand-menu">
+                    <button class="stand-tab-btn active" onclick="setStandTab('metal', 0)">
+                        <h4>Проектирование техцехов</h4>
+                        <span>Планировки участков, эстакады и вентиляция</span>
+                    </button>
+                    <button class="stand-tab-btn" onclick="setStandTab('metal', 1)">
+                        <h4>Несущие стальные фермы</h4>
+                        <span>Силовые конструкции промышленных зданий</span>
+                    </button>
+                    <button class="stand-tab-btn" onclick="setStandTab('metal', 2)">
+                        <h4>Емкостные корпуса и эстакады</h4>
+                        <span>Бункеры, рамы и кабельно-трубопроводные мосты</span>
+                    </button>
+                </div>
+
+                <div class="stand-view">
+                    <div class="stand-hud">
+                        <span id="stand-hud-title-metal">ПРОЕКТИРОВАНИЕ ТЕХЦЕХОВ</span>
+                        <span>КОНТУР NDA</span>
+                    </div>
+
+                    <div class="stand-render" id="stand-hud-svg-metal">
+                        <svg width="240" height="130" viewBox="0 0 240 130" fill="none">
+                            <polygon points="30,105 120,25 210,105" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
+                            <rect x="55" y="70" width="130" height="45" stroke="#fff" stroke-width="1.6"/>
+                            <line x1="120" y1="25" x2="120" y2="115" stroke="var(--accent-primary)" stroke-width="1.5" stroke-dasharray="4 4"/>
+                        </svg>
+                    </div>
+
+                    <div class="stand-params" id="stand-hud-params-metal">
+                        <div class="stand-cell"><span>Разделы</span><strong>ТХ, КМ, КМД, АР</strong></div>
+                        <div class="stand-cell"><span>Среды</span><strong>Агрессивные и химопасные</strong></div>
+                        <div class="stand-cell"><span>Контроль</span><strong>3D-увязка без коллизий</strong></div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ПРОДУКЦИЯ И НАПРАВЛЕНИЯ -->
+    <!-- КАТАЛОГ ПРОДУКЦИИ -->
     <section class="catalog-sec" id="catalog">
         <div class="container">
             <div class="sec-header">
                 <div>
                     <span class="sec-kicker">Номенклатурный ряд</span>
-                    <h2 id="cat-title">ПРОИЗВОДСТВЕННАЯ ПРОГРАММА</h2>
+                    <h2 class="content-rti">ПРОИЗВОДСТВЕННАЯ ПРОГРАММА РТИ</h2>
+                    <h2 class="content-metal">ПРОЕКТИРОВАНИЕ И МЕТАЛЛОКОНСТРУКЦИИ</h2>
                 </div>
                 <p style="color: var(--text-secondary); max-width: 440px; font-size: 14px;">
                     Выпуск изделий осуществляется по ГОСТ, техническим условиям или индивидуальным чертежам заказчика.
                 </p>
             </div>
 
-            <div class="catalog-grid" id="cat-grid"></div>
+            <!-- Каталог РТИ -->
+            <div class="catalog-grid content-rti">
+                <div class="catalog-card">
+                    <span class="catalog-tag">Формовые РТИ</span>
+                    <h4>Манжеты и уплотнительные кольца</h4>
+                    <p>Прецизионные уплотнения для гидравлических и пневматических систем промышленного оборудования.</p>
+                    <ul class="specs-table">
+                        <li><span>Материалы</span><span>NBR, EPDM, FKM</span></li>
+                        <li><span>Твердость</span><span>40–90 Shore A</span></li>
+                    </ul>
+                </div>
+                <div class="catalog-card">
+                    <span class="catalog-tag">Виброизоляция</span>
+                    <h4>Амортизаторы и демпферы</h4>
+                    <p>Резинометаллические виброопоры для снижения динамических нагрузок от станочного парка и прессов.</p>
+                    <ul class="specs-table">
+                        <li><span>Крепление</span><span>Шпильки / фланцы</span></li>
+                        <li><span>Среда</span><span>Масло- и бензостойкие</span></li>
+                    </ul>
+                </div>
+                <div class="catalog-card">
+                    <span class="catalog-tag">Спецрецептуры</span>
+                    <h4>Химостойкие и термостойкие детали</h4>
+                    <p>Изделия, устойчивые к воздействию концентрированных щелочей, кислот и перегретого пара.</p>
+                    <ul class="specs-table">
+                        <li><span>Температура</span><span>-60°C … +300°C</span></li>
+                        <li><span>Стандарты</span><span>ГОСТ, ТУ заказчика</span></li>
+                    </ul>
+                </div>
+                <div class="catalog-card">
+                    <span class="catalog-tag">Импортозамещение</span>
+                    <h4>Изготовление по образцу</h4>
+                    <p>Реверс-инжиниринг изношенных импортных комплектующих с выпуском индивидуальной оснастки.</p>
+                    <ul class="specs-table">
+                        <li><span>Контроль</span><span>3D-сканирование</span></li>
+                        <li><span>Партии</span><span>От опытной до серии</span></li>
+                    </ul>
+                </div>
+                <div class="catalog-card">
+                    <span class="catalog-tag">Антикоррозия</span>
+                    <h4>Гуммирование барабанов и валов</h4>
+                    <p>Нанесение защитного эластомерного покрытия на металл для предотвращения абразивного износа.</p>
+                    <ul class="specs-table">
+                        <li><span>Адгезия</span><span>Повышенная прочность</span></li>
+                        <li><span>Обработка</span><span>Шлифовка в допуск</span></li>
+                    </ul>
+                </div>
+                <div class="catalog-card">
+                    <span class="catalog-tag">Неформовые РТИ</span>
+                    <h4>Профили, техпластины и шнуры</h4>
+                    <p>Экструзионные монолитные и пористые профили нестандартного сечения для герметизации узлов.</p>
+                    <ul class="specs-table">
+                        <li><span>Поставка</span><span>Бухты / отрезки</span></li>
+                        <li><span>Форма</span><span>По матрице заказчика</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Каталог МЕТАЛЛ -->
+            <div class="catalog-grid content-metal">
+                <div class="catalog-card">
+                    <span class="catalog-tag">Промпроектирование</span>
+                    <h4>Проектирование химических и техцехов</h4>
+                    <p>Разработка технологических планировок, трассировки коммуникаций и расстановки оборудования.</p>
+                    <ul class="specs-table">
+                        <li><span>Документация</span><span>ТХ, КМ, КМД</span></li>
+                        <li><span>Специфика</span><span>Сложные производства</span></li>
+                    </ul>
+                </div>
+                <div class="catalog-card">
+                    <span class="catalog-tag">Несущие конструкции</span>
+                    <h4>Колонны, фермы и балки</h4>
+                    <p>Изготовление металлоконструкций силового каркаса для строительства и реконструкции цехов.</p>
+                    <ul class="specs-table">
+                        <li><span>Стали</span><span>С245, С345, 09Г2С</span></li>
+                        <li><span>Контроль</span><span>100% УЗК диагностика</span></li>
+                    </ul>
+                </div>
+                <div class="catalog-card">
+                    <span class="catalog-tag">Инфраструктура</span>
+                    <h4>Технологические эстакады и площадки</h4>
+                    <p>Многоуровневые галереи под прокладку трубопроводов и безопасное обслуживание агрегатов.</p>
+                    <ul class="specs-table">
+                        <li><span>Настил</span><span>Прессованный / ПВЛ</span></li>
+                        <li><span>Покрытие</span><span>Химстойкие грунты</span></li>
+                    </ul>
+                </div>
+                <div class="catalog-card">
+                    <span class="catalog-tag">Емкостной парк</span>
+                    <h4>Бункеры, силосы и резервуары</h4>
+                    <p>Расчет и изготовление металлоемкостей, рам под тяжелые насосы и технологических газоходов.</p>
+                    <ul class="specs-table">
+                        <li><span>Исполнение</span><span>Нержавеющая сталь</span></li>
+                        <li><span>Испытания</span><span>Гидравлический контроль</span></li>
+                    </ul>
+                </div>
+                <div class="catalog-card">
+                    <span class="catalog-tag">Оснастка</span>
+                    <h4>Пресс-формы и детали штампов</h4>
+                    <p>Высокоточная металлообработка на ЧПУ-станках: изготовление формующей оснастки для РТИ.</p>
+                    <ul class="specs-table">
+                        <li><span>Точность</span><span>Высокие квалитеты</span></li>
+                        <li><span>Закалка</span><span>Термообработка стали</span></li>
+                    </ul>
+                </div>
+                <div class="catalog-card">
+                    <span class="catalog-tag">Модернизация</span>
+                    <h4>Усиление конструкций цехов</h4>
+                    <p>Инженерное обследование, перерасчет нагрузок и усиление каркасов без остановки цеха.</p>
+                    <ul class="specs-table">
+                        <li><span>Режим</span><span>В действующем производстве</span></li>
+                        <li><span>Безопасность</span><span>Регламент NDA</span></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- ПОКАЗАТЕЛИ И ДОПУСКИ -->
+    <!-- ИНЖЕНЕРНЫЕ МЕТРИКИ -->
     <section class="metrics-strip">
         <div class="container">
-            <div class="metrics-grid" id="metrics-grid"></div>
+            <div class="metrics-grid content-rti">
+                <div class="metric-item"><div class="metric-num">-60°…+300°C</div><div class="metric-title">Температурный диапазон эластомеров</div></div>
+                <div class="metric-item"><div class="metric-num">40–95 Sh A</div><div class="metric-title">Диапазон программируемой твердости</div></div>
+                <div class="metric-item"><div class="metric-num">ГОСТ / ТУ</div><div class="metric-title">Соответствие проектной документации</div></div>
+                <div class="metric-item"><div class="metric-num">100% NDA</div><div class="metric-title">Закрытый контур производства и оснастки</div></div>
+            </div>
+
+            <div class="metrics-grid content-metal">
+                <div class="metric-item"><div class="metric-num">КМ / КМД</div><div class="metric-title">Комплект рабочей документации</div></div>
+                <div class="metric-item"><div class="metric-num">09Г2С / AISI</div><div class="metric-title">Конструкционные и нержавеющие стали</div></div>
+                <div class="metric-item"><div class="metric-num">100% УЗК</div><div class="metric-title">Контроль ответственных сварных швов</div></div>
+                <div class="metric-item"><div class="metric-num">3D Модель</div><div class="metric-title">Точное проектирование узлов</div></div>
+            </div>
         </div>
     </section>
 
@@ -1252,11 +1483,23 @@
             <span class="sec-kicker">Регламент исполнения</span>
             <h2 style="font-size: clamp(24px, 3.2vw, 36px); font-weight: 800;">ПОРЯДОК РЕАЛИЗАЦИИ ПРОЕКТА</h2>
 
-            <div class="steps-row" id="steps-grid"></div>
+            <div class="steps-row content-rti">
+                <div class="step-tile"><span class="step-idx">ШАГ 01</span><h4>Анализ задачи и ТЗ</h4><p>Изучаем условия работы узла, температурные режимы, контактные среды и нагрузки.</p></div>
+                <div class="step-tile"><span class="step-idx">ШАГ 02</span><h4>Рецептура и оснастка</h4><p>Подбираем эластомерную смесь и проектируем формующую матрицу.</p></div>
+                <div class="step-tile"><span class="step-idx">ШАГ 03</span><h4>Опытный образец</h4><p>Выпускаем предсерийную партию деталей для контроля размеров и полевых испытаний.</p></div>
+                <div class="step-tile"><span class="step-idx">ШАГ 04</span><h4>Серийный выпуск</h4><p>Производим требуемый тираж изделий с контролем ОТК и закрывающими документами.</p></div>
+            </div>
+
+            <div class="steps-row content-metal">
+                <div class="step-tile"><span class="step-idx">ШАГ 01</span><h4>Анализ исходных данных</h4><p>Изучаем архитектурные параметры, схемы нагрузок и условия размещения оборудования.</p></div>
+                <div class="step-tile"><span class="step-idx">ШАГ 02</span><h4>Расчет и 3D-моделирование</h4><p>Выполняем прочностные расчеты, разрабатываем чертежи КМ и деталировку КМД.</p></div>
+                <div class="step-tile"><span class="step-idx">ШАГ 03</span><h4>Изготовление и контроль</h4><p>Производим раскрой металлопроката, сварку узлов и неразрушающий контроль швов.</p></div>
+                <div class="step-tile"><span class="step-idx">ШАГ 04</span><h4>Поставка и комплектность</h4><p>Отгружаем готовые конструкции с сертификатами качества на сталь и паспортами изделий.</p></div>
+            </div>
         </div>
     </section>
 
-    <!-- ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ (NDA) -->
+    <!-- NDA -->
     <section class="nda-sec" id="nda">
         <div class="container">
             <div class="nda-container-box">
@@ -1289,7 +1532,7 @@
         </div>
     </section>
 
-    <!-- КОНТАКТЫ (ТОЛЬКО EMAIL) -->
+    <!-- КОНТАКТЫ -->
     <section class="contact-sec" id="contacts">
         <div class="container">
             <div class="contact-box">
@@ -1310,7 +1553,7 @@
                     </p>
                 </div>
 
-                <form class="contact-form" onsubmit="submitFormHandler(event)">
+                <form class="contact-form" onsubmit="event.preventDefault(); alert('Заявка сформирована. В боевом режиме параметры отправляются на корпоративную почту.'); event.target.reset();">
                     <div class="form-row">
                         <input type="text" class="form-ctrl" placeholder="Организация / ИНН" required>
                         <input type="email" class="form-ctrl" placeholder="Корпоративный Email" required>
@@ -1327,7 +1570,7 @@
         </div>
     </section>
 
-    <!-- ФУТЕР БЕЗ ДАТЫ -->
+    <!-- ФУТЕР -->
     <footer>
         <div class="container">
             <div class="footer-flex">
@@ -1337,304 +1580,82 @@
         </div>
     </footer>
 
-    <!-- СКРИПТ: ЛАКОНИЧНЫЙ КОНТЕНТ И 3D ДВИЖОК БЕЗ ЛОМАЮЩИХСЯ БУКВ -->
+    <!-- СКРИПТ ПЕРЕКЛЮЧЕНИЯ И 3D ДВИЖОК -->
     <script>
-        const appData = {
-            rti: {
-                badge: "ДИВИЗИОН РЕЗИНОТЕХНИЧЕСКИХ ИЗДЕЛИЙ",
-                title: "СПЕЦИАЛИЗИРОВАННЫЕ РЕЗИНОТЕХНИЧЕСКИЕ ИЗДЕЛИЯ",
-                subhead: "Серийное и опытное производство РТИ по чертежам и образцам заказчика. Подбор рецептур резиновых смесей под агрессивные среды и высокие нагрузки.",
-                cards: [
-                    {
-                        title: "Спецрецептуры смесей",
-                        desc: "Подбор эластомеров (NBR, EPDM, FKM, силикон) под масла, кислоты, перегретый пар и минусовые температуры.",
-                        svg: `<svg width="48" height="48" viewBox="0 0 68 68" fill="none">
-                            <line x1="20" y1="20" x2="36" y2="34" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <line x1="36" y1="34" x2="54" y2="24" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <circle cx="20" cy="20" r="5" fill="#0b111d" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <circle cx="36" cy="34" r="6" fill="#0b111d" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <circle cx="54" cy="24" r="5" fill="#0b111d" stroke="var(--accent-primary)" stroke-width="2"/>
-                        </svg>`
-                    },
-                    {
-                        title: "Формовые детали",
-                        desc: "Манжеты, кольца, уплотнители и виброопоры высокой точности. Стендовый контроль геометрии.",
-                        svg: `<svg width="48" height="48" viewBox="0 0 64 64" fill="none">
-                            <polygon points="32,6 54,18 54,46 32,58 10,46 10,18" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                            <circle cx="32" cy="32" r="10" stroke="#fff" stroke-width="1.8"/>
-                        </svg>`
-                    },
-                    {
-                        title: "Реверс-инжиниринг",
-                        desc: "Изготовление аналогов импортных деталей по предоставленному физическому образцу с проектированием оснастки.",
-                        svg: `<svg width="48" height="48" viewBox="0 0 64 64" fill="none">
-                            <rect x="12" y="12" width="40" height="40" rx="6" stroke="var(--accent-primary)" stroke-width="2" stroke-dasharray="4 4"/>
-                            <path d="M24 32L30 38L42 26" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-                        </svg>`
-                    }
-                ],
-                standHead: "ТЕХНОЛОГИЧЕСКИЕ ВОЗМОЖНОСТИ РТИ",
-                standTabs: [
-                    {
-                        name: "Уплотнительные элементы",
-                        sub: "Стойкость к маслам, кислотам и давлению",
-                        specs: [["Твердость", "50–90 Shore A"], ["Температура", "-50°C … +250°C"], ["Давление", "до 45 МПа"]],
-                        svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none">
-                            <ellipse cx="120" cy="65" rx="85" ry="46" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                            <ellipse cx="120" cy="65" rx="50" ry="24" stroke="#fff" stroke-width="1.5" stroke-dasharray="5 3"/>
-                        </svg>`
-                    },
-                    {
-                        name: "Антивибрационные опоры",
-                        sub: "Резинометаллические демпферы оборудования",
-                        specs: [["Адгезия", "Горячая вулканизация"], ["Нагрузки", "Высокие динамические"], ["Исполнение", "По чертежу узла"]],
-                        svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none">
-                            <rect x="50" y="25" width="140" height="16" rx="2" stroke="#fff" stroke-width="1.8"/>
-                            <path d="M65 41 L50 95 L190 95 L175 41 Z" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                            <rect x="40" y="95" width="160" height="16" rx="2" stroke="#fff" stroke-width="1.8"/>
-                        </svg>`
-                    },
-                    {
-                        name: "Гуммирование узлов",
-                        sub: "Эластомерная защита валов и емкостей",
-                        specs: [["Толщина слоя", "от 3 до 35 мм"], ["Назначение", "Защита от абразива"], ["Контроль", "Ультразвуковой"]],
-                        svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none">
-                            <rect x="35" y="40" width="170" height="50" rx="10" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                            <line x1="15" y1="65" x2="225" y2="65" stroke="#fff" stroke-width="3"/>
-                        </svg>`
-                    }
-                ],
-                catalogHead: "ПРОИЗВОДСТВЕННАЯ ПРОГРАММА РТИ",
-                catalog: [
-                    { tag: "Формовые РТИ", title: "Манжеты и уплотнительные кольца", desc: "Прецизионные уплотнения для гидравлических и пневматических систем промышленного оборудования.", specs: [["Материалы", "NBR, EPDM, FKM"], ["Твердость", "40–90 Shore A"]] },
-                    { tag: "Виброизоляция", title: "Амортизаторы и демпферы", desc: "Резинометаллические виброопоры для снижения динамических нагрузок от станочного парка и прессов.", specs: [["Крепление", "Шпильки / фланцы"], ["Среда", "Масло- и бензостойкие"]] },
-                    { tag: "Спецрецептуры", title: "Химостойкие и термостойкие детали", desc: "Изделия, устойчивые к воздействию концентрированных щелочей, кислот и перегретого пара.", specs: [["Температура", "-60°C … +300°C"], ["Стандарты", "ГОСТ, ТУ заказчика"]] },
-                    { tag: "Импортозамещение", title: "Изготовление по образцу", desc: "Реверс-инжиниринг изношенных импортных комплектующих с выпуском индивидуальной оснастки.", specs: [["Контроль", "3D-сканирование"], ["Партии", "От опытной до серии"]] },
-                    { tag: "Антикоррозия", title: "Гуммирование барабанов и валов", desc: "Нанесение защитного эластомерного покрытия на металл для предотвращения абразивного износа.", specs: [["Адгезия", "Повышенная прочность"], ["Обработка", "Шлифовка в допуск"]] },
-                    { tag: "Неформовые РТИ", title: "Профили, техпластины и шнуры", desc: "Экструзионные монолитные и пористые профили нестандартного сечения для герметизации узлов.", specs: [["Поставка", "Бухты / отрезки"], ["Форма", "По матрице заказчика"]] }
-                ],
-                metrics: [
-                    ["-60°…+300°C", "Температурный диапазон эластомеров"],
-                    ["40–95 Sh A", "Диапазон программируемой твердости"],
-                    ["ГОСТ / ТУ", "Соответствие проектной документации"],
-                    ["100% NDA", "Закрытый контур производства и оснастки"]
-                ],
-                steps: [
-                    ["ШАГ 01", "Анализ задачи и ТЗ", "Изучаем условия работы узла, температурные режимы, контактные среды и нагрузки."],
-                    ["ШАГ 02", "Рецептура и оснастка", "Подбираем эластомерную смесь и проектируем формующую матрицу."],
-                    ["ШАГ 03", "Опытный образец", "Выпускаем предсерийную партию деталей для контроля размеров и полевых испытаний."],
-                    ["ШАГ 04", "Серийный выпуск", "Производим требуемый тираж изделий с контролем ОТК и закрывающими документами."]
-                ]
-            },
-
-            metal: {
-                badge: "ДИВИЗИОН МЕТАЛЛОКОНСТРУКЦИЙ И ИНЖИНИРИНГА",
-                title: "ПРОЕКТИРОВАНИЕ И МЕТАЛЛОКОНСТРУКЦИИ",
-                subhead: "Разработка конструкторской документации (КМ, КМД), проектирование химико-технологических цехов и производство несущих стальных конструкций.",
-                cards: [
-                    {
-                        title: "Проектирование цехов",
-                        desc: "Комплексные технологические решения: компоновка производственных линий, эстакад и участков.",
-                        svg: `<svg width="48" height="48" viewBox="0 0 64 64" fill="none">
-                            <path d="M10 50L32 16L54 50H10Z" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                            <line x1="32" y1="16" x2="32" y2="50" stroke="#fff" stroke-width="1.8"/>
-                        </svg>`
-                    },
-                    {
-                        title: "Каркасы и фермы",
-                        desc: "Несущие металлоконструкции для производственных корпусов, большепролетные фермы и колонны.",
-                        svg: `<svg width="48" height="48" viewBox="0 0 64 64" fill="none">
-                            <rect x="12" y="12" width="40" height="40" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <line x1="12" y1="12" x2="52" y2="52" stroke="#fff" stroke-width="1.8"/>
-                            <line x1="52" y1="12" x2="12" y2="52" stroke="#fff" stroke-width="1.8"/>
-                        </svg>`
-                    },
-                    {
-                        title: "Документация КМ/КМД",
-                        desc: "Прочностной расчет нагрузок, 3D-моделирование узлов и подготовка полного пакета рабочих чертежей.",
-                        svg: `<svg width="48" height="48" viewBox="0 0 64 64" fill="none">
-                            <polygon points="32,10 54,22 54,46 32,58 10,46 10,22" stroke="var(--accent-primary)" stroke-width="2"/>
-                            <polyline points="10,22 32,34 54,22" stroke="#fff" stroke-width="1.8"/>
-                        </svg>`
-                    }
-                ],
-                standHead: "ТЕХНОЛОГИЧЕСКИЕ ВОЗМОЖНОСТИ ИНЖИНИРИНГА",
-                standTabs: [
-                    {
-                        name: "Проектирование технологических цехов",
-                        sub: "Планировки участков, эстакады и вентиляция",
-                        specs: [["Разделы", "ТХ, КМ, КМД, АР"], ["Среды", "Агрессивные и взрывоопасные"], ["Контроль", "3D-увязка без коллизий"]],
-                        svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none">
-                            <polygon points="30,105 120,25 210,105" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                            <rect x="55" y="70" width="130" height="45" stroke="#fff" stroke-width="1.6"/>
-                            <line x1="120" y1="25" x2="120" y2="115" stroke="var(--accent-primary)" stroke-width="1.5" stroke-dasharray="4 4"/>
-                        </svg>`
-                    },
-                    {
-                        name: "Несущие стальные фермы",
-                        sub: "Силовые конструкции промышленных зданий",
-                        specs: [["Марки стали", "С245, С345, 09Г2С"], ["Контроль швов", "Ультразвуковой (УЗК)"], ["Защита", "Антикоррозийные эмали"]],
-                        svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none">
-                            <rect x="25" y="45" width="190" height="48" stroke="#fff" stroke-width="1.8"/>
-                            <polyline points="25,93 65,45 105,93 145,45 185,93 215,45" stroke="var(--accent-primary)" stroke-width="2"/>
-                        </svg>`
-                    },
-                    {
-                        name: "Емкостные корпуса и эстакады",
-                        sub: "Бункеры, рамы и кабельно-трубопроводные мосты",
-                        specs: [["Материалы", "Конструкционная / нерж. сталь"], ["Нагрузки", "Высокие статические"], ["Монтаж", "Болтовые и сварные узлы"]],
-                        svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none">
-                            <rect x="70" y="20" width="100" height="60" rx="6" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/>
-                            <polygon points="70,80 170,80 140,118 100,118" stroke="#fff" stroke-width="1.8"/>
-                        </svg>`
-                    }
-                ],
-                catalogHead: "ПРОЕКТИРОВАНИЕ И МЕТАЛЛОКОНСТРУКЦИИ",
-                catalog: [
-                    { tag: "Промпроектирование", title: "Проектирование химических и техцехов", desc: "Разработка технологических планировок, трассировки коммуникаций и расстановки оборудования.", specs: [["Документация", "ТХ, КМ, КМД"], ["Специфика", "Сложные производства"]] },
-                    { tag: "Несущие конструкции", title: "Колонны, фермы и балки", desc: "Изготовление металлоконструкций силового каркаса для строительства и реконструкции цехов.", specs: [["Стали", "С245, С345, 09Г2С"], ["Контроль", "100% УЗК диагностика"]] },
-                    { tag: "Инфраструктура", title: "Технологические эстакады и площадки", desc: "Многоуровневые галереи под прокладку трубопроводов и безопасное обслуживание агрегатов.", specs: [["Настил", "Прессованный / ПВЛ"], ["Покрытие", "Химстойкие грунты"]] },
-                    { tag: "Емкостной парк", title: "Бункеры, силосы и резервуары", desc: "Расчет и изготовление металлоемкостей, рам под тяжелые насосы и технологических газоходов.", specs: [["Исполнение", "Нержавеющая сталь"], ["Испытания", "Гидравлический контроль"]] },
-                    { tag: "Оснастка", title: "Пресс-формы и детали штампов", desc: "Высокоточная металлообработка на ЧПУ-станках: изготовление формующей оснастки для РТИ.", specs: [["Точность", "Высокие квалитеты"], ["Закалка", "Термообработка стали"]] },
-                    { tag: "Модернизация", title: "Усиление конструкций цехов", desc: "Инженерное обследование, перерасчет нагрузок и усиление каркасов без остановки цеха.", specs: [["Режим", "В действующем производстве"], ["Безопасность", "Регламент NDA"]] }
-                ],
-                metrics: [
-                    ["КМ / КМД", "Комплект рабочей документации"],
-                    ["09Г2С / AISI", "Конструкционные и нержавеющие стали"],
-                    ["100% УЗК", "Контроль ответственных сварных швов"],
-                    ["3D Модель", "Точное проектирование узлов"]
-                ],
-                steps: [
-                    ["ШАГ 01", "Анализ исходных данных", "Изучаем архитектурные параметры, схемы нагрузок и условия размещения оборудования."],
-                    ["ШАГ 02", "Расчет и 3D-моделирование", "Выполняем прочностные расчеты, разрабатываем чертежи КМ и деталировку КМД."],
-                    ["ШАГ 03", "Изготовление и контроль", "Производим раскрой металлопроката, сварку узлов и неразрушающий контроль швов."],
-                    ["ШАГ 04", "Поставка и комплектность", "Отгружаем готовые конструкции с сертификатами качества на сталь и паспортами изделий."]
-                ]
-            }
+        const standData = {
+            rti: [
+                {
+                    title: "УПЛОТНИТЕЛЬНЫЕ ЭЛЕМЕНТЫ",
+                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><ellipse cx="120" cy="65" rx="85" ry="46" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/><ellipse cx="120" cy="65" rx="50" ry="24" stroke="#fff" stroke-width="1.5" stroke-dasharray="5 3"/></svg>`,
+                    params: [["Твердость", "50–90 Shore A"], ["Температура", "-50°C … +250°C"], ["Давление", "до 45 МПа"]]
+                },
+                {
+                    title: "АНТИВИБРАЦИОННЫЕ ОПОРЫ",
+                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><rect x="50" y="25" width="140" height="16" rx="2" stroke="#fff" stroke-width="1.8"/><path d="M65 41 L50 95 L190 95 L175 41 Z" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/><rect x="40" y="95" width="160" height="16" rx="2" stroke="#fff" stroke-width="1.8"/></svg>`,
+                    params: [["Адгезия", "Горячая вулканизация"], ["Нагрузки", "Высокие динамические"], ["Исполнение", "По чертежу узла"]]
+                },
+                {
+                    title: "ГУММИРОВАНИЕ УЗЛОВ",
+                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><rect x="35" y="40" width="170" height="50" rx="10" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/><line x1="15" y1="65" x2="225" y2="65" stroke="#fff" stroke-width="3"/></svg>`,
+                    params: [["Толщина слоя", "от 3 до 35 мм"], ["Назначение", "Защита от абразива"], ["Контроль", "Ультразвуковой"]]
+                }
+            ],
+            metal: [
+                {
+                    title: "ПРОЕКТИРОВАНИЕ ТЕХЦЕХОВ",
+                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><polygon points="30,105 120,25 210,105" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/><rect x="55" y="70" width="130" height="45" stroke="#fff" stroke-width="1.6"/><line x1="120" y1="25" x2="120" y2="115" stroke="var(--accent-primary)" stroke-width="1.5" stroke-dasharray="4 4"/></svg>`,
+                    params: [["Разделы", "ТХ, КМ, КМД, АР"], ["Среды", "Агрессивные и химопасные"], ["Контроль", "3D-увязка без коллизий"]]
+                },
+                {
+                    title: "НЕСУЩИЕ СТАЛЬНЫЕ ФЕРМЫ",
+                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><rect x="25" y="45" width="190" height="48" stroke="#fff" stroke-width="1.8"/><polyline points="25,93 65,45 105,93 145,45 185,93 215,45" stroke="var(--accent-primary)" stroke-width="2"/></svg>`,
+                    params: [["Марки стали", "С245, С345, 09Г2С"], ["Контроль швов", "Ультразвуковой (УЗК)"], ["Защита", "Антикоррозийные эмали"]]
+                },
+                {
+                    title: "ЕМКОСТНЫЕ КОРПУСА И ЭСТАКАДЫ",
+                    svg: `<svg width="240" height="130" viewBox="0 0 240 130" fill="none"><rect x="70" y="20" width="100" height="60" rx="6" stroke="var(--accent-primary)" stroke-width="2" fill="var(--accent-soft)"/><polygon points="70,80 170,80 140,118 100,118" stroke="#fff" stroke-width="1.8"/></svg>`,
+                    params: [["Материалы", "Конструкционная / нерж. сталь"], ["Нагрузки", "Высокие статические"], ["Монтаж", "Болтовые и сварные узлы"]]
+                }
+            ]
         };
 
-        let activeMode = 'rti';
-        let activeStandTab = 0;
+        let currentActiveMode = 'rti';
 
-        function switchSite(mode) {
-            if (mode === activeMode) return;
-            activeMode = mode;
-
-            // Волна смены режима
-            const fx = document.getElementById('scan-fx');
-            fx.classList.remove('active');
-            void fx.offsetWidth;
-            fx.classList.add('active');
-
+        function setSiteMode(mode) {
+            currentActiveMode = mode;
             document.documentElement.setAttribute('data-mode', mode);
 
-            // Синхронизация кнопок шапки и Hero
             document.getElementById('tab-nav-rti').classList.toggle('active', mode === 'rti');
             document.getElementById('tab-nav-metal').classList.toggle('active', mode === 'metal');
             document.getElementById('hero-btn-rti').classList.toggle('active', mode === 'rti');
             document.getElementById('hero-btn-metal').classList.toggle('active', mode === 'metal');
-            document.getElementById('form-direction').value = mode;
+            
+            const formDir = document.getElementById('form-direction');
+            if (formDir) formDir.value = mode;
 
-            const data = appData[mode];
-
-            document.getElementById('hero-badge-text').textContent = data.badge;
-
-            // Мягкая кинематографичная смена заголовка без кракозябр
-            const headEl = document.getElementById('hero-head');
-            headEl.classList.add('text-fading');
-            setTimeout(() => {
-                headEl.textContent = data.title;
-                headEl.classList.remove('text-fading');
-            }, 180);
-
-            document.getElementById('hero-subhead').textContent = data.subhead;
-
-            // Обновление 3 карточек первого экрана
-            document.getElementById('hero-cards').innerHTML = data.cards.map(c => `
-                <div class="card-item">
-                    <div class="card-top">${c.svg}</div>
-                    <div>
-                        <h3>${c.title}</h3>
-                        <p>${c.desc}</p>
-                    </div>
-                </div>
-            `).join('');
-
-            // Обновление Инженерного стенда
-            document.getElementById('stand-head').textContent = data.standHead;
-            document.getElementById('stand-tabs').innerHTML = data.standTabs.map((t, idx) => `
-                <button class="stand-tab-btn ${idx === 0 ? 'active' : ''}" onclick="selectStandTab(${idx})">
-                    <h4>${t.name}</h4>
-                    <span>${t.sub}</span>
-                </button>
-            `).join('');
-            selectStandTab(0);
-
-            // Обновление Каталога
-            document.getElementById('cat-title').textContent = data.catalogHead;
-            document.getElementById('cat-grid').innerHTML = data.catalog.map(i => `
-                <div class="catalog-card">
-                    <span class="catalog-tag">${i.tag}</span>
-                    <h4>${i.title}</h4>
-                    <p>${i.desc}</p>
-                    <ul class="specs-table">
-                        ${i.specs.map(s => `<li><span>${s[0]}</span><span>${s[1]}</span></li>`).join('')}
-                    </ul>
-                </div>
-            `).join('');
-
-            // Метрики
-            document.getElementById('metrics-grid').innerHTML = data.metrics.map(m => `
-                <div class="metric-item">
-                    <div class="metric-num">${m[0]}</div>
-                    <div class="metric-title">${m[1]}</div>
-                </div>
-            `).join('');
-
-            // Этапы
-            document.getElementById('steps-grid').innerHTML = data.steps.map(s => `
-                <div class="step-tile">
-                    <span class="step-idx">${s[0]}</span>
-                    <h4>${s[1]}</h4>
-                    <p>${s[2]}</p>
-                </div>
-            `).join('');
-
-            update3DMorphTargets(mode);
+            updateMorphTargets(mode);
         }
 
-        function selectStandTab(idx) {
-            activeStandTab = idx;
-            const tabData = appData[activeMode].standTabs[idx];
+        function setStandTab(mode, idx) {
+            const data = standData[mode][idx];
+            const prefix = mode;
 
-            document.querySelectorAll('.stand-tab-btn').forEach((btn, i) => {
-                btn.classList.toggle('active', i === idx);
-            });
+            const btns = document.querySelectorAll(`.stand-box.content-${mode} .stand-tab-btn`);
+            btns.forEach((btn, i) => btn.classList.toggle('active', i === idx));
 
-            document.getElementById('hud-title').textContent = tabData.name.toUpperCase();
-            document.getElementById('hud-svg').innerHTML = tabData.svg;
-            document.getElementById('hud-params').innerHTML = tabData.specs.map(sp => `
-                <div class="stand-cell">
-                    <span>${sp[0]}</span>
-                    <strong>${sp[1]}</strong>
-                </div>
+            document.getElementById(`stand-hud-title-${prefix}`).textContent = data.title;
+            document.getElementById(`stand-hud-svg-${prefix}`).innerHTML = data.svg;
+            document.getElementById(`stand-hud-params-${prefix}`).innerHTML = data.params.map(p => `
+                <div class="stand-cell"><span>${p[0]}</span><strong>${p[1]}</strong></div>
             `).join('');
         }
 
         function scrollToBlock(id) {
-            const block = document.getElementById(id);
-            if (block) block.scrollIntoView({ behavior: 'smooth' });
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function submitFormHandler(e) {
-            e.preventDefault();
-            alert('Заявка сформирована. В боевом режиме параметры заказа отправляются на корпоративную почту.');
-            e.target.reset();
-        }
-
-        // =========================================================
-        // 3D-МОРФИНГ (ПОЛИМЕР <-> МЕТАЛЛОКАРКАС)
-        // =========================================================
+        /* 3D-МОРФИНГ (CANVAS) */
         const canvas = document.getElementById('morph-canvas');
         const ctx = canvas.getContext('2d');
         const W = canvas.width = 640;
@@ -1643,7 +1664,6 @@
         const points = [];
 
         for (let i = 0; i < COUNT; i++) {
-            // Форма 1: Полимерный тор
             const u = (i / COUNT) * Math.PI * 2 * 6;
             const v = (i / COUNT) * Math.PI * 2;
             const R = 135;
@@ -1652,7 +1672,6 @@
             const ry = (R + r * Math.cos(u)) * Math.sin(v);
             const rz = r * Math.sin(u);
 
-            // Форма 2: Стальная колонна/ферма
             const tier = i % 8;
             const spoke = Math.floor(i / 8) % 6;
             const ang = (spoke / 6) * Math.PI * 2;
@@ -1670,7 +1689,7 @@
             });
         }
 
-        function update3DMorphTargets(mode) {
+        function updateMorphTargets(mode) {
             points.forEach(p => {
                 const target = mode === 'rti' ? p.rti : p.metal;
                 p.tx = target.x;
@@ -1690,7 +1709,7 @@
         function animate3D() {
             ctx.clearRect(0, 0, W, H);
 
-            const isMetal = activeMode === 'metal';
+            const isMetal = currentActiveMode === 'metal';
             const lineColor = isMetal ? '56, 189, 248' : '0, 210, 255';
             const dotColor = isMetal ? '254, 243, 199' : '224, 242, 254';
 
@@ -1753,8 +1772,6 @@
             requestAnimationFrame(animate3D);
         }
 
-        // Старт по умолчанию
-        switchSite('rti');
         animate3D();
     </script>
 </body>
