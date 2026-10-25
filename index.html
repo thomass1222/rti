@@ -10,9 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-        /* =========================================================
-           1. СИСТЕМА ЦВЕТОВ И ПЕРЕМЕННЫХ (РТИ vs МЕТАЛЛ)
-           ========================================================= */
         :root {
             --bg-base: #06090f;
             --bg-panel: #0b111c;
@@ -22,7 +19,7 @@
             --text-muted: #94a3b8;
             --text-low: #64748b;
 
-            /* Режим I: РТИ (Кобальт и Неоновый Циан) */
+            /* Режим I: РТИ */
             --accent: #00d4ff;
             --accent-alt: #0066ff;
             --accent-rgb: 0, 212, 255;
@@ -32,7 +29,7 @@
         }
 
         html[data-mode="metal"] {
-            /* Режим II: Металлоконструкции (Сталь и Индустриальный Янтарь) */
+            /* Режим II: Металлоконструкции */
             --accent: #f59e0b;
             --accent-alt: #38bdf8;
             --accent-rgb: 245, 158, 11;
@@ -41,7 +38,6 @@
             --accent-glow: rgba(245, 158, 11, 0.5);
         }
 
-        /* Изолированное переключение видимости слоев */
         html[data-mode="rti"] [data-show="metal"] { display: none !important; }
         html[data-mode="metal"] [data-show="rti"] { display: none !important; }
 
@@ -52,7 +48,10 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html {
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
@@ -61,7 +60,6 @@
             background-color: var(--bg-base);
             color: var(--text-white);
             line-height: 1.55;
-            overflow-x: hidden;
         }
 
         h1, h2, h3, h4, .font-head {
@@ -73,6 +71,7 @@
         }
 
         .container {
+            width: 100%;
             max-width: 1280px;
             margin: 0 auto;
             padding: 0 24px;
@@ -80,7 +79,6 @@
             z-index: 5;
         }
 
-        /* Фоновая инженерная миллиметровка */
         .blueprint-bg-grid {
             position: fixed;
             inset: 0;
@@ -94,9 +92,7 @@
             z-index: 1;
         }
 
-        /* =========================================================
-           2. ФИКСИРОВАННАЯ ШАПКА (АДАПТИВНАЯ БЕЗ ВЫЛЕТОВ ЗА КРАЙ)
-           ========================================================= */
+        /* ШАПКА */
         .header-fixed {
             position: fixed;
             top: 16px;
@@ -227,9 +223,7 @@
             height: 16px;
         }
 
-        /* =========================================================
-           3. ЭКРАН 01: АСИММЕТРИЧНЫЙ HERO + 3D-МОДЕЛЬ НА ПЬЕДЕСТАЛЕ
-           ========================================================= */
+        /* HERO */
         .hero-section {
             position: relative;
             min-height: 100vh;
@@ -237,6 +231,8 @@
             display: flex;
             align-items: center;
             background: radial-gradient(circle at 70% 45%, rgba(var(--accent-rgb), 0.11) 0%, transparent 60%);
+            width: 100%;
+            overflow: hidden;
         }
 
         .hero-grid {
@@ -244,6 +240,7 @@
             grid-template-columns: 1.08fr 0.92fr;
             gap: 48px;
             align-items: center;
+            width: 100%;
         }
 
         .division-pill {
@@ -363,19 +360,21 @@
             white-space: nowrap;
         }
 
+        /* 3D СЦЕНА */
         .hero-3d-stage {
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            width: 100%;
         }
 
         .holo-viewport {
             position: relative;
             width: 100%;
             max-width: 500px;
-            height: 430px;
+            height: 420px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -388,6 +387,7 @@
             position: relative;
             z-index: 4;
             touch-action: pan-y;
+            display: block;
         }
 
         #hero-3d-canvas:active {
@@ -462,14 +462,14 @@
             border-color: var(--accent-border);
         }
 
-        /* =========================================================
-           4. ЭКРАН 02: ТРЕХКОЛОНОЧНЫЙ ТЕРМИНАЛ CAD
-           ========================================================= */
+        /* CAD СТЕНД */
         .cad-section {
             padding: 90px 0;
             background: #080d16;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            width: 100%;
+            overflow: hidden;
         }
 
         .section-head-split {
@@ -503,6 +503,7 @@
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 25px 70px rgba(0, 0, 0, 0.75), 0 0 35px rgba(var(--accent-rgb), 0.08);
+            width: 100%;
         }
 
         .cad-topbar {
@@ -687,17 +688,18 @@
             margin-top: 16px;
         }
 
-        /* =========================================================
-           5. ЭКРАН 03: МОЗАИЧНЫЙ BENTO-КАТАЛОГ
-           ========================================================= */
+        /* КАТАЛОГ BENTO */
         .bento-section {
             padding: 100px 0;
+            width: 100%;
+            overflow: hidden;
         }
 
         .bento-mosaic {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             gap: 20px;
+            width: 100%;
         }
 
         .bento-tile {
@@ -788,20 +790,21 @@
             border-radius: 6px;
         }
 
-        /* =========================================================
-           6. ЭКРАН 04: СКВОЗНАЯ СВЕТОВАЯ ШКАЛА ПОКАЗАТЕЛЕЙ
-           ========================================================= */
+        /* ШКАЛА МЕТРИК */
         .telemetry-strip {
             padding: 56px 0;
             background: radial-gradient(circle at 50% 50%, rgba(var(--accent-rgb), 0.14) 0%, rgba(8, 12, 20, 0.98) 75%);
             border-top: 1px solid var(--accent-border);
             border-bottom: 1px solid var(--accent-border);
             box-shadow: 0 0 50px rgba(var(--accent-rgb), 0.1);
+            width: 100%;
+            overflow: hidden;
         }
 
         .strip-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
+            width: 100%;
         }
 
         .strip-metric {
@@ -831,19 +834,19 @@
             letter-spacing: 0.8px;
         }
 
-        /* =========================================================
-           7. ЭКРАН 05: ГОРИЗОНТАЛЬНЫЙ ИНТЕРАКТИВНЫЙ ТАЙМЛАЙН
-           ========================================================= */
+        /* ТАЙМЛАЙН */
         .timeline-section {
             padding: 105px 0;
             background: #06090f;
             overflow: hidden;
+            width: 100%;
         }
 
         .timeline-track-wrapper {
             position: relative;
             margin-top: 60px;
             padding: 20px 0;
+            width: 100%;
         }
 
         .timeline-axis-line {
@@ -864,6 +867,7 @@
             gap: 16px;
             position: relative;
             z-index: 2;
+            width: 100%;
         }
 
         .tl-node {
@@ -876,29 +880,13 @@
             justify-content: space-between;
         }
 
-        .tl-node:nth-child(odd) .tl-text-block {
-            order: 1;
-            padding-bottom: 28px;
-        }
-        .tl-node:nth-child(odd) .tl-dot-ring {
-            order: 2;
-        }
-        .tl-node:nth-child(odd) .tl-spacer {
-            order: 3;
-            height: 85px;
-        }
+        .tl-node:nth-child(odd) .tl-text-block { order: 1; padding-bottom: 28px; }
+        .tl-node:nth-child(odd) .tl-dot-ring { order: 2; }
+        .tl-node:nth-child(odd) .tl-spacer { order: 3; height: 85px; }
 
-        .tl-node:nth-child(even) .tl-spacer {
-            order: 1;
-            height: 85px;
-        }
-        .tl-node:nth-child(even) .tl-dot-ring {
-            order: 2;
-        }
-        .tl-node:nth-child(even) .tl-text-block {
-            order: 3;
-            padding-top: 28px;
-        }
+        .tl-node:nth-child(even) .tl-spacer { order: 1; height: 85px; }
+        .tl-node:nth-child(even) .tl-dot-ring { order: 2; }
+        .tl-node:nth-child(even) .tl-text-block { order: 3; padding-top: 28px; }
 
         .tl-dot-ring {
             width: 38px;
@@ -937,11 +925,11 @@
             line-height: 1.45;
         }
 
-        /* =========================================================
-           8. ЭКРАН 06: АСИММЕТРИЧНАЯ ФОРМА ЗАЯВКИ
-           ========================================================= */
+        /* КОНТАКТЫ */
         .contact-section {
             padding: 80px 0 100px 0;
+            width: 100%;
+            overflow: hidden;
         }
 
         .asymmetric-contact-monolith {
@@ -953,6 +941,7 @@
             display: grid;
             grid-template-columns: 1fr 1.25fr;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75);
+            width: 100%;
         }
 
         .contact-left-side {
@@ -1095,6 +1084,8 @@
             padding: 34px 0;
             background: #04060a;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
+            width: 100%;
+            overflow: hidden;
         }
 
         .footer-bar {
@@ -1108,19 +1099,12 @@
         }
 
         /* =========================================================
-           9. ПЛАНШЕТНАЯ И МОБИЛЬНАЯ ВЕРСИЯ (ПОЛНАЯ ПЕРЕРАБОТКА)
+           ПЛАНШЕТ (до 1080px)
            ========================================================= */
         @media (max-width: 1080px) {
-            .header-nav {
-                display: none;
-            }
-            .hero-grid {
-                grid-template-columns: 1fr;
-                gap: 28px;
-            }
-            .cad-body-3col {
-                grid-template-columns: 1fr;
-            }
+            .header-nav { display: none; }
+            .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+            .cad-body-3col { grid-template-columns: 1fr; }
             .cad-sidebar-left {
                 flex-direction: row;
                 overflow-x: auto;
@@ -1128,33 +1112,25 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.07);
                 scrollbar-width: none;
             }
-            .cad-sidebar-left::-webkit-scrollbar {
-                display: none;
-            }
-            .cad-node-btn {
-                min-width: 200px;
-            }
-            .cad-telemetry-right {
-                border-left: none;
-                border-top: 1px solid rgba(255, 255, 255, 0.07);
-            }
-            .asymmetric-contact-monolith {
-                grid-template-columns: 1fr;
-            }
+            .cad-sidebar-left::-webkit-scrollbar { display: none; }
+            .cad-node-btn { min-width: 200px; }
+            .cad-telemetry-right { border-left: none; border-top: 1px solid rgba(255, 255, 255, 0.07); }
+            .asymmetric-contact-monolith { grid-template-columns: 1fr; }
             .contact-left-side {
                 border-right: none;
                 border-bottom: 1px solid rgba(var(--accent-rgb), 0.25);
                 padding: 32px 24px;
             }
-            .contact-right-form {
-                padding: 32px 24px;
-            }
+            .contact-right-form { padding: 32px 24px; }
         }
 
-        /* УЗКИЕ ЭКРАНЫ СМАРТФОНОВ (iPhone 360px - 430px) */
+        /* =========================================================
+           МОБИЛЬНАЯ ВЕРСИЯ (СТРОГО БЕЗ ВЫЛЕТОВ И ПЕРЕКОСОВ)
+           ========================================================= */
         @media (max-width: 768px) {
             .container {
                 padding: 0 14px;
+                max-width: 100vw;
             }
 
             .header-fixed {
@@ -1203,68 +1179,66 @@
                 border-radius: 8px;
             }
 
-            .header-cta-text {
-                display: none;
-            }
+            .header-cta-text { display: none; }
+            .header-cta-icon { display: block; }
 
-            .header-cta-icon {
-                display: block;
-            }
-
+            /* HERO */
             .hero-section {
                 min-height: auto;
-                padding: 74px 0 28px 0;
+                padding: 74px 0 24px 0;
+                overflow: hidden;
             }
 
             .hero-grid {
                 display: flex;
                 flex-direction: column;
-                gap: 14px;
+                gap: 12px;
+                width: 100%;
             }
 
             .hero-left {
-                display: contents;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
             }
 
             .division-pill {
-                order: 1;
                 align-self: flex-start;
                 font-size: 10px;
                 padding: 4px 10px;
-                margin-bottom: 2px;
+                margin-bottom: 6px;
                 gap: 6px;
             }
 
             .hero-left h1 {
-                order: 2;
                 font-size: 21px;
                 line-height: 1.18;
-                margin-bottom: 4px;
-            }
-
-            .hero-left p {
-                order: 3;
-                font-size: 12.5px;
-                line-height: 1.42;
                 margin-bottom: 6px;
             }
 
+            .hero-left p {
+                font-size: 12.5px;
+                line-height: 1.42;
+                margin-bottom: 10px;
+            }
+
+            /* 3D СЦЕНА НА МОБИЛКЕ — СТРОГО ПО ЦЕНТРУ */
             .hero-3d-stage {
-                order: 4;
                 width: 100%;
                 max-width: 100%;
-                margin: 0 auto 10px auto;
+                margin: 0 auto 12px auto;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                justify-content: center;
                 overflow: hidden;
             }
 
             .holo-viewport {
                 position: relative;
-                width: 100%;
-                max-width: 290px;
-                height: 220px;
+                width: 280px;
+                height: 230px;
+                max-width: 100%;
                 margin: 0 auto;
                 display: flex;
                 align-items: center;
@@ -1273,17 +1247,16 @@
             }
 
             #hero-3d-canvas {
-                width: 100% !important;
-                height: 100% !important;
-                max-width: 290px;
+                width: 280px !important;
+                height: 230px !important;
                 display: block;
                 margin: 0 auto;
             }
 
             .holo-pedestal {
-                width: 200px;
-                height: 40px;
-                bottom: 8px;
+                width: 210px;
+                height: 44px;
+                bottom: 12px;
                 left: 50%;
                 transform: translateX(-50%);
             }
@@ -1302,7 +1275,7 @@
             .stage-controls {
                 padding: 3px;
                 gap: 4px;
-                margin-top: -2px;
+                margin-top: 4px;
             }
 
             .stage-ctrl-btn {
@@ -1311,17 +1284,15 @@
             }
 
             .mode-console-label {
-                order: 5;
                 font-size: 9.5px;
-                margin-bottom: 2px;
+                margin-bottom: 4px;
             }
 
             .hero-mode-console {
-                order: 6;
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
                 width: 100%;
-                margin-bottom: 6px;
+                margin-bottom: 8px;
             }
 
             .console-card-btn {
@@ -1344,7 +1315,6 @@
             }
 
             .hero-quick-tags {
-                order: 7;
                 width: 100%;
                 flex-wrap: nowrap;
                 overflow-x: auto;
@@ -1353,9 +1323,7 @@
                 scrollbar-width: none;
             }
 
-            .hero-quick-tags::-webkit-scrollbar {
-                display: none;
-            }
+            .hero-quick-tags::-webkit-scrollbar { display: none; }
 
             .q-tag {
                 font-size: 10.5px;
@@ -1363,36 +1331,14 @@
                 flex-shrink: 0;
             }
 
-            .cad-section {
-                padding: 40px 0;
-            }
-
-            .section-head-split {
-                margin-bottom: 18px;
-                gap: 8px;
-            }
-
-            .section-head-split h2 {
-                font-size: 19px;
-            }
-
-            .section-head-split p {
-                font-size: 12.5px !important;
-            }
-
-            .cad-topbar {
-                padding: 9px 12px;
-                font-size: 10px;
-            }
-
-            .cad-body-3col {
-                min-height: auto;
-            }
-
-            .cad-sidebar-left {
-                padding: 10px;
-                gap: 6px;
-            }
+            /* CAD */
+            .cad-section { padding: 40px 0; }
+            .section-head-split { margin-bottom: 18px; gap: 8px; }
+            .section-head-split h2 { font-size: 19px; }
+            .section-head-split p { font-size: 12.5px !important; }
+            .cad-topbar { padding: 9px 12px; font-size: 10px; }
+            .cad-body-3col { min-height: auto; }
+            .cad-sidebar-left { padding: 10px; gap: 6px; }
 
             .cad-node-btn {
                 min-width: auto;
@@ -1407,93 +1353,27 @@
                 white-space: nowrap;
             }
 
-            .cad-node-btn span {
-                display: none;
-            }
+            .cad-node-btn span { display: none; }
+            .cad-viewport-center { padding: 12px; }
+            .cad-drawing-canvas { min-height: 145px; }
+            .cad-drawing-canvas svg { max-height: 135px; }
+            .cad-bottom-coords { font-size: 9.5px; padding-top: 8px; }
+            .cad-telemetry-right { padding: 14px; }
+            .telemetry-group { gap: 9px; }
+            .t-bar-head { font-size: 11px; }
+            .cad-summary-box { margin-top: 10px; padding: 10px; font-size: 11px; }
 
-            .cad-viewport-center {
-                padding: 12px;
-            }
-
-            .cad-drawing-canvas {
-                min-height: 145px;
-            }
-
-            .cad-drawing-canvas svg {
-                max-height: 135px;
-            }
-
-            .cad-bottom-coords {
-                font-size: 9.5px;
-                padding-top: 8px;
-            }
-
-            .cad-telemetry-right {
-                padding: 14px;
-            }
-
-            .telemetry-group {
-                gap: 9px;
-            }
-
-            .t-bar-head {
-                font-size: 11px;
-            }
-
-            .cad-summary-box {
-                margin-top: 10px;
-                padding: 10px;
-                font-size: 11px;
-            }
-
-            .bento-section {
-                padding: 42px 0;
-            }
-
-            .bento-mosaic {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-
-            .bento-tile {
-                padding: 14px;
-                border-radius: 12px;
-            }
-
-            .bento-mosaic > .bento-tile:first-child {
-                grid-column: span 2;
-            }
-
-            .bento-tile.tile-Split {
-                grid-template-columns: 1.35fr 0.65fr;
-                gap: 10px;
-            }
-
-            .bento-art-box {
-                min-height: 95px;
-                padding: 8px;
-            }
-
-            .bento-art-box svg {
-                width: 76px;
-                height: 76px;
-            }
-
-            .bento-mosaic > .bento-tile:not(:first-child) {
-                grid-column: span 1;
-            }
-
-            .bento-tag {
-                font-size: 9px;
-                padding: 3px 7px;
-                margin-bottom: 8px;
-            }
-
-            .bento-tile h3 {
-                font-size: 13.5px;
-                margin-bottom: 6px;
-            }
-
+            /* BENTO */
+            .bento-section { padding: 42px 0; }
+            .bento-mosaic { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .bento-tile { padding: 14px; border-radius: 12px; }
+            .bento-mosaic > .bento-tile:first-child { grid-column: span 2; }
+            .bento-tile.tile-Split { grid-template-columns: 1.35fr 0.65fr; gap: 10px; }
+            .bento-art-box { min-height: 95px; padding: 8px; }
+            .bento-art-box svg { width: 76px; height: 76px; }
+            .bento-mosaic > .bento-tile:not(:first-child) { grid-column: span 1; }
+            .bento-tag { font-size: 9px; padding: 3px 7px; margin-bottom: 8px; }
+            .bento-tile h3 { font-size: 13.5px; margin-bottom: 6px; }
             .bento-tile p {
                 font-size: 11.5px;
                 margin-bottom: 10px;
@@ -1502,25 +1382,12 @@
                 -webkit-box-orient: vertical;
                 overflow: hidden;
             }
+            .pill-specs { gap: 4px; }
+            .pill-specs span { font-size: 9.5px; padding: 3px 6px; }
 
-            .pill-specs {
-                gap: 4px;
-            }
-
-            .pill-specs span {
-                font-size: 9.5px;
-                padding: 3px 6px;
-            }
-
-            .telemetry-strip {
-                padding: 28px 0;
-            }
-
-            .strip-row {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-            }
-
+            /* МЕТРИКИ */
+            .telemetry-strip { padding: 28px 0; }
+            .strip-row { grid-template-columns: 1fr 1fr; gap: 12px; }
             .strip-metric {
                 border-right: none;
                 background: rgba(255, 255, 255, 0.025);
@@ -1528,35 +1395,14 @@
                 border-radius: 10px;
                 padding: 12px 8px;
             }
+            .strip-number { font-size: 20px; margin-bottom: 3px; }
+            .strip-caption { font-size: 10px; line-height: 1.25; }
 
-            .strip-number {
-                font-size: 20px;
-                margin-bottom: 3px;
-            }
-
-            .strip-caption {
-                font-size: 10px;
-                line-height: 1.25;
-            }
-
-            .timeline-section {
-                padding: 42px 0;
-            }
-
-            .timeline-track-wrapper {
-                margin-top: 18px;
-                padding: 0;
-            }
-
-            .timeline-axis-line {
-                display: none;
-            }
-
-            .timeline-nodes-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-
+            /* ТАЙМЛАЙН */
+            .timeline-section { padding: 42px 0; }
+            .timeline-track-wrapper { margin-top: 18px; padding: 0; }
+            .timeline-axis-line { display: none; }
+            .timeline-nodes-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
             .tl-node {
                 min-height: auto;
                 background: rgba(14, 21, 34, 0.75);
@@ -1568,11 +1414,7 @@
                 justify-content: flex-start;
                 gap: 8px;
             }
-
-            .tl-node .tl-spacer {
-                display: none;
-            }
-
+            .tl-node .tl-spacer { display: none; }
             .tl-node:nth-child(odd) .tl-dot-ring,
             .tl-node:nth-child(even) .tl-dot-ring {
                 order: 1;
@@ -1580,90 +1422,28 @@
                 height: 28px;
                 font-size: 10.5px;
             }
-
             .tl-node:nth-child(odd) .tl-text-block,
-            .tl-node:nth-child(even) .tl-text-block {
-                order: 2;
-                padding: 0;
-            }
+            .tl-node:nth-child(even) .tl-text-block { order: 2; padding: 0; }
+            .tl-text-block h4 { font-size: 12.5px; margin-bottom: 3px; }
+            .tl-text-block p { font-size: 11px; line-height: 1.35; }
 
-            .tl-text-block h4 {
-                font-size: 12.5px;
-                margin-bottom: 3px;
-            }
+            /* ФОРМА */
+            .contact-section { padding: 36px 0 50px 0; }
+            .asymmetric-contact-monolith { border-radius: 16px; }
+            .contact-left-side { padding: 20px 16px; }
+            .contact-left-side h2 { font-size: 20px; margin-bottom: 8px; }
+            .contact-left-side p { font-size: 12.5px !important; }
+            .direct-email-panel { margin: 14px 0; padding: 12px 14px; }
+            .email-copy-row a { font-size: 15.5px; }
+            .contact-right-form { padding: 20px 16px; }
+            .minimal-form { gap: 10px; }
+            .form-2col { grid-template-columns: 1fr; gap: 10px; }
+            .sleek-input { padding: 11px 13px; font-size: 13px; }
+            textarea.sleek-input { min-height: 85px; }
+            .btn-send-monolith { padding: 14px 18px; font-size: 12px; }
 
-            .tl-text-block p {
-                font-size: 11px;
-                line-height: 1.35;
-            }
-
-            .contact-section {
-                padding: 36px 0 50px 0;
-            }
-
-            .asymmetric-contact-monolith {
-                border-radius: 16px;
-            }
-
-            .contact-left-side {
-                padding: 20px 16px;
-            }
-
-            .contact-left-side h2 {
-                font-size: 20px;
-                margin-bottom: 8px;
-            }
-
-            .contact-left-side p {
-                font-size: 12.5px !important;
-            }
-
-            .direct-email-panel {
-                margin: 14px 0;
-                padding: 12px 14px;
-            }
-
-            .email-copy-row a {
-                font-size: 15.5px;
-            }
-
-            .contact-right-form {
-                padding: 20px 16px;
-            }
-
-            .minimal-form {
-                gap: 10px;
-            }
-
-            .form-2col {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .sleek-input {
-                padding: 11px 13px;
-                font-size: 13px;
-            }
-
-            textarea.sleek-input {
-                min-height: 85px;
-            }
-
-            .btn-send-monolith {
-                padding: 14px 18px;
-                font-size: 12px;
-            }
-
-            footer {
-                padding: 22px 0;
-            }
-
-            .footer-bar {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 6px;
-                font-size: 11px;
-            }
+            footer { padding: 22px 0; }
+            .footer-bar { flex-direction: column; align-items: flex-start; gap: 6px; font-size: 11px; }
         }
     </style>
 </head>
@@ -1726,6 +1506,7 @@
                         Инжиниринг технологических и химических участков, разработка разделов КМ/КМД и производство несущих стальных каркасов, эстакад и нестандартного оборудования.
                     </p>
 
+                    <!-- БЛОК 3D НА МОБИЛЬНОМ ВСТАЕТ СЮДА АВТОМАТИЧЕСКИ ЧЕРЕЗ DOM-ПОРЯДОК НА ДЕСКТОПЕ -->
                     <span class="mode-console-label">Переключение специализации комплекса:</span>
                     <div class="hero-mode-console">
                         <button class="console-card-btn active" id="console-btn-rti" onclick="switchMode('rti')">
@@ -1823,7 +1604,6 @@
                                 <circle cx="125" cy="110" r="56" stroke="#fff" stroke-width="1.2" stroke-dasharray="5 4"/>
                                 <circle cx="125" cy="110" r="38" stroke="var(--accent)" stroke-width="2" fill="#060911"/>
                                 <line x1="30" y1="110" x2="220" y2="110" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-dasharray="4 4"/>
-                                <line x1="125" y1="18" x2="125" y2="202" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-dasharray="4 4"/>
                                 <rect x="275" y="32" width="44" height="156" rx="4" stroke="var(--accent)" stroke-width="2" fill="var(--accent-soft)"/>
                                 <line x1="275" y1="72" x2="319" y2="72" stroke="#fff" stroke-width="2"/>
                                 <line x1="275" y1="148" x2="319" y2="148" stroke="#fff" stroke-width="2"/>
@@ -2304,9 +2084,7 @@
         </div>
     </footer>
 
-    <!-- =========================================================
-         JAVASCRIPT: 3D-МОДЕЛЬ НА ПЬЕДЕСТАЛЕ + ИНТЕРАКТИВНЫЙ CAD
-         ========================================================= -->
+    <!-- JAVASCRIPT: 3D-МОДЕЛЬ + CAD СТЕНД -->
     <script>
         let currentMode = 'rti';
 
@@ -2465,22 +2243,22 @@
         }
 
         // =========================================================
-        // 5. ИНТЕРАКТИВНЫЙ 3D-ДВИЖОК НА ПЬЕДЕСТАЛЕ
+        // 3D ДВИЖОК
         // =========================================================
         const canvas = document.getElementById('hero-3d-canvas');
         const ctx = canvas.getContext('2d');
-        let CW = 500;
-        let CH = 420;
+        let CW = 280;
+        let CH = 230;
 
         function resize3DCanvas() {
             const rect = canvas.getBoundingClientRect();
-            if (rect.width > 0 && rect.height > 0) {
-                const dpr = Math.min(window.devicePixelRatio || 1, 2);
-                canvas.width = rect.width * dpr;
-                canvas.height = rect.height * dpr;
-                CW = canvas.width;
-                CH = canvas.height;
-            }
+            const w = rect.width > 0 ? rect.width : (window.innerWidth < 768 ? 280 : 500);
+            const h = rect.height > 0 ? rect.height : (window.innerWidth < 768 ? 230 : 420);
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = w * dpr;
+            canvas.height = h * dpr;
+            CW = canvas.width;
+            CH = canvas.height;
         }
         window.addEventListener('resize', resize3DCanvas);
         resize3DCanvas();
@@ -2620,8 +2398,8 @@
             const proj = [];
 
             const isMobile = window.innerWidth < 768;
-            const modelScale = isMobile ? 0.58 : 1.0;
-            const baseScale = Math.min(CW, CH) * (isMobile ? 0.75 : 0.95);
+            const modelScale = isMobile ? 0.45 : 1.0;
+            const baseScale = Math.min(CW, CH) * (isMobile ? 0.65 : 0.95);
 
             for (let i = 0; i < vertices.length; i++) {
                 const v = vertices[i];
@@ -2641,7 +2419,7 @@
                 const fov = baseScale / (baseScale + z2 * 1.5);
                 proj.push({
                     px: CW / 2 + x1 * fov,
-                    py: CH / 2 - (isMobile ? 4 : 8) + y1 * fov,
+                    py: CH / 2 - (isMobile ? 2 : 8) + y1 * fov,
                     z: z2,
                     fov: fov
                 });
@@ -2654,7 +2432,7 @@
                 const depthAlpha = Math.max(0.08, Math.min(0.75, (avgZ + 180) / 320));
 
                 ctx.strokeStyle = `rgba(${strokeRGB}, ${depthAlpha})`;
-                ctx.lineWidth = depthAlpha * (CW < 600 ? 1.2 : 1.7);
+                ctx.lineWidth = depthAlpha * (CW < 600 ? 1.1 : 1.7);
                 ctx.beginPath();
                 ctx.moveTo(p1.px, p1.py);
                 ctx.lineTo(p2.px, p2.py);
@@ -2666,7 +2444,7 @@
                 const alpha = Math.max(0.15, Math.min(0.95, (p.z + 180) / 320));
                 ctx.fillStyle = `rgba(${nodeRGB}, ${alpha})`;
                 ctx.beginPath();
-                ctx.arc(p.px, p.py, (CW < 600 ? 1.4 : 1.8) * p.fov, 0, Math.PI * 2);
+                ctx.arc(p.px, p.py, (CW < 600 ? 1.2 : 1.8) * p.fov, 0, Math.PI * 2);
                 ctx.fill();
             }
 
