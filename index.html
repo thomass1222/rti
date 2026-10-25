@@ -143,7 +143,6 @@
             flex-shrink: 0;
         }
 
-        /* Переключатель режимов в шапке */
         .header-mode-switch {
             display: flex;
             background: #05080e;
@@ -364,7 +363,6 @@
             white-space: nowrap;
         }
 
-        /* ПРАВАЯ ЧАСТЬ HERO: 3D-ГОЛОГРАММА И ПЬЕДЕСТАЛ */
         .hero-3d-stage {
             position: relative;
             display: flex;
@@ -1159,7 +1157,6 @@
                 padding: 0 14px;
             }
 
-            /* 1. Идеальная компактная шапка без вылетов за экран */
             .header-fixed {
                 top: 10px;
                 padding: 0 10px;
@@ -1195,12 +1192,10 @@
                 border-radius: 5px;
             }
 
-            /* Скрываем длинное " и Цеха" в шапке на телефоне, оставляя четкое "Металл" */
             .hms-btn .mobile-hide-text {
                 display: none;
             }
 
-            /* Кнопка ТЗ в шапке превращается в аккуратную иконку 34x34 */
             .header-cta {
                 width: 34px;
                 height: 34px;
@@ -1216,7 +1211,6 @@
                 display: block;
             }
 
-            /* 2. Hero-экран ровно в 1 экран телефона */
             .hero-section {
                 min-height: auto;
                 padding: 74px 0 28px 0;
@@ -1255,7 +1249,6 @@
                 margin-bottom: 6px;
             }
 
-          /* 3D-сцена строго по ширине экрана без вылетов */
             .hero-3d-stage {
                 order: 4;
                 width: 100%;
@@ -1295,21 +1288,15 @@
                 transform: translateX(-50%);
             }
 
+            .holo-pedestal::before {
+                inset: 7px 18px;
+            }
+
             .stage-hud-top {
                 top: 4px;
                 left: 6px;
                 right: 6px;
                 font-size: 9px;
-            }
-
-            .holo-pedestal {
-                width: 210px;
-                height: 44px;
-                bottom: 10px;
-            }
-
-            .holo-pedestal::before {
-                inset: 7px 18px;
             }
 
             .stage-controls {
@@ -1329,7 +1316,6 @@
                 margin-bottom: 2px;
             }
 
-            /* 2 кнопки выбора режима строго в 1 ряд (50% / 50%) */
             .hero-mode-console {
                 order: 6;
                 grid-template-columns: 1fr 1fr;
@@ -1357,7 +1343,6 @@
                 text-overflow: ellipsis;
             }
 
-            /* Быстрые теги в одну строку со свайпом */
             .hero-quick-tags {
                 order: 7;
                 width: 100%;
@@ -1378,7 +1363,6 @@
                 flex-shrink: 0;
             }
 
-            /* 3. Компактный CAD-терминал на 1 экран */
             .cad-section {
                 padding: 40px 0;
             }
@@ -1423,7 +1407,6 @@
                 white-space: nowrap;
             }
 
-            /* Скрываем подстрочник в табах CAD, чтобы они были компактными капсулами */
             .cad-node-btn span {
                 display: none;
             }
@@ -1463,7 +1446,6 @@
                 font-size: 11px;
             }
 
-            /* 4. Мозаика Bento на мобильном: 2 колонки вместо длинной ленты */
             .bento-section {
                 padding: 42px 0;
             }
@@ -1478,7 +1460,6 @@
                 border-radius: 12px;
             }
 
-            /* Первая флагманская карточка на всю ширину, остальные 4 — по 2 в ряд! */
             .bento-mosaic > .bento-tile:first-child {
                 grid-column: span 2;
             }
@@ -1531,7 +1512,6 @@
                 padding: 3px 6px;
             }
 
-            /* 5. Компактная сетка метрик 2x2 */
             .telemetry-strip {
                 padding: 28px 0;
             }
@@ -1559,7 +1539,6 @@
                 line-height: 1.25;
             }
 
-            /* 6. Таймлайн на мобильном: компактная сетка 2x3 (вместо 6 этажей) */
             .timeline-section {
                 padding: 42px 0;
             }
@@ -1618,7 +1597,6 @@
                 line-height: 1.35;
             }
 
-            /* 7. Компактная форма контактов */
             .contact-section {
                 padding: 36px 0 50px 0;
             }
@@ -1704,7 +1682,6 @@
                 <span>ПРОМТЕХ</span>
             </a>
 
-            <!-- Компактный двухпозиционный переключатель режимов -->
             <div class="header-mode-switch">
                 <button class="hms-btn active" id="nav-btn-rti" onclick="switchMode('rti')">РТИ</button>
                 <button class="hms-btn" id="nav-btn-metal" onclick="switchMode('metal')">Металл<span class="mobile-hide-text"> и Цеха</span></button>
@@ -1727,14 +1704,11 @@
         </header>
     </div>
 
-    <!-- =========================================================
-         ЭКРАН 01: HERO + 3D-ДЕТАЛЬ НА ГОЛОГРАФИЧЕСКОМ ПЬЕДЕСТАЛЕ
-         ========================================================= -->
+    <!-- ЭКРАН 01: HERO -->
     <section class="hero-section">
         <div class="container">
             <div class="hero-grid">
                 
-                <!-- Левая часть (на мобилке перестраивается через order) -->
                 <div class="hero-left">
                     <div class="division-pill">
                         <span class="dot"></span>
@@ -1776,7 +1750,6 @@
                     </div>
                 </div>
 
-                <!-- Правая часть: Объемная 3D-модель над пьедесталом -->
                 <div class="hero-3d-stage">
                     <div class="holo-viewport">
                         <div class="stage-hud-top mono">
@@ -1784,11 +1757,10 @@
                             <span>360° ИНТЕРАКТИВ</span>
                         </div>
 
-                        <canvas id="hero-3d-canvas" width="500" height="420"></canvas>
+                        <canvas id="hero-3d-canvas"></canvas>
                         <div class="holo-pedestal"></div>
                     </div>
 
-                    <!-- Кнопки управления проекцией 3D-модели -->
                     <div class="stage-controls">
                         <button class="stage-ctrl-btn active" onclick="set3DView('iso', this)">Изометрия</button>
                         <button class="stage-ctrl-btn" onclick="set3DView('front', this)">Фронтальный вид</button>
@@ -1800,9 +1772,7 @@
         </div>
     </section>
 
-    <!-- =========================================================
-         ЭКРАН 02: ИНТЕРАКТИВНЫЙ СТЕНД CAD
-         ========================================================= -->
+    <!-- ЭКРАН 02: CAD СТЕНД -->
     <section class="cad-section" id="cad-stand">
         <div class="container">
             <div class="section-head-split">
@@ -1825,7 +1795,7 @@
                     <span id="cad-layer-code">LAYER: RTI-SEAL-01</span>
                 </div>
 
-                <!-- СТЕНД ДЛЯ РЕЖИМА РТИ -->
+                <!-- РТИ -->
                 <div class="cad-body-3col" data-show="rti">
                     <div class="cad-sidebar-left">
                         <button class="cad-node-btn active" onclick="selectCadNode('rti', 0, this)">
@@ -1887,7 +1857,7 @@
                     </div>
                 </div>
 
-                <!-- СТЕНД ДЛЯ РЕЖИМА МЕТАЛЛ -->
+                <!-- МЕТАЛЛ -->
                 <div class="cad-body-3col" data-show="metal">
                     <div class="cad-sidebar-left">
                         <button class="cad-node-btn active" onclick="selectCadNode('metal', 0, this)">
@@ -1952,9 +1922,7 @@
         </div>
     </section>
 
-    <!-- =========================================================
-         ЭКРАН 03: МОЗАИЧНЫЙ КАТАЛОГ (BENTO GRID 2x2 НА МОБИЛКЕ)
-         ========================================================= -->
+    <!-- ЭКРАН 03: МОЗАИЧНЫЙ КАТАЛОГ -->
     <section class="bento-section" id="bento-catalog">
         <div class="container">
             <div class="section-head-split">
@@ -1968,7 +1936,7 @@
                 </p>
             </div>
 
-            <!-- МОЗАИКА 1: РТИ -->
+            <!-- РТИ -->
             <div class="bento-mosaic" data-show="rti">
                 <div class="bento-tile span-7 tile-Split">
                     <div>
@@ -2039,7 +2007,7 @@
                 </div>
             </div>
 
-            <!-- МОЗАИКА 2: МЕТАЛЛ И ЦЕХА -->
+            <!-- МЕТАЛЛ -->
             <div class="bento-mosaic" data-show="metal">
                 <div class="bento-tile span-7 tile-Split">
                     <div>
@@ -2112,9 +2080,7 @@
         </div>
     </section>
 
-    <!-- =========================================================
-         ЭКРАН 04: СКВОЗНАЯ ШКАЛА ИНЖЕНЕРНЫХ ПОКАЗАТЕЛЕЙ
-         ========================================================= -->
+    <!-- ЭКРАН 04: ШКАЛА МЕТРИК -->
     <section class="telemetry-strip">
         <div class="container">
             <div class="strip-row" data-show="rti">
@@ -2157,9 +2123,7 @@
         </div>
     </section>
 
-    <!-- =========================================================
-         ЭКРАН 05: ТАЙМЛАЙН (ГОРИЗОНТАЛЬНАЯ ОСЬ НА ПК / 2x3 НА МОБИЛКЕ)
-         ========================================================= -->
+    <!-- ЭКРАН 05: ТАЙМЛАЙН -->
     <section class="timeline-section" id="process-timeline">
         <div class="container">
             <div class="section-head-split">
@@ -2175,7 +2139,7 @@
             <div class="timeline-track-wrapper">
                 <div class="timeline-axis-line"></div>
 
-                <!-- Таймлайн РТИ -->
+                <!-- РТИ -->
                 <div class="timeline-nodes-grid" data-show="rti">
                     <div class="tl-node">
                         <div class="tl-text-block">
@@ -2227,7 +2191,7 @@
                     </div>
                 </div>
 
-                <!-- Таймлайн Металл -->
+                <!-- Металл -->
                 <div class="timeline-nodes-grid" data-show="metal">
                     <div class="tl-node">
                         <div class="tl-text-block">
@@ -2282,9 +2246,7 @@
         </div>
     </section>
 
-    <!-- =========================================================
-         ЭКРАН 06: АСИММЕТРИЧНЫЙ КОНТАКТНЫЙ БЛОК (ТОЛЬКО EMAIL + ТЗ)
-         ========================================================= -->
+    <!-- ЭКРАН 06: ФОРМА ЗАЯВКИ -->
     <section class="contact-section" id="contacts">
         <div class="container">
             <div class="asymmetric-contact-monolith">
@@ -2502,7 +2464,7 @@
             `).join('');
         }
 
-  // =========================================================
+        // =========================================================
         // 5. ИНТЕРАКТИВНЫЙ 3D-ДВИЖОК НА ПЬЕДЕСТАЛЕ
         // =========================================================
         const canvas = document.getElementById('hero-3d-canvas');
@@ -2657,7 +2619,7 @@
 
             const proj = [];
 
-         const isMobile = window.innerWidth < 768;
+            const isMobile = window.innerWidth < 768;
             const modelScale = isMobile ? 0.58 : 1.0;
             const baseScale = Math.min(CW, CH) * (isMobile ? 0.75 : 0.95);
 
@@ -2667,7 +2629,6 @@
                 v.y += (v.ty - v.y) * 0.08;
                 v.z += (v.tz - v.z) * 0.08;
 
-                // Применяем масштаб под мобилку
                 const curX = v.x * modelScale;
                 const curY = v.y * modelScale;
                 const curZ = v.z * modelScale;
@@ -2675,7 +2636,7 @@
                 const x1 = curX * cosY - curZ * sinY;
                 const z1 = curZ * cosY + curX * sinY;
                 const y1 = curY * cosX - z1 * sinX;
-                const z2 = z1 * cosX + pYOffset(curY, sinX);
+                const z2 = z1 * cosX + curY * sinX;
 
                 const fov = baseScale / (baseScale + z2 * 1.5);
                 proj.push({
