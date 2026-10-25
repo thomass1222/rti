@@ -1255,35 +1255,51 @@
                 margin-bottom: 6px;
             }
 
-            /* 3D-сцена поднимается сразу под подзаголовок! */
+          /* 3D-сцена строго по ширине экрана без вылетов */
             .hero-3d-stage {
                 order: 4;
                 width: 100%;
-                margin: 2px 0 6px 0;
+                max-width: 100%;
+                margin: 0 auto 10px auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                overflow: hidden;
             }
 
-         .holo-viewport {
-             width: 100%;
-             max-width: 320px;
-             height: 260px;
-             margin: 0 auto;
-         }
+            .holo-viewport {
+                position: relative;
+                width: 100%;
+                max-width: 290px;
+                height: 220px;
+                margin: 0 auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+            }
 
-         #hero-3d-canvas {
-             width: 100%;
-             height: 100%;
-             display: block;
-         }
+            #hero-3d-canvas {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 290px;
+                display: block;
+                margin: 0 auto;
+            }
 
-         .holo-pedestal {
-             width: 220px;
-             height: 48px;
-             bottom: 12px;
-         }
+            .holo-pedestal {
+                width: 200px;
+                height: 40px;
+                bottom: 8px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
 
             .stage-hud-top {
-                top: 0;
-                font-size: 9.5px;
+                top: 4px;
+                left: 6px;
+                right: 6px;
+                font-size: 9px;
             }
 
             .holo-pedestal {
@@ -2641,8 +2657,9 @@
 
             const proj = [];
 
-            // Автоматический масштаб модели под размер экрана
-            const baseScale = Math.min(CW, CH) * 0.95;
+         const isMobile = window.innerWidth < 768;
+            const modelScale = isMobile ? 0.58 : 1.0;
+            const baseScale = Math.min(CW, CH) * (isMobile ? 0.75 : 0.95);
 
             for (let i = 0; i < vertices.length; i++) {
                 const v = vertices[i];
@@ -2650,15 +2667,20 @@
                 v.y += (v.ty - v.y) * 0.08;
                 v.z += (v.tz - v.z) * 0.08;
 
-                const x1 = v.x * cosY - v.z * sinY;
-                const z1 = v.z * cosY + v.x * sinY;
-                const y1 = v.y * cosX - z1 * sinX;
-                const z2 = z1 * cosX + v.y * sinX;
+                // Применяем масштаб под мобилку
+                const curX = v.x * modelScale;
+                const curY = v.y * modelScale;
+                const curZ = v.z * modelScale;
+
+                const x1 = curX * cosY - curZ * sinY;
+                const z1 = curZ * cosY + curX * sinY;
+                const y1 = curY * cosX - z1 * sinX;
+                const z2 = z1 * cosX + pYOffset(curY, sinX);
 
                 const fov = baseScale / (baseScale + z2 * 1.5);
                 proj.push({
                     px: CW / 2 + x1 * fov,
-                    py: CH / 2 - 8 + y1 * fov,
+                    py: CH / 2 - (isMobile ? 4 : 8) + y1 * fov,
                     z: z2,
                     fov: fov
                 });
